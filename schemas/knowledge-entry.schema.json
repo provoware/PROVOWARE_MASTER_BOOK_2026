@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://provoware.local/schemas/knowledge-entry.schema.json",
+  "title": "PROVOWARE Wissenseintrag",
+  "type": "object",
+  "required": [
+    "id",
+    "type",
+    "title",
+    "summary",
+    "primary_category",
+    "categories",
+    "tags",
+    "projects",
+    "priority",
+    "maturity",
+    "scope",
+    "automatable",
+    "status",
+    "revision",
+    "sources"
+  ],
+  "properties": {
+    "id": {"type": "string", "pattern": "^[A-Z]+-[0-9]{3,6}$"},
+    "type": {"enum": ["beobachtung", "erkenntnis", "regel", "standard", "goldene_regel", "fehler", "anti_pattern", "wenn_dann", "automatisierung", "notiz", "offene_frage", "entscheidung"]},
+    "title": {"type": "string", "minLength": 3},
+    "summary": {"type": "string", "minLength": 3},
+    "primary_category": {"type": "string", "minLength": 1},
+    "categories": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "tags": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "projects": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "priority": {"enum": ["P0", "P1", "P2", "P3"]},
+    "maturity": {"enum": ["E0", "E1", "E2", "E3", "E4", "E5"]},
+    "scope": {"enum": ["global", "desktop", "web", "linux", "projekt", "persoenlich"]},
+    "automatable": {"type": "boolean"},
+    "status": {"enum": ["neu", "spaeter_pruefen", "bestaetigt", "verworfen", "zusammengefuehrt", "standard", "archiviert", "konflikt"]},
+    "revision": {"type": "integer", "minimum": 1},
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["kind", "ref", "claim"],
+        "properties": {
+          "kind": {"enum": ["projektdatei", "projektchat", "eigene_erfahrung", "externe_quelle", "standard", "testnachweis"]},
+          "ref": {"type": "string", "minLength": 1},
+          "claim": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}
