@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://provoware.local/schemas/commit-evidence.schema.json",
+  "title": "PROVOWARE Knowledge Commit Evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version","evidence_id","transaction_id","candidate_id","intent_id",
+    "classification","journal_state_observed","verified_at","journal_hash",
+    "before_state_hash","after_state_hash","targets","evidence_hash"
+  ],
+  "properties": {
+    "schema_version": {"const":"1.0"},
+    "evidence_id": {"type":"string","pattern":"^EVID-TX-[0-9]{4,}$"},
+    "transaction_id": {"type":"string","pattern":"^TX-[0-9]{4,}$"},
+    "candidate_id": {"type":"string","pattern":"^INBOX-[0-9]{3,6}$"},
+    "intent_id": {"type":"string","minLength":1},
+    "classification": {"enum":["COMMITTED_VERIFIED","ROLLED_BACK_VERIFIED"]},
+    "journal_state_observed": {"enum":["PREPARED","WRITING","VALIDATING","COMMITTED","ROLLED_BACK","RECOVERY_REQUIRED","FAILED"]},
+    "verified_at": {"type":"string","minLength":1},
+    "journal_hash": {"type":"string","pattern":"^[a-f0-9]{64}$"},
+    "before_state_hash": {"type":"string","pattern":"^[a-f0-9]{64}$"},
+    "after_state_hash": {"type":"string","pattern":"^[a-f0-9]{64}$"},
+    "targets": {
+      "type":"array",
+      "minItems":3,
+      "items": {
+        "type":"object",
+        "additionalProperties": false,
+        "required":["path","before_hash","after_hash","observed_hash"],
+        "properties": {
+          "path":{"type":"string","minLength":1},
+          "before_hash":{"type":"string","pattern":"^[a-f0-9]{64}$"},
+          "after_hash":{"type":"string","pattern":"^[a-f0-9]{64}$"},
+          "observed_hash":{"type":"string","pattern":"^[a-f0-9]{64}$"}
+        }
+      }
+    },
+    "evidence_hash": {"type":"string","pattern":"^[a-f0-9]{64}$"}
+  }
+}
