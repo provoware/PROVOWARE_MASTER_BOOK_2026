@@ -2,7 +2,7 @@
 
 Lokaler Wissensspeicher, Masterbuch und spätere Standards Engine für projektübergreifendes Entwicklungswissen.
 
-## Iteration 001
+## Aktueller Stand – Iteration 002
 
 Enthalten:
 
@@ -10,16 +10,30 @@ Enthalten:
 - Knowledge Core Contract v1
 - Navigation Contract v1
 - maschinenlesbares Wissenseintrag-Schema
-- initialer quellengebundener Masterbuch-Bestand
+- zentral registrierte Kategorien und Beziehungstypen
+- versionierter Wissenseingang
+- deterministische Vorprüfung für neue Wissenskandidaten
+- kanonischer Masterbuch-Bestand in `data/masterbook_seed.json`
+- Browser-Derivat `src/seed.js`, erzeugbar über `scripts/generate_seed.py`
 - lesender Offline-Prototyp mit Suche und Filtern
-- deterministischer Smoke-Test
+- Smoke- und Preflight-Tests
 
 ## Start
 
 `index.html` lokal in Chrome oder Firefox öffnen.
 
-Iteration 001 ist absichtlich nur lesend. Persistente Nutzdatenspeicherung wird erst nach Stabilisierung des Wissens-, Kategorie- und Beziehungsvertrags eingeführt.
+Die Oberfläche bleibt absichtlich lesend. Persistente Nutzdatenspeicherung wird erst nach Stabilisierung von Wissenseingang, Dubletten- und Konfliktlogik eingeführt.
+
+## Entwicklerprüfung
+
+```bash
+python3 scripts/generate_seed.py
+python3 tests/smoke.py
+python3 tests/test_preflight.py
+```
+
+Nicht ausgeführte Prüfungen dürfen nicht als PASS interpretiert werden.
 
 ## Nächster Schritt
 
-Iteration 002: Kategorien-, Beziehungs- und Wissenseingangsmodell mit deterministischer Dubletten-Vorprüfung.
+Iteration 003: lokale Knowledge-Inbox-Ansicht mit sichtbaren Zuständen `READY`, `DUPLICATE`, `CONFLICT` und `BLOCKED`, weiterhin ohne persistente Nutzeränderung.
