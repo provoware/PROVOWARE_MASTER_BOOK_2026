@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://provoware.local/schemas/knowledge-delta.schema.json",
+  "title": "PROVOWARE Knowledge Delta",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["event_id", "schema_version", "timestamp", "iteration", "entry_id", "change_type", "reason", "source", "status"],
+  "properties": {
+    "event_id": {"type": "string", "pattern": "^DELTA-[0-9]{4,6}$"},
+    "schema_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+$"},
+    "timestamp": {"type": "string", "format": "date-time"},
+    "iteration": {"type": "integer", "minimum": 1},
+    "entry_id": {"type": "string", "minLength": 3},
+    "change_type": {"enum": ["neu", "verbessert", "zusammengefuehrt", "konflikt", "reife_geaendert", "prioritaet_geaendert", "projektbezug_geaendert", "archiviert"]},
+    "reason": {"type": "string", "minLength": 3},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "ref", "claim"],
+      "properties": {
+        "kind": {"enum": ["projektdatei", "projektchat", "eigene_erfahrung", "externe_quelle", "standard", "testnachweis"]},
+        "ref": {"type": "string", "minLength": 1},
+        "claim": {"type": "string", "minLength": 1}
+      }
+    },
+    "before_hash": {"type": ["string", "null"]},
+    "after_hash": {"type": ["string", "null"]},
+    "status": {"enum": ["historisch_rekonstruiert", "direkt_nachgewiesen"]}
+  }
+}
