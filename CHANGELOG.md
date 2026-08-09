@@ -1,5 +1,38 @@
 # Änderungsprotokoll
 
+## 0.1.3-i004 – 2026-08-09
+
+### Hinzugefügt
+
+- Knowledge-Delta-Vertrag `schemas/knowledge-delta.schema.json`
+- kanonisches Delta-Ledger `data/knowledge-deltas.json`
+- Single-Source-Generator `scripts/generate_deltas.py`
+- Browser-Derivat `src/deltas.js`
+- read-only Navigation `Was hat sich geändert?`
+- Delta-Detailansicht mit Grund, Quelle, Iteration, Zeitpunkt und Nachweisstatus
+- Regressionstest `tests/test_deltas.py`
+- Masterbuch-Regel `RULE-004` zur nachvollziehbaren Protokollierung von Wissensänderungen
+- Iterationsdokumentation `docs/ITERATION_004.md`
+
+### Geändert
+
+- `index.html` auf Iteration 004 aktualisiert
+- `src/app.js` um read-only Änderungsverlauf erweitert
+- `README.md` mit Delta-/History-Vertrag synchronisiert
+- `PROJEKTSTATUS.json` auf Iteration 004 und 44 % Fortschritt aktualisiert
+
+### Qualitätsentscheidungen
+
+- weiterhin keine schreibende Inbox-Übernahme
+- historisch rekonstruierte Delta-Ereignisse werden ausdrücklich so markiert
+- fehlende Snapshot-Hashes werden nicht erfunden
+- `data/knowledge-deltas.json` ist kanonisch; `src/deltas.js` nur Browser-Derivat
+- Laufzeit-/Browsertests bleiben BLOCKED/NOT_RUN, solange sie nicht real ausgeführt wurden
+
+### Nächster Schritt
+
+Iteration 005 – reversible Inbox-Übernahme zunächst als Preview/Simulation mit Delta-Erzeugung und Undo-Vertrag.
+
 ## 0.1.2-i003 – 2026-08-09
 
 ### Hinzugefügt
