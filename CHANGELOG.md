@@ -1,5 +1,36 @@
 # Änderungsprotokoll
 
+## 0.1.5-i006 – 2026-08-09
+
+### Hinzugefügt
+
+- `schemas/preview-evidence.schema.json` für maschinenlesbare Reproduzierbarkeitsnachweise
+- `scripts/verify_preview_reproducibility.py` für zwei unabhängige Preview-Läufe und Hashvergleich
+- `tests/test_preview_reproducibility.py` als Regressionstest für READY und unbekannte Kandidaten
+- `.github/workflows/preview-evidence.yml` als isoliertes, zeitbegrenztes CI-Gate ohne zusätzliche Python-Abhängigkeiten
+- `docs/ITERATION_006.md`
+- Masterbuch-Regel `RULE-006`: Commit-Vorbereitung erst nach reproduzierbarer Preview-Evidence
+- `DELTA-0007` für die Einführung des Evidence-Gates
+
+### Geändert
+
+- `data/masterbook_seed.json` und `src/seed.js` synchronisiert
+- `data/knowledge-deltas.json` und `src/deltas.js` synchronisiert
+- `PROJEKTSTATUS.json` auf Version `0.1.5-i006` und 54 % Fortschritt aktualisiert
+
+### Qualitätsentscheidungen
+
+- weiterhin kein kanonischer Wissensschreibvorgang
+- zwei Preview-Läufe müssen vollständig identisch sein
+- `PREVIEW_BLOCKED` kann niemals Reproduzierbarkeits-PASS erzeugen
+- fehlender Kandidat wird als `BLOCKED` behandelt
+- CI-Konfiguration ist vorhanden; ohne real beobachteten Lauf wird kein Runtime-PASS behauptet
+- Commit-Intent bleibt bis zur nächsten Iteration gesperrt
+
+### Nächster Schritt
+
+Iteration 007 – Commit-Intent Contract für genau einen READY-Kandidaten; an Preview-Evidence, Ausgangsbestand, Zielhash und Undo-Plan binden, weiterhin ohne echten Commit.
+
 ## 0.1.4-i005 – 2026-08-09
 
 ### Hinzugefügt
