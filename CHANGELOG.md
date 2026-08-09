@@ -1,5 +1,36 @@
 # Änderungsprotokoll
 
+## 0.1.2-i003 – 2026-08-09
+
+### Hinzugefügt
+
+- lokale, nur lesende Wissenseingangs-Ansicht
+- vier deterministische Demonstrationskandidaten für `READY`, `DUPLICATE`, `CONFLICT` und `BLOCKED`
+- sichtbare Begründung jedes Preflight-Zustands
+- Tastaturbedienung der Inbox-Karten
+- Statuskennzeichnung zusätzlich über Text und Symbol, nicht nur Farbe
+- Browser-Derivat `src/inbox.js` für direkten Offline-Start per `file://`
+
+### Geändert
+
+- `index.html` auf Iteration 003 aktualisiert und Wissenseingang in die Navigation aufgenommen
+- `src/app.js` um read-only Inbox-Rendering und deterministische Vorprüfung erweitert
+- `src/style.css` um zugängliche Statusdarstellung erweitert
+- `PROJEKTSTATUS.json` auf Version `0.1.2-i003` und 39 % Fortschritt aktualisiert
+
+### Qualitätsentscheidungen
+
+- weiterhin keine persistente Nutzeränderung
+- keine automatische Übernahme von `READY`
+- keine automatische Zusammenführung von `DUPLICATE`
+- keine automatische Auflösung von `CONFLICT`
+- `BLOCKED` bleibt sichtbar blockiert
+- Laufzeit-/Browsertests werden nicht als PASS behauptet, solange sie nicht real ausgeführt wurden
+
+### Nächster Schritt
+
+Iteration 004 – Knowledge-Delta-Vertrag und read-only Änderungsverlauf; erst danach schreibende Inbox-Übernahme.
+
 ## 0.1.1-i002 – 2026-08-09
 
 ### Hinzugefügt
