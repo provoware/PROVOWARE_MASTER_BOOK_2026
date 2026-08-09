@@ -103,7 +103,7 @@ def build_target_documents(root: Path, candidate_id: str, intent: dict) -> tuple
         "entry_id": preview["after"]["id"],
         "change_type": "neu",
         "reason": f"Atomare Übernahme von {candidate_id} hinter gültigem Commit-Intent.",
-        "source": {"kind":"wissenseingang","ref":candidate_id,"claim":"Kandidat wurde nach Preflight, Preview-Evidence und Intent-Guard übernommen."},
+        "source": {"kind":"projektdatei","ref":f"data/inbox.json#{candidate_id}","claim":"Kandidat wurde nach Preflight, Preview-Evidence und Intent-Guard übernommen."},
         "before_hash": None,
         "after_hash": preview["after_hash"],
         "status": "direkt_nachgewiesen"
@@ -137,7 +137,11 @@ def execute_transaction(root: Path, candidate_id: str, intent: dict, fault_at: s
     if intent.get("status") != "COMMIT_READY":
         return {"result":"BLOCKED","reason":"Intent ist nicht COMMIT_READY."}
 
-    new_seed, new_deltas, new_inbox, preview = build_target_documents(root, candidate_id, intent)
+    try:
+        new_seed, new_deltas, new_inbox, preview = build_target_documents(root, candidate_id, intent)
+    except (KeyError, ValueError) as exc:
+        return {"result":"BLOCKED","reason":f"{type(exc).__name__}: {exc}"}
+
     documents = {
         "data/masterbook_seed.json": new_seed,
         "data/knowledge-deltas.json": new_deltas,
