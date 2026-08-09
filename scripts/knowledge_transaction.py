@@ -10,6 +10,7 @@ import shutil
 from acceptance_preview import build_preview
 from canonical_json import canonical_json, sha256_json
 from intent_guard import build_intent, validate_intent
+from recovery_startup_gate import evaluate_write_gate
 
 ROOT = Path(__file__).resolve().parents[1]
 TARGET_PATHS = (
@@ -134,6 +135,14 @@ def _rollback(root: Path, journal: dict) -> None:
 
 
 def execute_transaction(root: Path, candidate_id: str, intent: dict, fault_at: str | None = None) -> dict:
+    gate = evaluate_write_gate(root)
+    if gate.get("status") != "WRITE_ALLOWED":
+        return {
+            "result": "BLOCKED",
+            "reason": "Recovery Startup Gate blockiert neue Schreibvorgänge.",
+            "gate": gate,
+        }
+
     if intent.get("status") != "COMMIT_READY":
         return {"result":"BLOCKED","reason":"Intent ist nicht COMMIT_READY."}
 
