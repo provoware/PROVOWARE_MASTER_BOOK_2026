@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PROVOWARE Übernahme-Vorschau</title>
+  <link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+  <header><div><strong>PROVOWARE Wissensspeicher</strong> · Iteration 005</div><div>PREVIEW ONLY · kein Schreibvorgang</div></header>
+  <main style="grid-template-columns:220px minmax(320px,1fr) 360px">
+    <aside><a class="nav-link" href="index.html">← Zurück</a><h2>Inbox</h2><div id="candidate-list"></div></aside>
+    <section><h1>Reversible Übernahme-Vorschau</h1><p>Nur Kandidaten mit <strong>READY</strong> dürfen einen Create-Plan erhalten. Die Vorschau verändert weder Masterbuch noch Inbox.</p><div id="plan" class="card" tabindex="0">Kandidaten wählen.</div></section>
+    <aside id="detail" class="detail"><h2>Prüfvertrag</h2><p>Zielzustand, SHA-256, Delta-Vorschau und Undo-Vorschau werden vor einem späteren Commit sichtbar.</p></aside>
+  </main>
+  <footer>Offline · Vorschau ist reversibel, weil keinerlei persistente Daten verändert werden.</footer>
+  <script src="src/seed.js"></script>
+  <script src="src/inbox.js"></script>
+  <script src="src/preview.js"></script>
+</body>
+</html>
