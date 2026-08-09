@@ -1,0 +1,35 @@
+name: Browser Derivative Sync Gate
+
+on:
+  push:
+    paths:
+      - 'data/masterbook_seed.json'
+      - 'data/knowledge-deltas.json'
+      - 'src/seed.js'
+      - 'src/deltas.js'
+      - 'scripts/verify_browser_derivatives.py'
+      - 'tests/test_browser_derivatives.py'
+      - '.github/workflows/browser-derivative-sync.yml'
+  pull_request:
+    paths:
+      - 'data/masterbook_seed.json'
+      - 'data/knowledge-deltas.json'
+      - 'src/seed.js'
+      - 'src/deltas.js'
+      - 'scripts/verify_browser_derivatives.py'
+      - 'tests/test_browser_derivatives.py'
+      - '.github/workflows/browser-derivative-sync.yml'
+
+jobs:
+  derivative-sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify canonical browser derivatives
+        run: python3 scripts/verify_browser_derivatives.py
+      - name: Run derivative regression test
+        run: python3 tests/test_browser_derivatives.py
