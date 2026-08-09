@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "kanonischer_projektname": "PROVOWARE Knowledge & Project Intelligence",
+  "aliasnamen": [
+    "PROVOWARE Wissensspeicher",
+    "PROVOWARE Master-Book"
+  ],
+  "version": "0.1.0-i001",
+  "repository": "provoware/PROVOWARE_MASTER_BOOK_2026",
+  "hauptdatei": "index.html",
+  "status": "Iteration 001 – Fundament",
+  "letztes_validiertes_release": null,
+  "iteration": 1,
+  "stand": "2026-08-09",
+  "fortschritt_prozent": 30,
+  "naechster_schritt": "Iteration 002 – Kategorien-, Beziehungs- und Wissenseingangsmodell mit deterministischer Dubletten-Vorprüfung"
+}
