@@ -1,5 +1,38 @@
 # Änderungsprotokoll
 
+## 0.1.8-i009 – 2026-08-09
+
+### Hinzugefügt
+
+- `schemas/commit-evidence.schema.json` für unveränderliche, hashgebundene Transaktionsnachweise
+- `scripts/recovery_replay.py` für deterministische Neustart-/Recovery-Klassifikation
+- `tests/test_recovery_replay.py` für Clean-, Commit-, Rollback-, Mixed-State- und Corrupt-Journal-Fälle
+- `.github/workflows/recovery-replay.yml` als isoliertes, zeitbegrenztes Recovery-Gate
+- `docs/ITERATION_009.md`
+- Masterbuch-Regel `RULE-009`: Wissens-Commits müssen nach Neustart aus Journal und Dateihashes eindeutig rekonstruierbar sein
+- `DELTA-0010` für die Einführung des Recovery-Replay-Vertrags
+
+### Geändert
+
+- `PROJEKTSTATUS.json` auf Version `0.1.8-i009` und 69 % Fortschritt aktualisiert
+- `data/masterbook_seed.json` und `src/seed.js` synchronisiert
+- `data/knowledge-deltas.json` und `src/deltas.js` synchronisiert
+
+### Qualitätsentscheidungen
+
+- Recovery-Replay ist standardmäßig lesend
+- ein gemischter Zustand bleibt ohne explizites `--repair` unverändert und `RECOVERY_REQUIRED`
+- `--repair` darf ausschließlich vorhandene Vorher-Backups verwenden
+- `CORRUPT_JOURNAL` und `HASH_MISMATCH` können niemals PASS erzeugen
+- Commit-Evidence wird nur für `COMMITTED_VERIFIED` und `ROLLED_BACK_VERIFIED` erzeugt
+- bestehende Evidence wird nicht still überschrieben
+- Runtime-/CI-PASS wird nicht behauptet, solange kein realer Lauf beobachtet wurde
+- weiterhin keine Massenübernahme
+
+### Nächster Schritt
+
+Iteration 010 – Recovery Startup Gate + Single-Commit Qualification: offene Recovery-Fälle vor jedem neuen Commit sperren und den vollständigen Einzelpfad Preview → Intent → Commit → Restart-Replay → Evidence als zusammenhängende Qualifikation prüfen.
+
 ## 0.1.7-i008 – 2026-08-09
 
 ### Hinzugefügt
