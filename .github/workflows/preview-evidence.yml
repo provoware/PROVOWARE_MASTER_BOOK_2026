@@ -1,0 +1,48 @@
+name: Preview Evidence
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/**'
+      - 'tests/**'
+      - 'data/**'
+      - 'schemas/**'
+      - '.github/workflows/preview-evidence.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preview-evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Acceptance preview regression
+        run: python3 tests/test_acceptance_preview.py
+      - name: Reproducibility evidence
+        run: python3 scripts/verify_preview_reproducibility.py INBOX-001 --output evidence/preview/INBOX-001.json
+      - name: Verify evidence result
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('evidence/preview/INBOX-001.json')
+          data = json.loads(p.read_text(encoding='utf-8'))
+          assert data['result'] == 'PASS'
+          assert data['equal'] is True
+          assert data['run_a_hash'] == data['run_b_hash']
+          assert data['plan_hash_a'] == data['plan_hash_b']
+          print('PASS: Preview Evidence reproduzierbar')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: preview-evidence
+          path: evidence/preview/INBOX-001.json
+          if-no-files-found: error
+          retention-days: 30
