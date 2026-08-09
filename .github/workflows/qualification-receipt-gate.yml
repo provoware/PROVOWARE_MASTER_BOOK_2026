@@ -1,0 +1,21 @@
+name: Qualification Receipt Gate
+on:
+  push:
+    paths: ['scripts/**','tests/**','data/**','schemas/**','.github/workflows/qualification-receipt-gate.yml']
+  pull_request:
+    paths: ['scripts/**','tests/**','data/**','schemas/**','.github/workflows/qualification-receipt-gate.yml']
+jobs:
+  qualification-receipt-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pytest -q tests/test_single_commit_qualification.py tests/test_qualification_receipt_gate.py
+      - run: python scripts/qualification_receipt_gate.py > qualification_gate_receipt.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: qualification-receipt-gate
+          path: qualification_gate_receipt.json
