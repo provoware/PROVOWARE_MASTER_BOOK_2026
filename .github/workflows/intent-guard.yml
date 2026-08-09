@@ -1,0 +1,33 @@
+name: Intent Guard
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/**'
+      - 'tests/**'
+      - 'data/**'
+      - 'schemas/**'
+      - '.github/workflows/intent-guard.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  intent-guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Preview regression
+        run: python3 tests/test_acceptance_preview.py
+      - name: Reproducibility regression
+        run: python3 tests/test_preview_reproducibility.py
+      - name: Intent stale-plan regression
+        run: python3 tests/test_intent_guard.py
+      - name: Read-only intent smoke
+        run: python3 scripts/intent_guard.py INBOX-001
