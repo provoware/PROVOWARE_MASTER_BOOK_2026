@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://provoware.local/schemas/commit-intent.schema.json",
+  "title": "PROVOWARE Commit Intent",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version","intent_id","candidate_id","operation","preview_evidence_hash","expected_project_state_hash","target_entry_id","target_hash","undo_plan_hash","created_at","expires_at","status"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "intent_id": {"type": "string", "pattern": "^INTENT-[0-9]{4,}$"},
+    "candidate_id": {"type": "string", "pattern": "^INBOX-[0-9]{3,}$"},
+    "operation": {"const": "create"},
+    "preview_evidence_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "expected_project_state_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "target_entry_id": {"type": "string", "pattern": "^[A-Z]+-[0-9]{3,}$"},
+    "target_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "undo_plan_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "expires_at": {"type": "string", "format": "date-time"},
+    "status": {"enum": ["COMMIT_READY","STALE","BLOCKED"]}
+  }
+}
