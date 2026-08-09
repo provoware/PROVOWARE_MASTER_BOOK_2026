@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://provoware.local/schemas/transaction-journal.schema.json",
+  "title": "PROVOWARE Knowledge Transaction Journal",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version","transaction_id","candidate_id","intent_id","state","created_at","updated_at","targets","applied_files","error"],
+  "properties": {
+    "schema_version": {"const":"1.0"},
+    "transaction_id": {"type":"string","pattern":"^TX-[0-9]{4,}$"},
+    "candidate_id": {"type":"string","pattern":"^INBOX-[0-9]{3,6}$"},
+    "intent_id": {"type":"string","minLength":1},
+    "state": {"enum":["PREPARED","WRITING","VALIDATING","COMMITTED","ROLLED_BACK","RECOVERY_REQUIRED","FAILED"]},
+    "created_at": {"type":"string"},
+    "updated_at": {"type":"string"},
+    "targets": {
+      "type":"array",
+      "minItems":3,
+      "items": {
+        "type":"object",
+        "required":["path","before_hash","after_hash","backup_path","temp_path"],
+        "properties": {
+          "path":{"type":"string"},
+          "before_hash":{"type":"string"},
+          "after_hash":{"type":"string"},
+          "backup_path":{"type":"string"},
+          "temp_path":{"type":"string"}
+        }
+      }
+    },
+    "applied_files":{"type":"array","items":{"type":"string"},"uniqueItems":true},
+    "error":{"type":["string","null"]}
+  }
+}
