@@ -1,0 +1,34 @@
+name: Delta Append Only
+on:
+  push:
+    paths:
+      - 'data/knowledge-deltas.json'
+      - 'scripts/verify_delta_append_only.py'
+      - 'tests/test_delta_append_only.py'
+      - '.github/workflows/delta-append-only.yml'
+  pull_request:
+    paths:
+      - 'data/knowledge-deltas.json'
+      - 'scripts/verify_delta_append_only.py'
+      - 'tests/test_delta_append_only.py'
+      - '.github/workflows/delta-append-only.yml'
+jobs:
+  history-integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python tests/test_delta_append_only.py
+      - name: Historischen Prefix gegen Ausgangs-Ref prüfen
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          if [ -z "$BASE_REF" ] || [ "$BASE_REF" = "0000000000000000000000000000000000000000" ]; then
+            BASE_REF="HEAD^"
+          fi
+          python scripts/verify_delta_append_only.py --baseline-ref "$BASE_REF"
