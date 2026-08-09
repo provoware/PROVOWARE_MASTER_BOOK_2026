@@ -1,0 +1,30 @@
+name: recovery-replay
+
+on:
+  push:
+    paths:
+      - 'scripts/recovery_replay.py'
+      - 'scripts/knowledge_transaction.py'
+      - 'schemas/commit-evidence.schema.json'
+      - 'tests/test_recovery_replay.py'
+      - '.github/workflows/recovery-replay.yml'
+  pull_request:
+    paths:
+      - 'scripts/recovery_replay.py'
+      - 'scripts/knowledge_transaction.py'
+      - 'schemas/commit-evidence.schema.json'
+      - 'tests/test_recovery_replay.py'
+      - '.github/workflows/recovery-replay.yml'
+
+jobs:
+  recovery-replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Python-Version
+        run: python3 --version
+      - name: Transaction-Basis prüfen
+        run: python3 tests/test_knowledge_transaction.py
+      - name: Recovery Replay prüfen
+        run: python3 tests/test_recovery_replay.py
