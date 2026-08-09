@@ -1,0 +1,21 @@
+name: Single Commit Qualification
+on:
+  push:
+    paths: ['scripts/**','tests/**','data/**','schemas/**','.github/workflows/single-commit-qualification.yml']
+  pull_request:
+    paths: ['scripts/**','tests/**','data/**','schemas/**','.github/workflows/single-commit-qualification.yml']
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pytest -q tests/test_single_commit_qualification.py
+      - run: python scripts/single_commit_qualification.py > qualification_receipt.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: single-commit-qualification
+          path: qualification_receipt.json
