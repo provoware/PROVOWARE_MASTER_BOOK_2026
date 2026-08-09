@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "iteration": 10,
+  "version": "0.1.9-i010",
+  "date": "2026-08-09",
+  "scope": "Recovery Startup Gate",
+  "result": "PARTIAL_PASS_RUNTIME_PENDING",
+  "verified": {
+    "write_gate_schema_present": true,
+    "startup_gate_implementation_present": true,
+    "transaction_gate_integration_present": true,
+    "regression_test_present": true,
+    "ci_workflow_configured": true,
+    "masterbook_rule": "RULE-010",
+    "knowledge_delta": "DELTA-0011"
+  },
+  "safety_properties": [
+    "Startup-Gate verwendet nur classify_journal und führt kein Repair aus.",
+    "Startup-Gate erzeugt keine Commit-Evidence.",
+    "RECOVERY_REQUIRED, HASH_MISMATCH und CORRUPT_JOURNAL führen zu WRITE_BLOCKED.",
+    "knowledge_transaction.execute_transaction prüft das Gate vor jeder Schreibvorbereitung."
+  ],
+  "not_claimed_as_pass": [
+    "Python-Laufzeitregression",
+    "GitHub-Actions-Lauf",
+    "Browser-E2E",
+    "Release-Gate"
+  ]
+}
