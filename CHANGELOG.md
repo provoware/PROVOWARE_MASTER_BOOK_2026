@@ -1,5 +1,38 @@
 # Änderungsprotokoll
 
+## 0.1.9-i010 – 2026-08-09
+
+### Hinzugefügt
+
+- `schemas/write-gate.schema.json` für das zentrale `WRITE_ALLOWED`/`WRITE_BLOCKED`-Recovery-Gate
+- `scripts/recovery_startup_gate.py` als schreibfreie Startprüfung über alle Transaktionsjournale
+- `tests/test_recovery_startup_gate.py` für CLEAN, beschädigtes Journal, Datenunverändertheit und Nicht-Umgehbarkeit
+- `.github/workflows/recovery-startup-gate.yml` als isoliertes, zeitbegrenztes CI-Gate
+- `docs/ITERATION_010.md`
+- Masterbuch-Regel `RULE-010`: offene Recovery-Fälle müssen jeden neuen Wissensschreibvorgang zentral sperren
+- `DELTA-0011` für die Einführung des globalen Write-Gates
+
+### Geändert
+
+- `scripts/knowledge_transaction.py` ruft das Recovery-Startup-Gate jetzt vor jedem Eintritt in den eigentlichen Schreibpfad auf
+- `data/masterbook_seed.json` und `src/seed.js` synchronisiert
+- `data/knowledge-deltas.json` und `src/deltas.js` synchronisiert
+- `PROJEKTSTATUS.json` auf Version `0.1.9-i010` und 73 % Fortschritt aktualisiert
+
+### Qualitätsentscheidungen
+
+- Startup-Gate ist strikt schreibfrei und ruft deshalb nicht `replay_all()` auf
+- das Gate erzeugt keine Evidence, führt kein Repair aus und verändert kein Journal
+- `RECOVERY_REQUIRED`, `HASH_MISMATCH` und `CORRUPT_JOURNAL` führen zwingend zu `WRITE_BLOCKED`
+- nur kein Journal oder ausschließlich hashverifizierte Endzustände führen zu `WRITE_ALLOWED`
+- der Transaktionspfad kann das Gate nicht umgehen
+- Runtime-/CI-PASS wird erst nach real beobachtetem Lauf gesetzt
+- weiterhin keine Batch- oder Massenübernahme
+
+### Nächster Schritt
+
+Iteration 011 – Single-Commit Qualification Chain: `Preview Evidence → Commit Intent → WRITE_GATE → Transaction → Restart-Replay → Commit Evidence` in einer isolierten Fixture vollständig ausführen und als zusammenhängenden Qualifikationsnachweis binden.
+
 ## 0.1.8-i009 – 2026-08-09
 
 ### Hinzugefügt

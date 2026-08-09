@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://provoware.local/schemas/write-gate.schema.json",
+  "title": "PROVOWARE Recovery Startup Write Gate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "status", "checked_journals", "blocking_counts", "reason"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "status": {"enum": ["WRITE_ALLOWED", "WRITE_BLOCKED"]},
+    "checked_journals": {"type": "integer", "minimum": 0},
+    "blocking_counts": {
+      "type": "object",
+      "additionalProperties": {"type": "integer", "minimum": 0}
+    },
+    "classifications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["journal", "classification"],
+        "properties": {
+          "journal": {"type": "string"},
+          "classification": {
+            "enum": ["COMMITTED_VERIFIED", "ROLLED_BACK_VERIFIED", "RECOVERY_REQUIRED", "CORRUPT_JOURNAL", "HASH_MISMATCH"]
+          },
+          "transaction_id": {"type": ["string", "null"]},
+          "reason": {"type": ["string", "null"]}
+        }
+      }
+    },
+    "reason": {"type": "string", "minLength": 1}
+  }
+}

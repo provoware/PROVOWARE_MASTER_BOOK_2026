@@ -1,0 +1,36 @@
+name: Recovery Startup Gate
+
+on:
+  push:
+    paths:
+      - 'scripts/recovery_startup_gate.py'
+      - 'scripts/recovery_replay.py'
+      - 'scripts/knowledge_transaction.py'
+      - 'tests/test_recovery_startup_gate.py'
+      - 'schemas/write-gate.schema.json'
+      - '.github/workflows/recovery-startup-gate.yml'
+  pull_request:
+    paths:
+      - 'scripts/recovery_startup_gate.py'
+      - 'scripts/recovery_replay.py'
+      - 'scripts/knowledge_transaction.py'
+      - 'tests/test_recovery_startup_gate.py'
+      - 'schemas/write-gate.schema.json'
+      - '.github/workflows/recovery-startup-gate.yml'
+  workflow_dispatch:
+
+jobs:
+  recovery-startup-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Startup-Gate Regression
+        run: python3 tests/test_recovery_startup_gate.py
+      - name: Bestehende Transaktionsregression
+        run: python3 tests/test_knowledge_transaction.py
+      - name: Bestehende Recovery-Regression
+        run: python3 tests/test_recovery_replay.py
