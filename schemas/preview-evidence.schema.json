@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://provoware.local/schemas/preview-evidence.schema.json",
+  "title": "PROVOWARE Preview Evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version","candidate_id","run_a_hash","run_b_hash","plan_hash_a","plan_hash_b","equal","result","verified_at"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "candidate_id": {"type": "string", "pattern": "^INBOX-[0-9]{3,}$"},
+    "run_a_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "run_b_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "plan_hash_a": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "plan_hash_b": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "equal": {"type": "boolean"},
+    "result": {"enum": ["PASS","FAIL","BLOCKED"]},
+    "verified_at": {"type": "string", "format": "date-time"},
+    "details": {"type": "object"}
+  }
+}
