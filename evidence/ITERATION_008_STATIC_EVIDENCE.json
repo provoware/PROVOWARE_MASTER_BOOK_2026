@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "iteration": 8,
+  "version": "0.1.7-i008",
+  "date": "2026-08-09",
+  "scope": "crash-consistent single knowledge transaction",
+  "result": "PARTIAL_PASS_RUNTIME_BLOCKED",
+  "checks": {
+    "repository_write_readback": "PASS",
+    "transaction_journal_schema_present": "PASS",
+    "knowledge_transaction_engine_present": "PASS",
+    "fault_matrix_test_present": "PASS",
+    "github_actions_gate_present": "PASS",
+    "masterbook_rule_008_present": "PASS",
+    "delta_0009_present": "PASS",
+    "project_status_synced": "PASS",
+    "changelog_synced": "PASS",
+    "browser_derivatives_synced": "PASS",
+    "python_fault_matrix_runtime": "BLOCKED_TRANSIENT_TOOL_ERROR",
+    "github_actions_runtime_observed": "UNKNOWN",
+    "release_gate": "BLOCKED"
+  },
+  "fault_points_defined": [
+    "after_prepare",
+    "before_replace_1",
+    "after_replace_1",
+    "before_replace_2",
+    "after_replace_2",
+    "before_replace_3",
+    "after_replace_3",
+    "before_validation"
+  ],
+  "safety_claims": [
+    "Nur COMMIT_READY darf schreiben.",
+    "Vorher-Backups und Temp-Dateien entstehen vor dem ersten Replace.",
+    "COMMITTED wird erst nach Rücklesen und Hashprüfung gesetzt.",
+    "Definierte Teilfehler führen zum Rollbackversuch.",
+    "Ein gescheiterter Rollback bleibt als RECOVERY_REQUIRED sichtbar.",
+    "Nicht ausgeführte Runtime-Tests werden nicht als PASS ausgewiesen."
+  ],
+  "known_limitations": [
+    "Ein Mehrdatei-Commit kann auf POSIX-Dateisystemen nicht als einzelner atomarer Kernel-Replace ausgeführt werden; Crash-Konsistenz wird deshalb über Journal und Rollback hergestellt.",
+    "Der reale Fault-Injection-Lauf konnte in dieser Agentenlaufzeit wegen eines transienten Toolfehlers nicht beobachtet werden.",
+    "Noch keine Massenübernahme und kein automatisches Recovery Replay."
+  ]
+}
