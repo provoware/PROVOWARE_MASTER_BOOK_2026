@@ -1,0 +1,22 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://provoware.local/schemas/inbox-candidate.schema.json",
+  "title":"PROVOWARE Wissenseingangs-Kandidat",
+  "type":"object",
+  "required":["candidate_id","title","summary","type","primary_category","categories","priority","maturity","scope","sources","status"],
+  "properties":{
+    "candidate_id":{"type":"string","pattern":"^INBOX-[0-9]{3,6}$"},
+    "title":{"type":"string","minLength":3},
+    "summary":{"type":"string","minLength":3},
+    "type":{"enum":["beobachtung","erkenntnis","regel","standard","goldene_regel","fehler","anti_pattern","wenn_dann","automatisierung","notiz","offene_frage","entscheidung"]},
+    "primary_category":{"type":"string","minLength":1},
+    "categories":{"type":"array","items":{"type":"string"},"uniqueItems":true},
+    "priority":{"enum":["P0","P1","P2","P3"]},
+    "maturity":{"enum":["E0","E1","E2","E3","E4","E5"]},
+    "scope":{"enum":["global","desktop","web","linux","projekt","persoenlich"]},
+    "sources":{"type":"array","minItems":1},
+    "status":{"enum":["neu","pruefen","dublette","konflikt","uebernommen","verworfen"]},
+    "possible_duplicate_of":{"type":["string","null"]},
+    "conflict_with":{"type":"array","items":{"type":"string"},"uniqueItems":true}
+  }
+}
