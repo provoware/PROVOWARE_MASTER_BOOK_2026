@@ -1,5 +1,59 @@
 # Änderungsprotokoll
 
+## 0.1.7-i008 – 2026-08-09
+
+### Hinzugefügt
+
+- `schemas/transaction-journal.schema.json` für `PREPARED`, `WRITING`, `VALIDATING`, `COMMITTED`, `ROLLED_BACK`, `RECOVERY_REQUIRED`
+- `scripts/knowledge_transaction.py` für die crash-konsistente Einzelübernahme eines `READY`-Kandidaten hinter gültigem Intent
+- `tests/test_knowledge_transaction.py` mit Erfolgsfall, Non-READY-Sperre und acht Fault-Injection-Punkten
+- `.github/workflows/knowledge-transaction.yml` als isoliertes, zeitbegrenztes Transaktions-Gate
+- `docs/ITERATION_008.md`
+- Masterbuch-Regel `RULE-008`: Wissens-Commit muss journalisiert, hashgeprüft und rückrollbar sein
+- `DELTA-0009` für die Einführung des Transaktionsvertrags
+
+### Geändert
+
+- `PROJEKTSTATUS.json` auf Version `0.1.7-i008` und 64 % Fortschritt aktualisiert
+- Masterbuch und Delta-Ledger mit Iteration 008 synchronisiert
+
+### Qualitätsentscheidungen
+
+- weiterhin keine Massenübernahme
+- nur ein `COMMIT_READY`-Intent darf den Schreibpfad betreten
+- vor Änderung werden Backups und Temp-Dateien erzeugt und synchronisiert
+- `COMMITTED` entsteht erst nach Rücklesen und SHA-256-Prüfung aller kanonischen Zieldokumente
+- jeder definierte Teilfehler versucht einen vollständigen Rollback
+- Rollbackfehler werden als `RECOVERY_REQUIRED` sichtbar gehalten
+- Runtime-/CI-PASS wird nicht behauptet, solange der reale Lauf nicht beobachtet wurde
+
+### Nächster Schritt
+
+Iteration 009 – Recovery Replay + Commit-Evidence: Journale nach Neustart deterministisch klassifizieren und erfolgreiche Transaktionen mit unveränderlichem Evidence-Datensatz absichern.
+
+## 0.1.6-i007 – 2026-08-09
+
+### Hinzugefügt
+
+- `schemas/commit-intent.schema.json` für schreibfreie Commit-Intents
+- `scripts/project_state.py` für den kanonischen Projektzustands-Hash
+- `scripts/intent_guard.py` für Evidence-, State-, Ziel-, Undo- und Ablaufzeit-Bindung
+- `tests/test_intent_guard.py` für Stale-Plan-Regression
+- `.github/workflows/intent-guard.yml`
+- `docs/ITERATION_007.md`
+- Masterbuch-Regel `RULE-007`: Schreib-Intent muss an den unveränderten Projektzustand gebunden sein
+- `DELTA-0008` für die Einführung des Intent-Gates
+
+### Qualitätsentscheidungen
+
+- Iteration 007 blieb vollständig schreibfrei
+- veränderte Evidence, Projektzustand, Zielhash, Undo-Plan oder Ablaufzeit führen zu `STALE`
+- unbekannte oder nicht freigabefähige Zustände bleiben `BLOCKED`
+
+### Nächster Schritt
+
+Iteration 008 – ersten crash-konsistenten Einzel-Commit hinter grünem Intent-Guard implementieren.
+
 ## 0.1.5-i006 – 2026-08-09
 
 ### Hinzugefügt
