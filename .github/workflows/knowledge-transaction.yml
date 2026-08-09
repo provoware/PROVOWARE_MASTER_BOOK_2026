@@ -1,0 +1,33 @@
+name: Knowledge Transaction Gate
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/knowledge_transaction.py'
+      - 'tests/test_knowledge_transaction.py'
+      - 'scripts/acceptance_preview.py'
+      - 'scripts/intent_guard.py'
+      - 'scripts/preflight.py'
+      - 'scripts/canonical_json.py'
+      - 'data/**'
+      - 'schemas/transaction-journal.schema.json'
+      - '.github/workflows/knowledge-transaction.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  transaction-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax compile
+        run: python3 -m py_compile scripts/knowledge_transaction.py tests/test_knowledge_transaction.py
+      - name: Transaction and rollback regression
+        run: python3 tests/test_knowledge_transaction.py
