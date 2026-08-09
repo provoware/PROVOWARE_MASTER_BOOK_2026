@@ -5,13 +5,22 @@
     "PROVOWARE Wissensspeicher",
     "PROVOWARE Master-Book"
   ],
-  "version": "0.1.0-i001",
+  "version": "0.1.1-i002",
   "repository": "provoware/PROVOWARE_MASTER_BOOK_2026",
   "hauptdatei": "index.html",
-  "status": "Iteration 001 – Fundament",
+  "status": "Iteration 002 – Taxonomie, Beziehungen und Wissenseingang implementiert; Laufzeittests BLOCKED",
   "letztes_validiertes_release": null,
-  "iteration": 1,
+  "iteration": 2,
   "stand": "2026-08-09",
-  "fortschritt_prozent": 30,
-  "naechster_schritt": "Iteration 002 – Kategorien-, Beziehungs- und Wissenseingangsmodell mit deterministischer Dubletten-Vorprüfung"
+  "fortschritt_prozent": 35,
+  "naechster_schritt": "Iteration 003 – lokale Knowledge-Inbox-Ansicht mit sichtbaren Preflight-Zuständen, weiterhin ohne persistente Nutzeränderung",
+  "qualitaetsstatus": {
+    "repository_write_readback": "PASS",
+    "taxonomy_contract": "PASS",
+    "relationship_registry": "PASS",
+    "inbox_contract": "PASS",
+    "python_runtime_tests": "BLOCKED",
+    "browser_e2e": "NOT_RUN",
+    "release_gate": "BLOCKED"
+  }
 }
