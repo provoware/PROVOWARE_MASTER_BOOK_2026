@@ -1,0 +1,13 @@
+{
+  "schema_version":"1.0",
+  "relationship_types":[
+    {"id":"verwandt_mit","label":"Verwandt mit","symmetric":true},
+    {"id":"entstanden_aus","label":"Entstanden aus","symmetric":false},
+    {"id":"ersetzt","label":"Ersetzt","symmetric":false},
+    {"id":"widerspricht","label":"Widerspricht","symmetric":true},
+    {"id":"verwendet_in","label":"Verwendet in","symmetric":false},
+    {"id":"praezisiert","label":"Präzisiert","symmetric":false},
+    {"id":"verhindert","label":"Verhindert","symmetric":false},
+    {"id":"fuehrt_zu","label":"Führt zu","symmetric":false}
+  ]
+}
