@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "generated_from": "documented_project_history",
+  "items": [
+    {
+      "event_id": "DELTA-0001",
+      "schema_version": "1.0",
+      "timestamp": "2026-08-09T06:00:00Z",
+      "iteration": 1,
+      "entry_id": "RULE-001",
+      "change_type": "neu",
+      "reason": "Initialer quellengebundener Masterbuch-Bestand angelegt.",
+      "source": {"kind": "projektdatei", "ref": "CHANGELOG.md", "claim": "Iteration 001 fügte initiale Wissenseinträge hinzu."},
+      "before_hash": null,
+      "after_hash": null,
+      "status": "historisch_rekonstruiert"
+    },
+    {
+      "event_id": "DELTA-0002",
+      "schema_version": "1.0",
+      "timestamp": "2026-08-09T07:00:00Z",
+      "iteration": 2,
+      "entry_id": "AUTO-001",
+      "change_type": "verbessert",
+      "reason": "Wissenseingang erhielt einen deterministischen Preflight als sichere Vorstufe.",
+      "source": {"kind": "projektdatei", "ref": "CHANGELOG.md", "claim": "Iteration 002 ergänzte Preflight, Taxonomie und Beziehungstypen."},
+      "before_hash": null,
+      "after_hash": null,
+      "status": "historisch_rekonstruiert"
+    },
+    {
+      "event_id": "DELTA-0003",
+      "schema_version": "1.0",
+      "timestamp": "2026-08-09T08:00:00Z",
+      "iteration": 3,
+      "entry_id": "AUTO-001",
+      "change_type": "projektbezug_geaendert",
+      "reason": "Knowledge Inbox wurde als sichtbare, nur lesende Toolansicht integriert.",
+      "source": {"kind": "projektdatei", "ref": "CHANGELOG.md", "claim": "Iteration 003 integrierte die lokale Knowledge-Inbox-Ansicht."},
+      "before_hash": null,
+      "after_hash": null,
+      "status": "historisch_rekonstruiert"
+    },
+    {
+      "event_id": "DELTA-0004",
+      "schema_version": "1.0",
+      "timestamp": "2026-08-09T08:05:00Z",
+      "iteration": 3,
+      "entry_id": "RULE-003",
+      "change_type": "verbessert",
+      "reason": "DUPLICATE und CONFLICT wurden sichtbar getrennt und nicht automatisch aufgelöst.",
+      "source": {"kind": "projektdatei", "ref": "CHANGELOG.md", "claim": "Iteration 003 machte Preflight-Zustände sichtbar und behielt Konflikte und Dubletten getrennt."},
+      "before_hash": null,
+      "after_hash": null,
+      "status": "historisch_rekonstruiert"
+    }
+  ]
+}
