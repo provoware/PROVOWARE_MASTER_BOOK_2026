@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://provoware.local/schemas/undo-record.schema.json",
+  "title": "PROVOWARE Undo-Vorschau",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["undo_id", "schema_version", "plan_id", "operation", "target_entry_id", "restore_snapshot", "restore_hash", "status"],
+  "properties": {
+    "undo_id": {"type": "string", "pattern": "^UNDO-[0-9]{4,6}$"},
+    "schema_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+$"},
+    "plan_id": {"type": "string", "pattern": "^PLAN-[0-9]{4,6}$"},
+    "operation": {"enum": ["delete_created_entry", "restore_previous_entry", "none"]},
+    "target_entry_id": {"type": ["string", "null"]},
+    "restore_snapshot": {"type": ["object", "null"]},
+    "restore_hash": {"type": ["string", "null"], "pattern": "^(sha256:[0-9a-f]{64})?$"},
+    "status": {"enum": ["PREVIEW_ONLY", "NOT_APPLICABLE"]}
+  }
+}
