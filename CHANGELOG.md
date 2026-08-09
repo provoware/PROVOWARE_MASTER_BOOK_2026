@@ -10,6 +10,7 @@
 - Tastaturbedienung der Inbox-Karten
 - Statuskennzeichnung zusätzlich über Text und Symbol, nicht nur Farbe
 - Browser-Derivat `src/inbox.js` für direkten Offline-Start per `file://`
+- Single-Source-Generator `scripts/generate_inbox.py` von `data/inbox.json` nach `src/inbox.js`
 
 ### Geändert
 
@@ -20,6 +21,7 @@
 
 ### Qualitätsentscheidungen
 
+- `data/inbox.json` ist die kanonische Wissenseingangsquelle; `src/inbox.js` ist nur Browser-Derivat
 - weiterhin keine persistente Nutzeränderung
 - keine automatische Übernahme von `READY`
 - keine automatische Zusammenführung von `DUPLICATE`
