@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://provoware.local/schemas/change-plan.schema.json",
+  "title": "PROVOWARE Wissens-Änderungsplan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["plan_id", "schema_version", "candidate_id", "operation", "result", "reason", "before", "after", "before_hash", "after_hash", "delta_preview", "undo_preview"],
+  "properties": {
+    "plan_id": {"type": "string", "pattern": "^PLAN-[0-9]{4,6}$"},
+    "schema_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+$"},
+    "candidate_id": {"type": "string", "minLength": 3},
+    "operation": {"enum": ["create", "merge", "resolve_conflict", "blocked"]},
+    "result": {"enum": ["PREVIEW_READY", "PREVIEW_BLOCKED"]},
+    "reason": {"type": "string", "minLength": 3},
+    "before": {"type": ["object", "null"]},
+    "after": {"type": ["object", "null"]},
+    "before_hash": {"type": ["string", "null"], "pattern": "^(sha256:[0-9a-f]{64})?$"},
+    "after_hash": {"type": ["string", "null"], "pattern": "^(sha256:[0-9a-f]{64})?$"},
+    "delta_preview": {"type": ["object", "null"]},
+    "undo_preview": {"type": ["object", "null"]}
+  }
+}
