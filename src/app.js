@@ -1,6 +1,7 @@
 (() => {
   const entries = window.MASTERBOOK_SEED || [];
   const inbox = (window.KNOWLEDGE_INBOX && window.KNOWLEDGE_INBOX.items) || [];
+  const deltas = (window.KNOWLEDGE_DELTAS && window.KNOWLEDGE_DELTAS.items) || [];
   let view = 'all';
   const cards = document.getElementById('cards');
   const search = document.getElementById('search');
@@ -81,6 +82,23 @@
       <p><strong>Quelle</strong><br>${esc((candidate.sources || []).map(source => source.ref).join(' · '))}</p>`;
   }
 
+  function showDelta(id) {
+    const delta = deltas.find(item => item.event_id === id);
+    if (!delta) return;
+    const hashState = delta.before_hash || delta.after_hash
+      ? `Vorher: ${esc(delta.before_hash || '—')}<br>Nachher: ${esc(delta.after_hash || '—')}`
+      : 'Für diesen rückwirkend rekonstruierten Alt-Eintrag liegen noch keine Snapshot-Hashes vor.';
+    detail.innerHTML = `
+      <h2>${esc(delta.event_id)}</h2>
+      <h3>${esc(delta.change_type.replaceAll('_', ' '))}</h3>
+      <p><strong>Betroffener Eintrag</strong><br>${esc(delta.entry_id)}</p>
+      <p><strong>Warum?</strong><br>${esc(delta.reason)}</p>
+      <p><strong>Iteration / Zeitpunkt</strong><br>${esc(delta.iteration)} · ${esc(delta.timestamp)}</p>
+      <p><strong>Nachweisstatus</strong><br>${esc(delta.status)}</p>
+      <p><strong>Quelle</strong><br>${esc(delta.source.ref)} · ${esc(delta.source.claim)}</p>
+      <p><strong>Snapshot-Nachweis</strong><br>${hashState}</p>`;
+  }
+
   function bindCards(handler, key) {
     cards.querySelectorAll('.card').forEach(card => {
       const open = () => handler(card.dataset[key]);
@@ -118,6 +136,25 @@
     bindCards(showInbox, 'candidateId');
   }
 
+  function renderHistory() {
+    const query = search.value.trim().toLowerCase();
+    const filtered = deltas.filter(delta => {
+      const haystack = [delta.event_id,delta.entry_id,delta.change_type,delta.reason,delta.iteration,delta.status,delta.source && delta.source.ref].join(' ').toLowerCase();
+      return !query || haystack.includes(query);
+    }).sort((a, b) => String(b.timestamp).localeCompare(String(a.timestamp)));
+    count.textContent = `${filtered.length} Änderungen`;
+    cards.innerHTML = filtered.map(delta => `
+      <article class="card" tabindex="0" data-event-id="${esc(delta.event_id)}">
+        <div class="card-head"><h3>${esc(delta.event_id)} · ${esc(delta.entry_id)}</h3><span class="chip">Iteration ${esc(delta.iteration)}</span></div>
+        <p><strong>${esc(delta.change_type.replaceAll('_', ' '))}</strong> · ${esc(delta.reason)}</p>
+        <div class="chips">
+          <span class="chip">${esc(delta.status)}</span>
+          <span class="chip">${esc(delta.timestamp)}</span>
+        </div>
+      </article>`).join('');
+    bindCards(showDelta, 'eventId');
+  }
+
   function renderEntries() {
     const query = search.value.trim();
     const filtered = entries.filter(entry => visible(entry) && matches(entry, query));
@@ -138,6 +175,7 @@
 
   function render() {
     if (view === 'inbox') renderInbox();
+    else if (view === 'history') renderHistory();
     else renderEntries();
   }
 
@@ -147,7 +185,9 @@
     view = button.dataset.view;
     detail.innerHTML = view === 'inbox'
       ? '<h2>Wissenseingang</h2><p>Nur lesen: Vorprüfzustände werden sichtbar erklärt. Es erfolgt keine Übernahme oder Datenänderung.</p>'
-      : '<h2>Eintrag wählen</h2><p>Was ist das? Warum wichtig? Was soll ich tun?</p>';
+      : view === 'history'
+        ? '<h2>Was hat sich geändert?</h2><p>Nur lesender Änderungsverlauf. Historisch rekonstruierte Einträge sind ausdrücklich von direkt nachgewiesenen Delta-Ereignissen getrennt.</p>'
+        : '<h2>Eintrag wählen</h2><p>Was ist das? Warum wichtig? Was soll ich tun?</p>';
     render();
   }));
 
