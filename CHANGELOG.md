@@ -1,5 +1,39 @@
 # Änderungsprotokoll
 
+## 0.1.4-i005 – 2026-08-09
+
+### Hinzugefügt
+
+- `schemas/change-plan.schema.json` für schreibfreie Änderungspläne
+- `schemas/undo-record.schema.json` für Undo-Vorschauen
+- `scripts/canonical_json.py` für deterministische UTF-8-JSON-Serialisierung und SHA-256
+- `scripts/acceptance_preview.py` für reversible READY-Übernahmevorschauen
+- `tests/test_acceptance_preview.py` mit READY- und Sperrzuständen
+- `preview.html` und `src/preview.js` als lokale Nur-Lesen-Vorschau
+- Masterbuch-Regel `RULE-005`: vor dem ersten Wissensschreibvorgang reproduzierbarer Änderungsplan
+- `DELTA-0006` für die Einführung der Preview-Sicherheitsregel
+
+### Geändert
+
+- `index.html` auf Iteration 005 aktualisiert und Übernahme-Vorschau verlinkt
+- `src/style.css` um zugänglichen Navigationslink erweitert
+- `data/masterbook_seed.json` und Browser-Derivat `src/seed.js` synchronisiert
+- `data/knowledge-deltas.json` und Browser-Derivat `src/deltas.js` synchronisiert
+- `PROJEKTSTATUS.json` auf Version `0.1.4-i005` und 49 % Fortschritt aktualisiert
+
+### Qualitätsentscheidungen
+
+- weiterhin kein kanonischer Wissensschreibvorgang
+- nur `READY` darf einen `create`-Previewplan erhalten
+- `DUPLICATE`, `CONFLICT` und `BLOCKED` erzeugen `PREVIEW_BLOCKED`
+- Hashes werden ausschließlich aus deterministisch serialisierten Daten erzeugt
+- Web-Crypto-Ausfall wird sichtbar als BLOCKED angezeigt, nicht durch Ersatzwerte kaschiert
+- Laufzeit-/Browsertests werden nicht als PASS behauptet, solange sie nicht real ausgeführt wurden
+
+### Nächster Schritt
+
+Iteration 006 – Preview Evidence Contract und real ausgeführte Reproduzierbarkeitsprüfung; erst danach atomaren Commit-Pfad für genau einen READY-Kandidaten vorbereiten.
+
 ## 0.1.3-i004 – 2026-08-09
 
 ### Hinzugefügt
