@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "iteration": 14,
+  "version": "0.1.13-i014",
+  "result": "PARTIAL_PASS_RUNTIME_NOT_OBSERVED",
+  "checks": {
+    "repository_writes": "PASS",
+    "rule_013_sync": "PASS_STATIC",
+    "rule_014_sync": "PASS_STATIC",
+    "delta_0014_append": "PASS_DIFF_VERIFIED",
+    "delta_0015_append": "PASS_DIFF_VERIFIED",
+    "seed_derivative_sync": "PASS_STATIC",
+    "delta_derivative_sync": "PASS_STATIC",
+    "derivative_guard_implemented": "PASS_STATIC",
+    "derivative_regression_test": "CONFIGURED",
+    "derivative_ci_gate": "CONFIGURED",
+    "changelog_011_014_sync": "PASS_STATIC",
+    "local_python_runtime": "BLOCKED_DNS",
+    "github_actions_runtime": "UNKNOWN_NOT_OBSERVED",
+    "qualification_receipt_runtime": "UNKNOWN_NOT_OBSERVED",
+    "browser_e2e": "NOT_RUN",
+    "release_gate": "BLOCKED"
+  },
+  "write_commits": [
+    "71eb09e06bb1b355bf8e0e9e6e049f514074d93c",
+    "a6ab3f39e327a2de770e24a1cca3caaa0a749714",
+    "9f9ea39317c7d4ae07b90fa8fa6d7583c5f43dd2",
+    "372064b7e77306df027548322c2ede08c392e3b2",
+    "1711b622e8fbc456c85139f6f68a81b7bc3ece50",
+    "c3bdb1785652760d5a757b166a8a3c46cd9aa9c5",
+    "ee8a2368dde44e612149d4a317150fb07e437437",
+    "8885727693d2914c91e307d875a40433bb8b2bc0",
+    "d7f842503ba8db7b07e2e85ef7d942579ba55c6d"
+  ],
+  "runtime_blocker": "Der lokale Klonversuch scheiterte an DNS-Auflösung von github.com; daraus wird kein PASS abgeleitet.",
+  "rollback": "Alle Änderungen sind Git-versioniert; es erfolgte keine produktive Wissensübernahme und keine Löschung bestehender Delta-Ereignisse.",
+  "next_step": "Iteration 015 – Qualification Evidence an source_commit_sha binden und real beobachtete positive/negative Runtime-Ausführung auswerten."
+}
