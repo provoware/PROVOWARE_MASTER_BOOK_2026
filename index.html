@@ -8,12 +8,13 @@
 </head>
 <body>
   <header>
-    <div><strong>PROVOWARE Wissensspeicher</strong> · Iteration 001</div>
-    <div>Nur-Lesen-Fundament</div>
+    <div><strong>PROVOWARE Wissensspeicher</strong> · Iteration 003</div>
+    <div>Nur-Lesen · Wissenseingang sichtbar</div>
   </header>
   <main>
     <aside>
       <button data-view="all" class="active">Entdecken</button>
+      <button data-view="inbox">Wissenseingang</button>
       <button data-view="P0">P0 kritisch</button>
       <button data-view="regel">Regeln</button>
       <button data-view="standard">Standards</button>
@@ -22,7 +23,7 @@
     <section>
       <div class="toolbar">
         <input id="search" type="search" aria-label="Wissen durchsuchen" placeholder="Wissen durchsuchen …">
-        <span id="count"></span>
+        <span id="count" aria-live="polite"></span>
       </div>
       <div id="cards" class="cards"></div>
     </section>
@@ -31,8 +32,9 @@
       <p>Was ist das? Warum wichtig? Was soll ich tun?</p>
     </aside>
   </main>
-  <footer>Offline · keine persistente Nutzdatenänderung in Iteration 001</footer>
+  <footer>Offline · keine persistente Nutzdatenänderung in Iteration 003</footer>
   <script src="src/seed.js"></script>
+  <script src="src/inbox.js"></script>
   <script src="src/app.js"></script>
 </body>
 </html>
