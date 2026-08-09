@@ -1,5 +1,107 @@
 # Änderungsprotokoll
 
+## 0.1.13-i014 – 2026-08-09
+
+### Hinzugefügt
+
+- `scripts/verify_browser_derivatives.py` als Fail-Closed-Wächter für kanonische JSON-Daten und Browser-JS
+- `tests/test_browser_derivatives.py` als Regressionstest für exakte Derivatgleichheit
+- `.github/workflows/browser-derivative-sync.yml` als zeitbegrenztes CI-Gate
+- `docs/ITERATION_014.md`
+- Masterbuch-Regel `RULE-014`: Browser-Derivate müssen deterministisch aus kanonischen Wissensquellen ableitbar sein
+- `DELTA-0015` für die Einführung des Derivat-Wächters
+
+### Geändert
+
+- `RULE-013` aus Iteration 013 kanonisch nachgetragen
+- `DELTA-0014` append-only ergänzt
+- `data/masterbook_seed.json` und `src/seed.js` auf Iteration 014 synchronisiert
+- `data/knowledge-deltas.json` und `src/deltas.js` auf Iteration 014 synchronisiert
+- Changelog-Lücke der Iterationen 011 bis 013 geschlossen
+
+### Qualitätsentscheidungen
+
+- Derivatdrift liefert `BLOCKED`, niemals ein toleriertes Teil-PASS
+- bestehende Delta-Ereignisse werden nicht umgeschrieben; neue Historie wird nur angehängt
+- keine produktive Wissensübernahme oder Batch-Verarbeitung
+- lokale Runtime-Ausführung bleibt BLOCKED, solange die Repository-Baseline wegen DNS nicht geklont werden kann
+- GitHub-Actions- und Qualification-Runtime bleiben UNKNOWN_NOT_OBSERVED bis ein konkreter Run beobachtet wurde
+
+### Nächster Schritt
+
+Iteration 015 – Qualification Evidence an `source_commit_sha` binden und einen tatsächlich beobachteten positiven sowie negativen Lauf auswerten; E3 erst nach realem PASS.
+
+## 0.1.12-i013 – 2026-08-09
+
+### Hinzugefügt
+
+- `scripts/qualification_receipt_gate.py` als Fail-Closed-Gate für die Single-Commit-Qualification
+- `tests/test_qualification_receipt_gate.py`
+- `.github/workflows/qualification-receipt-gate.yml`
+- `docs/ITERATION_013.md`
+- Masterbuch-Regel `RULE-013`: Qualification Receipts dürfen nur mit vollständiger hashgebundener Lineage freigeben
+- `DELTA-0014` für die Einführung des Receipt-Gates
+
+### Qualitätsentscheidungen
+
+- positiver Receipt benötigt vollständige innere Checks, Lineage-Felder und gültigen Receipt-Hash
+- die kanonische Wissenshistorie wird als `canonical_history_hash` gebunden
+- der Non-READY-Negativpfad muss ohne Transaktion blockieren
+- manipulierte Receipts führen zu `QUALIFICATION_BLOCKED`
+- ohne beobachteten Runtime-Lauf keine Reifehochsetzung
+
+### Nächster Schritt
+
+Iteration 014 – kanonische Synchronisierung reparieren, Derivatdrift automatisch blockieren und erst danach Runtime-Evidence weiterqualifizieren.
+
+## 0.1.11-i012 – 2026-08-09
+
+### Hinzugefügt
+
+- `scripts/verify_delta_append_only.py` als Fail-Closed-Wächter gegen Mutation bestehender Wissenshistorie
+- `tests/test_delta_append_only.py`
+- `.github/workflows/delta-append-only.yml`
+- `docs/ITERATION_012.md`
+- Masterbuch-Regel `RULE-012`: bestehende Wissenshistorie darf nur append-only fortgeschrieben werden
+- `DELTA-0013`
+
+### Geändert
+
+- unbeabsichtigt verkürzte historische Delta-Texte aus dem letzten unveränderten Git-Stand restauriert
+- `src/seed.js` und `src/deltas.js` wieder mit den damaligen kanonischen Quellen synchronisiert
+
+### Qualitätsentscheidungen
+
+- Löschung, Umordnung und Mutation bestehender Delta-Ereignisse sind blockierend
+- Korrekturen werden als neue Ereignisse angehängt
+- keine Runtime-Ergebnisse erfunden
+
+### Nächster Schritt
+
+Iteration 013 – Qualification Receipt als eigenständiges Gate mit positiver und negativer Qualifikation absichern.
+
+## 0.1.10-i011 – 2026-08-09
+
+### Hinzugefügt
+
+- `scripts/single_commit_qualification.py` als isolierte End-to-End-Einzelcommit-Qualifikation
+- `tests/test_single_commit_qualification.py`
+- `.github/workflows/single-commit-qualification.yml`
+- `docs/ITERATION_011.md`
+- Masterbuch-Regel `RULE-011`: schreibender Wissenspfad erst nach vollständiger isolierter End-to-End-Qualifikation freigabefähig
+- `DELTA-0012`
+
+### Qualitätsentscheidungen
+
+- Qualifikation läuft ausschließlich in temporärer Fixture
+- positiver READY-Pfad und negativer Non-READY-Pfad bleiben getrennt
+- der kanonische Repository-Seed darf durch die Qualifikation nicht verändert werden
+- Runtime-/CI-PASS bleibt unbekannt bis real beobachtet
+
+### Nächster Schritt
+
+Iteration 012 – historische Delta-Integrität reparieren und append-only dauerhaft erzwingen.
+
 ## 0.1.9-i010 – 2026-08-09
 
 ### Hinzugefügt
