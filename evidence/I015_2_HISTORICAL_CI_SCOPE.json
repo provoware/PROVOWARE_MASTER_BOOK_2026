@@ -26,7 +26,11 @@
     "i008_historischer_nachlauf_31407554415": "GRUEN",
     "i008_promotion": "PR_27_GEMERGT_790245E0D1D34A30914C72A6E67EE7BF0073A374",
     "i009_vorheriger_lauf_31407554446": "ROT_SCOPE_SCHULD_BESTAETIGT",
-    "i009_scope_hardening": "IMPLEMENTIERT_IN_TOOL_PR_28_QUALIFIKATION_AUSSTEHEND"
+    "i009_scope_gate_run_31412511727": "GRUEN",
+    "i009_historischer_nachlauf_31412511481": "GRUEN",
+    "i009_promotion": "PR_28_GEMERGT_0F8A03908D1DDF27E5F13EA7CED2E49C9EC4C4C7",
+    "i007_bis_i010_scope": "VOLLSTAENDIG_GEHAERTET_TOOLSEITIG",
+    "kanonische_konsolidierung": "AUSSTEHEND"
   },
   "historie": [
     {
@@ -47,7 +51,7 @@
     },
     {
       "datum": "2026-08-10",
-      "aktion": "I009 als letzter Referenzfall in Tool-PR #28 auf Operations-/Fixture-Quellen und explizite I009-Scope-Regression begrenzt. Reale Qualification ausstehend; Reifegrad bleibt E1."
+      "aktion": "I009-Nachlauf 31412511481 und Scope-Gate 31412511727 real gruen; Tool-PR #28 SHA-gebunden auf 0f8a03908d1ddf27e5f13ea7ced2e49c9ec4c4c7 promoviert. I007-I010 sind damit toolseitig vollstaendig scope-gehaertet. Reifegrad bleibt bis zur kanonischen Dublettenkonsolidierung E1."
     }
   ]
 }
