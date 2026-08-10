@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "iteration": "I015.1",
+  "status": "ANALYSE_ABGESCHLOSSEN",
+  "basis_commit": "7947b719e03dd56eee311e66b8310ec82e2b5dce",
+  "prinzip": "Dubletten bevorzugt konsolidieren; keine parallelen Regeln ohne belegten semantischen Mehrwert.",
+  "entscheidungen": [
+    {
+      "candidate_id": "INBOX-005",
+      "target_id": "RULE-007",
+      "entscheidung": "KONSOLIDIEREN",
+      "begruendung": "Beide Regeln behandeln einen Stale-Guard vor einer spaeteren Mutation. INBOX-005 liefert die dateisystemspezifische Device/Inode/Stat-Praezisierung, waehrend RULE-007 bereits die generische Bindung eines Schreib-Intents an einen unveraenderten Ausgangszustand definiert.",
+      "vorgeschlagene_aenderung": "RULE-007 Revision 2 um dateisystemspezifischen unmittelbaren Identitaets-Recheck als zulaessige Konkretisierung erweitern; Quellen von INBOX-005 uebernehmen; keine neue RULE-ID.",
+      "reifegrad": "E1 Kandidat bleibt bis zur qualifizierten kanonischen Revision unveraendert",
+      "goldene_regel": false
+    },
+    {
+      "candidate_id": "INBOX-006",
+      "target_id": "RULE-008",
+      "entscheidung": "KONSOLIDIEREN",
+      "begruendung": "RULE-008 fordert bereits Journal, fsync, Atomic Replace, Hash-Ruecklesen und Rollbackpfad. INBOX-006 praezisiert die Fehlersemantik an der irreversiblen Namensmutationsgrenze und ist damit eine schaerfere Recovery-/Evidence-Auslegung derselben Regel.",
+      "vorgeschlagene_aenderung": "RULE-008 Revision 2 um explizite Vor-/Nach-Replace-Fehlersemantik ergaenzen; Quellen von INBOX-006 uebernehmen; keine neue RULE-ID.",
+      "reifegrad": "E1 Kandidat bleibt bis zur qualifizierten kanonischen Revision unveraendert",
+      "goldene_regel": false
+    }
+  ],
+  "nicht_durchgefuehrt": [
+    "masterbook_seed.json veraendert",
+    "Reifegrad hochgestuft",
+    "Goldene Regel erzeugt",
+    "Inbox-Kandidat geloescht",
+    "historische Quelle umgeschrieben"
+  ],
+  "naechster_sicherer_schritt": "Revisionen von RULE-007 und RULE-008 als append-only Knowledge-Delta vorbereiten und gegen bestehende Qualification-/History-Gates pruefen."
+}
