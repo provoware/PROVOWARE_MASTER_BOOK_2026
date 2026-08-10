@@ -1,0 +1,31 @@
+{
+  "schema": "1.0.0",
+  "iteration": "I015.2",
+  "typ": "KONSOLIDIERUNGSANALYSE",
+  "status": "IN_PRUEFUNG",
+  "quelle_projekt": "provoware/PROVOWARE",
+  "quelle_erkenntnis": "ERK-I015-2-001",
+  "aussage": "Historische Qualifikationsgates muessen an ihren qualifizierten Quell- und Lebenszyklus-Scope gebunden bleiben; spaetere globale Metadaten duerfen fachfremde Freeze-Gates nicht starten.",
+  "reifegrad": "E1",
+  "prioritaet": "P0",
+  "automatisierbarkeit": "JA",
+  "goldene_regel": false,
+  "dublettenstrategie": {
+    "vermuteter_bezug": "bestehende CI-/Lifecycle-Regel aus I012",
+    "entscheidung": "KONSOLIDIERUNG_PRUEFEN",
+    "neue_rule_id": false,
+    "begruendung": "Die neue Erkenntnis formalisiert und erweitert eine bereits bestaetigte Scope-Regel; parallele Regelbildung ist zu vermeiden."
+  },
+  "validierungsgrenze": {
+    "tool_scope_manifest": "ANGELEGT",
+    "i010_trigger": "GEHAERTET_STATIC",
+    "i015_2_ci": "NOCH_NICHT_BEOBACHTET",
+    "i007_i009": "OFFEN"
+  },
+  "historie": [
+    {
+      "datum": "2026-08-10",
+      "aktion": "Als E1-Konsolidierungskandidat aufgenommen; keine Seed-Aenderung und keine Hochstufung."
+    }
+  ]
+}
