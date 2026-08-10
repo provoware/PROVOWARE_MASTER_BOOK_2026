@@ -1,0 +1,80 @@
+name: I015.1 Konsolidierungsanalyse Gate
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - "evidence/I015_1_KONSOLIDIERUNGSANALYSE.json"
+      - ".github/workflows/i015-1-konsolidierungsanalyse.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  analyse:
+    name: JSON / Dubletten / Nichtpromotion
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - name: Repository auschecken
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
+        with:
+          persist-credentials: false
+
+      - name: Konsolidierungsentscheidung fail-closed prüfen
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("evidence/I015_1_KONSOLIDIERUNGSANALYSE.json")
+          data = json.loads(path.read_text(encoding="utf-8"))
+          assert data["schema_version"] == "1.0"
+          assert data["iteration"] == "I015.1"
+          assert data["status"] == "ANALYSE_ABGESCHLOSSEN"
+          assert data["basis_commit"] == "7947b719e03dd56eee311e66b8310ec82e2b5dce"
+
+          decisions = {d["candidate_id"]: d for d in data["entscheidungen"]}
+          assert set(decisions) == {"INBOX-005", "INBOX-006"}
+          assert decisions["INBOX-005"]["target_id"] == "RULE-007"
+          assert decisions["INBOX-006"]["target_id"] == "RULE-008"
+          for decision in decisions.values():
+              assert decision["entscheidung"] == "KONSOLIDIEREN"
+              assert decision["goldene_regel"] is False
+              assert "E1" in decision["reifegrad"]
+              assert "keine neue RULE-ID" in decision["vorgeschlagene_aenderung"]
+
+          forbidden = set(data["nicht_durchgefuehrt"])
+          assert "masterbook_seed.json veraendert" in forbidden
+          assert "Reifegrad hochgestuft" in forbidden
+          assert "Goldene Regel erzeugt" in forbidden
+          PY
+
+      - name: Diff-Scope prüfen
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          git fetch --no-tags --depth=1 origin "${{ github.base_ref }}"
+          mapfile -t FILES < <(git diff --name-only "origin/${{ github.base_ref }}...HEAD" | sort)
+          ALLOWED=(
+            ".github/workflows/i015-1-konsolidierungsanalyse.yml"
+            "evidence/I015_1_KONSOLIDIERUNGSANALYSE.json"
+          )
+          for file in "${FILES[@]}"; do
+            ok=false
+            for allowed in "${ALLOWED[@]}"; do
+              if [[ "$file" == "$allowed" ]]; then ok=true; break; fi
+            done
+            [[ "$ok" == true ]] || { echo "Unerlaubte Änderung: $file" >&2; exit 1; }
+          done
+
+      - name: Ergebnis
+        run: |
+          echo "## I015.1 Konsolidierungsanalyse — GRÜN" >> "$GITHUB_STEP_SUMMARY"
+          echo "- INBOX-005 → RULE-007" >> "$GITHUB_STEP_SUMMARY"
+          echo "- INBOX-006 → RULE-008" >> "$GITHUB_STEP_SUMMARY"
+          echo "- keine neue RULE-ID, keine E-Hochstufung, keine Goldene Regel" >> "$GITHUB_STEP_SUMMARY"
