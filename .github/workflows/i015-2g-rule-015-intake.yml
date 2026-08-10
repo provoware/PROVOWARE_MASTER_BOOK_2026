@@ -25,10 +25,8 @@ jobs:
           from pathlib import Path
 
           candidate = json.loads(Path('evidence/I015_2G_RULE_015_KANDIDAT.json').read_text(encoding='utf-8'))
-          seed_raw = Path('data/masterbook_seed.json').read_text(encoding='utf-8')
-          delta_raw = Path('data/knowledge-deltas.json').read_text(encoding='utf-8')
-          seed = json.loads(seed_raw)
-          deltas = json.loads(delta_raw)
+          seed = json.loads(Path('data/masterbook_seed.json').read_text(encoding='utf-8'))
+          deltas = json.loads(Path('data/knowledge-deltas.json').read_text(encoding='utf-8'))
 
           assert candidate['typ'] == 'REGEL_AUFNAHMEVORSCHAU'
           assert candidate['reifegrad'] == 'E2'
@@ -60,17 +58,15 @@ jobs:
           assert event_ids[-1] == 'DELTA-0015'
           assert 'DELTA-0016' not in event_ids
 
-          expected_seed_js = 'window.MASTERBOOK_SEED=' + seed_raw + ';\n'
-          expected_delta_js = 'window.KNOWLEDGE_DELTAS=' + delta_raw + ';\n'
-          assert Path('src/seed.js').read_text(encoding='utf-8') == expected_seed_js
-          assert Path('src/deltas.js').read_text(encoding='utf-8') == expected_delta_js
-
           contract = candidate['transaktionsvertrag']
           assert contract['append_only_delta'] is True
           assert contract['derivate_deterministisch_regenerieren'] is True
           assert contract['unbekannte_pruefung_blockiert'] is True
           assert contract['main_direkt_mutieren'] is False
           PY
+
+      - name: Bestehende Browser-Derivate mit kanonischem Guard pruefen
+        run: python scripts/verify_browser_derivatives.py
 
       - name: Diese Preflight-Runde darf kanonische Wissensdaten noch nicht mutieren
         run: |
