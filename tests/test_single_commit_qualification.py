@@ -15,6 +15,6 @@ def test_single_commit_chain_isolated_and_complete():
     assert (ROOT/'data/masterbook_seed.json').read_bytes()==before
 
 def test_non_ready_candidate_blocks():
-    receipt=qualify('INBOX-002')
+    receipt=qualify('INBOX-004')
     assert receipt['result']=='BLOCKED'
     assert receipt['checks']['transaction_committed'] is False
