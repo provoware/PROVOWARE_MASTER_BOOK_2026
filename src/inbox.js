@@ -53,6 +53,25 @@ window.KNOWLEDGE_INBOX = {
       scope: 'projekt',
       sources: [{kind:'projektchat',ref:'Störfallkandidat I003',claim:'Absichtlich ungültiger Testkandidat für die BLOCKED-Darstellung.'}],
       status: 'neu'
+    },
+    {
+      candidate_id: 'INBOX-005',
+      title: 'Dateiidentität unmittelbar vor Mutation erneut prüfen',
+      summary: 'Eine erfolgreiche Pfad- oder Symlinkprüfung darf keine spätere Objektidentität garantieren. Vor mutierenden Dateisystemschritten muss ein read-only Identitätssnapshot erneut fail-closed verglichen werden.',
+      type: 'regel',
+      primary_category: 'Daten & Integrität',
+      categories: ['Dateisystem', 'Fehlervermeidung', 'Evidence & Audit', 'Tests'],
+      priority: 'P0',
+      maturity: 'E1',
+      scope: 'projektübergreifend',
+      projects: ['PROVOWARE', 'PROVOWARE Knowledge & Project Intelligence'],
+      automatable: true,
+      tags: ['TOCTOU', 'Stale Guard', 'Device', 'Inode', 'Fail Closed'],
+      sources: [
+        {kind:'projektdatei',ref:'provoware/PROVOWARE: docs/WISSENSSPEICHER_I014_ERKENNTNIS.json',claim:'I014 modelliert die TOCTOU-Lücke vor der ersten mutierenden Dateisystemprimitive als E1/P0-Regelentwurf.'},
+        {kind:'projektdatei',ref:'provoware/PROVOWARE: docs/PLAN_DELTA_I014.json',claim:'Die ursprünglichen mutierenden P03-Schritte werden bis zur qualifizierten read-only Identitätsprüfung aufgeschoben.'}
+      ],
+      status: 'neu'
     }
   ]
 };
