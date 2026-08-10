@@ -5,7 +5,7 @@
   "status": "IN_PRUEFUNG",
   "quelle_projekt": "provoware/PROVOWARE",
   "quelle_erkenntnis": "ERK-I015-2-001",
-  "aussage": "Historische Qualifikationsgates muessen an ihren qualifizierten Quell- und Lebenszyklus-Scope gebunden bleiben; spaetere globale Metadaten duerfen fachfremde Freeze-Gates nicht starten.",
+  "aussage": "Historische Qualifikationsgates muessen an ihren qualifizierten Quell- und Lebenszyklus-Scope gebunden bleiben; spaetere globale Metadaten und ungescoppte Gesamtprojekt-Regressionen duerfen fachfremde Freeze-Gates nicht starten oder zur historischen Gate-Aussage erheben.",
   "reifegrad": "E1",
   "prioritaet": "P0",
   "automatisierbarkeit": "JA",
@@ -20,7 +20,10 @@
     "tool_scope_manifest": "KANONISCH",
     "i010_trigger": "GEHAERTET_UND_SCOPE_GATE_GRUEN",
     "i015_2_ci": "GRUEN_FUER_I010_REFERENZFALL",
-    "i007_trigger": "IMPLEMENTIERT_PR26_CI_AUSSTEHEND",
+    "i007_scope_gate_run_31402335947": "GRUEN",
+    "i007_historischer_run_31402335547": "ROT_NUR_UNGESCOPPTE_GESAMTREGRESSION",
+    "i007_contracttests_run_31402335547": "49_PASS",
+    "i007_minimalfix": "IMPLEMENTIERT_NEUER_CI_READBACK_AUSSTEHEND",
     "i008_i009": "OFFEN"
   },
   "historie": [
@@ -30,7 +33,11 @@
     },
     {
       "datum": "2026-08-10",
-      "aktion": "I010-Scope-Vertrag nach real gruenem I015.2-Gate kanonisch; I007 als zweiter einzelner Referenzfall in Tool-PR #26 umgesetzt, reale CI-Abnahme noch ausstehend."
+      "aktion": "I010-Scope-Vertrag nach real gruenem I015.2-Gate kanonisch; I007 als zweiter einzelner Referenzfall in Tool-PR #26 umgesetzt."
+    },
+    {
+      "datum": "2026-08-10",
+      "aktion": "Run 31402335547 analysiert: Baseline, Ruff, mypy und 49 Contracttests gruen; vier spaetere I009/I010-Freeze-Tests machten nur die ungescoppte Gesamtregression rot. Tool-Workflow minimal auf I007-Vertragsscope begrenzt; erneute CI-Abnahme ausstehend."
     }
   ]
 }
