@@ -28,7 +28,7 @@ def verify_receipt(receipt: dict) -> dict:
 
 def run_gate() -> dict:
     positive = qualify('INBOX-001')
-    negative = qualify('INBOX-002')
+    negative = qualify('INBOX-004')
     positive_gate = verify_receipt(positive)
     negative_blocked = negative.get('result') == 'BLOCKED' and not negative.get('checks', {}).get('transaction_committed', False)
     result = 'PASS' if positive_gate['result'] == 'QUALIFICATION_ACCEPTED' and negative_blocked else 'BLOCKED'
