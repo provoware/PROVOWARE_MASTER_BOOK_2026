@@ -1,0 +1,64 @@
+name: I015.2 Konsolidierungsanalyse
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "evidence/I015_2_HISTORICAL_CI_SCOPE.json"
+      - ".github/workflows/i015-2-konsolidierungsanalyse.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  pruefung:
+    name: E1-Konsolidierung / Seed-Schutz
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - name: Repository auschecken
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Evidence fail-closed prüfen
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          p = Path('evidence/I015_2_HISTORICAL_CI_SCOPE.json')
+          data = json.loads(p.read_text(encoding='utf-8'))
+          assert data['schema'] == '1.0.0'
+          assert data['iteration'] == 'I015.2'
+          assert data['typ'] == 'KONSOLIDIERUNGSANALYSE'
+          assert data['status'] == 'IN_PRUEFUNG'
+          assert data['reifegrad'] == 'E1'
+          assert data['prioritaet'] == 'P0'
+          assert data['automatisierbarkeit'] == 'JA'
+          assert data['goldene_regel'] is False
+          assert data['dublettenstrategie']['entscheidung'] == 'KONSOLIDIERUNG_PRUEFEN'
+          assert data['dublettenstrategie']['neue_rule_id'] is False
+          v = data['validierungsgrenze']
+          assert v['i007_historischer_nachlauf_31402618783'] == 'GRUEN'
+          assert v['i008_historischer_nachlauf_31407554415'] == 'GRUEN'
+          assert v['i009_historischer_nachlauf_31412511481'] == 'GRUEN'
+          assert v['i009_scope_gate_run_31412511727'] == 'GRUEN'
+          assert v['i007_bis_i010_scope'] == 'VOLLSTAENDIG_GEHAERTET_TOOLSEITIG'
+          assert v['kanonische_konsolidierung'] == 'AUSSTEHEND'
+          PY
+
+      - name: Seed und kanonische Regeln unverändert halten
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          git fetch --no-tags origin main
+          CHANGED="$(git diff --name-only origin/main...HEAD)"
+          printf '%s\n' "$CHANGED"
+          if printf '%s\n' "$CHANGED" | grep -E '(^|/)masterbook_seed\.json$|(^|/)golden|(^|/)rules?/|(^|/)RULE-' ; then
+            echo 'Kanonische Seed-/Regeldatei in E1-Konsolidierungsanalyse verändert.' >&2
+            exit 1
+          fi

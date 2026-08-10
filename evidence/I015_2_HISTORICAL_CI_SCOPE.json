@@ -1,0 +1,57 @@
+{
+  "schema": "1.0.0",
+  "iteration": "I015.2",
+  "typ": "KONSOLIDIERUNGSANALYSE",
+  "status": "IN_PRUEFUNG",
+  "quelle_projekt": "provoware/PROVOWARE",
+  "quelle_erkenntnis": "ERK-I015-2-001",
+  "aussage": "Historische Qualifikationsgates muessen an ihren qualifizierten Quell- und Lebenszyklus-Scope gebunden bleiben; spaetere globale Metadaten und ungescoppte Gesamtprojekt-Regressionen duerfen fachfremde Freeze-Gates nicht starten oder zur historischen Gate-Aussage erheben.",
+  "reifegrad": "E1",
+  "prioritaet": "P0",
+  "automatisierbarkeit": "JA",
+  "goldene_regel": false,
+  "dublettenstrategie": {
+    "vermuteter_bezug": "bestehende CI-/Lifecycle-Regel aus I012",
+    "entscheidung": "KONSOLIDIERUNG_PRUEFEN",
+    "neue_rule_id": false,
+    "begruendung": "Die neue Erkenntnis formalisiert und erweitert eine bereits bestaetigte Scope-Regel; parallele Regelbildung ist zu vermeiden."
+  },
+  "validierungsgrenze": {
+    "tool_scope_manifest": "KANONISCH",
+    "i010": "GEHAERTET_UND_SCOPE_GATE_GRUEN",
+    "i007_scope_gate_run_31402618199": "GRUEN",
+    "i007_historischer_nachlauf_31402618783": "GRUEN",
+    "i007_promotion": "PR_26_GEMERGT",
+    "i008_scope_gate_run_31407554457": "GRUEN",
+    "i008_historischer_nachlauf_31407554415": "GRUEN",
+    "i008_promotion": "PR_27_GEMERGT_790245E0D1D34A30914C72A6E67EE7BF0073A374",
+    "i009_vorheriger_lauf_31407554446": "ROT_SCOPE_SCHULD_BESTAETIGT",
+    "i009_scope_gate_run_31412511727": "GRUEN",
+    "i009_historischer_nachlauf_31412511481": "GRUEN",
+    "i009_promotion": "PR_28_GEMERGT_0F8A03908D1DDF27E5F13EA7CED2E49C9EC4C4C7",
+    "i007_bis_i010_scope": "VOLLSTAENDIG_GEHAERTET_TOOLSEITIG",
+    "kanonische_konsolidierung": "AUSSTEHEND"
+  },
+  "historie": [
+    {
+      "datum": "2026-08-10",
+      "aktion": "Als E1-Konsolidierungskandidat aufgenommen; keine Seed-Aenderung und keine Hochstufung."
+    },
+    {
+      "datum": "2026-08-10",
+      "aktion": "I010-Scope-Vertrag nach real gruenem I015.2-Gate kanonisch; I007 als zweiter einzelner Referenzfall umgesetzt."
+    },
+    {
+      "datum": "2026-08-10",
+      "aktion": "I007-Nachlauf 31402618783 und Scope-Gate 31402618199 real gruen; PR #26 promoviert."
+    },
+    {
+      "datum": "2026-08-10",
+      "aktion": "I008-Nachlauf 31407554415 und Scope-Gate 31407554457 real gruen; Tool-PR #27 SHA-gebunden auf 790245e0d1d34a30914c72a6e67ee7bf0073a374 promoviert. Der parallel gestartete I009-Lauf 31407554446 blieb rot und bestaetigte die letzte offene historische Scope-Kopplung."
+    },
+    {
+      "datum": "2026-08-10",
+      "aktion": "I009-Nachlauf 31412511481 und Scope-Gate 31412511727 real gruen; Tool-PR #28 SHA-gebunden auf 0f8a03908d1ddf27e5f13ea7ced2e49c9ec4c4c7 promoviert. I007-I010 sind damit toolseitig vollstaendig scope-gehaertet. Reifegrad bleibt bis zur kanonischen Dublettenkonsolidierung E1."
+    }
+  ]
+}
