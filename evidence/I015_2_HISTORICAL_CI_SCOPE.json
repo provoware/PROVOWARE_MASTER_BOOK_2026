@@ -18,13 +18,15 @@
   },
   "validierungsgrenze": {
     "tool_scope_manifest": "KANONISCH",
-    "i010_trigger": "GEHAERTET_UND_SCOPE_GATE_GRUEN",
-    "i015_2_ci": "GRUEN_FUER_I010_REFERENZFALL",
-    "i007_scope_gate_run_31402335947": "GRUEN",
-    "i007_historischer_run_31402335547": "ROT_NUR_UNGESCOPPTE_GESAMTREGRESSION",
-    "i007_contracttests_run_31402335547": "49_PASS",
-    "i007_minimalfix": "IMPLEMENTIERT_NEUER_CI_READBACK_AUSSTEHEND",
-    "i008_i009": "OFFEN"
+    "i010": "GEHAERTET_UND_SCOPE_GATE_GRUEN",
+    "i007_scope_gate_run_31402618199": "GRUEN",
+    "i007_historischer_nachlauf_31402618783": "GRUEN",
+    "i007_promotion": "PR_26_GEMERGT",
+    "i008_scope_gate_run_31407554457": "GRUEN",
+    "i008_historischer_nachlauf_31407554415": "GRUEN",
+    "i008_promotion": "PR_27_GEMERGT_790245E0D1D34A30914C72A6E67EE7BF0073A374",
+    "i009_vorheriger_lauf_31407554446": "ROT_SCOPE_SCHULD_BESTAETIGT",
+    "i009_scope_hardening": "IMPLEMENTIERT_IN_TOOL_PR_28_QUALIFIKATION_AUSSTEHEND"
   },
   "historie": [
     {
@@ -33,11 +35,19 @@
     },
     {
       "datum": "2026-08-10",
-      "aktion": "I010-Scope-Vertrag nach real gruenem I015.2-Gate kanonisch; I007 als zweiter einzelner Referenzfall in Tool-PR #26 umgesetzt."
+      "aktion": "I010-Scope-Vertrag nach real gruenem I015.2-Gate kanonisch; I007 als zweiter einzelner Referenzfall umgesetzt."
     },
     {
       "datum": "2026-08-10",
-      "aktion": "Run 31402335547 analysiert: Baseline, Ruff, mypy und 49 Contracttests gruen; vier spaetere I009/I010-Freeze-Tests machten nur die ungescoppte Gesamtregression rot. Tool-Workflow minimal auf I007-Vertragsscope begrenzt; erneute CI-Abnahme ausstehend."
+      "aktion": "I007-Nachlauf 31402618783 und Scope-Gate 31402618199 real gruen; PR #26 promoviert."
+    },
+    {
+      "datum": "2026-08-10",
+      "aktion": "I008-Nachlauf 31407554415 und Scope-Gate 31407554457 real gruen; Tool-PR #27 SHA-gebunden auf 790245e0d1d34a30914c72a6e67ee7bf0073a374 promoviert. Der parallel gestartete I009-Lauf 31407554446 blieb rot und bestaetigte die letzte offene historische Scope-Kopplung."
+    },
+    {
+      "datum": "2026-08-10",
+      "aktion": "I009 als letzter Referenzfall in Tool-PR #28 auf Operations-/Fixture-Quellen und explizite I009-Scope-Regression begrenzt. Reale Qualification ausstehend; Reifegrad bleibt E1."
     }
   ]
 }
