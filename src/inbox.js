@@ -53,6 +53,46 @@ window.KNOWLEDGE_INBOX = {
       scope: 'projekt',
       sources: [{kind:'projektchat',ref:'Störfallkandidat I003',claim:'Absichtlich ungültiger Testkandidat für die BLOCKED-Darstellung.'}],
       status: 'neu'
+    },
+    {
+      candidate_id: 'INBOX-005',
+      title: 'Dateiidentität unmittelbar vor Mutation erneut prüfen',
+      summary: 'Eine erfolgreiche Pfad- oder Symlinkprüfung darf keine spätere Objektidentität garantieren. Vor mutierenden Dateisystemschritten muss ein read-only Identitätssnapshot erneut fail-closed verglichen werden.',
+      type: 'regel',
+      primary_category: 'Daten & Integrität',
+      categories: ['Dateisystem', 'Fehlervermeidung', 'Evidence & Audit', 'Tests'],
+      priority: 'P0',
+      maturity: 'E1',
+      scope: 'projektübergreifend',
+      projects: ['PROVOWARE', 'PROVOWARE Knowledge & Project Intelligence'],
+      automatable: true,
+      tags: ['TOCTOU', 'Stale Guard', 'Device', 'Inode', 'Fail Closed'],
+      sources: [
+        {kind:'projektdatei',ref:'provoware/PROVOWARE: docs/WISSENSSPEICHER_I014_ERKENNTNIS.json',claim:'I014 modelliert die TOCTOU-Lücke vor der ersten mutierenden Dateisystemprimitive als E1/P0-Regelentwurf.'},
+        {kind:'projektdatei',ref:'provoware/PROVOWARE: docs/PLAN_DELTA_I014.json',claim:'Die ursprünglichen mutierenden P03-Schritte werden bis zur qualifizierten read-only Identitätsprüfung aufgeschoben.'}
+      ],
+      relationships: [{type:'erweitert_oder_konsolidiert',target_id:'RULE-007'}],
+      status: 'merge_pruefen'
+    },
+    {
+      candidate_id: 'INBOX-006',
+      title: 'Replace-Fehler vor und nach der Namensmutation getrennt behandeln',
+      summary: 'Ein atomarer Einzeldatei-Replace benötigt getrennte Sicherheits- und Dauerhaftigkeitsgates. Fehler vor os.replace dürfen keine Mutation behaupten; Fehler nach erfolgreichem os.replace müssen die bereits erfolgte Mutation offen ausweisen und dürfen keinen Rollback vortäuschen.',
+      type: 'regel',
+      primary_category: 'Daten & Integrität',
+      categories: ['Dateisystem', 'Recovery', 'Fehlervermeidung', 'Evidence & Audit', 'Tests'],
+      priority: 'P0',
+      maturity: 'E1',
+      scope: 'projektübergreifend',
+      projects: ['PROVOWARE', 'PROVOWARE Knowledge & Project Intelligence'],
+      automatable: true,
+      tags: ['Atomic Replace', 'fsync', 'Directory fsync', 'Fail Closed', 'Recovery'],
+      sources: [
+        {kind:'projektdatei',ref:'provoware/PROVOWARE: docs/WISSENSSPEICHER_I015_ERKENNTNIS.json',claim:'I015 trennt Vorbedingungen, Datei-fsync, os.replace und Verzeichnis-fsync sowie Fehlerzustände vor und nach der Namensmutation.'},
+        {kind:'primärquelle',ref:'Linux rename(2) / fsync(2)',claim:'Rename ersetzt einen bestehenden Zielnamen atomar; Verzeichnis-Persistenz benötigt einen separaten fsync des Verzeichnisses.'}
+      ],
+      relationships: [{type:'erweitert_oder_konsolidiert',target_id:'RULE-008'}],
+      status: 'merge_pruefen'
     }
   ]
 };
