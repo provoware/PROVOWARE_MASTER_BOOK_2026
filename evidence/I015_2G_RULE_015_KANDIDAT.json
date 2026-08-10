@@ -1,0 +1,46 @@
+{
+  "schema": "1.0.0",
+  "iteration": "I015.2G",
+  "typ": "KANONISCHE_REGEL_AUFNAHME_VORSCHAU",
+  "status": "VORBEREITET_NICHT_KANONISCH",
+  "prioritaet": "P0",
+  "automatisierbarkeit": "JA",
+  "goldene_regel": false,
+  "ziel_rule_id": "RULE-015",
+  "ziel_reifegrad_maximal": "E2",
+  "regel": {
+    "id": "RULE-015",
+    "type": "regel",
+    "title": "Historische Qualifikationsgates müssen auf ihren qualifizierten Quell- und Lebenszyklus-Scope begrenzt bleiben",
+    "summary": "Historische Gates dürfen nur durch fachlich zugehörige Quellen requalifiziert werden und nur Tests ausführen, die zu ihrem qualifizierten Lebenszyklus-Scope gehören; unbekannter Scope blockiert fail-closed.",
+    "primary_category": "Architektur",
+    "categories": ["CI/CD", "Lebenszyklus", "Tests", "Evidence & Audit", "Fehlervermeidung"],
+    "tags": ["Historical Gate", "Qualified Scope", "Fail Closed", "Requalification"],
+    "projects": ["PROVOWARE Knowledge & Project Intelligence", "PROVOWARE"],
+    "priority": "P0",
+    "maturity": "E2",
+    "scope": "projekt",
+    "automatable": true,
+    "status": "bestaetigt",
+    "revision": 1,
+    "sources": [
+      {"kind":"projektregel","ref":"PROVOWARE/docs/WISSENSSPEICHER_I012_ERKENNTNIS_002.json#ERK-I012-002","claim":"E2/BESTAETIGT: Trigger- und Testselektion historischer Gates müssen qualifizierten Scope und Lebenszykluszustand explizit abgrenzen."},
+      {"kind":"projektdatei","ref":"PROVOWARE/docs/WISSENSSPEICHER_I015_2_ERKENNTNIS.json#ERK-I015-2-001","claim":"I007-I010 bestätigten zusätzlich, dass auch ungescoppte Gesamtprojekt-Regressionen innerhalb historischer Gates fachfremde Freeze-Annahmen reaktivieren können."},
+      {"kind":"evidence","ref":"evidence/I015_2_HISTORICAL_CI_SCOPE.json","claim":"Kanonischer Masterbuchbestand RULE-001 bis RULE-014 wurde geprüft; keine semantische CI-/Lifecycle-Scope-Dublette vorhanden."}
+    ]
+  },
+  "geplanter_delta": {
+    "event_id": "DELTA-0016",
+    "change_type": "neu",
+    "entry_id": "RULE-015",
+    "append_only": true
+  },
+  "sicherheitsgrenzen": {
+    "masterbook_seed_in_diesem_schritt_veraendert": false,
+    "knowledge_deltas_in_diesem_schritt_veraendert": false,
+    "browser_derivate_in_diesem_schritt_veraendert": false,
+    "reifegrad_ueber_e2": false,
+    "goldene_regel": false,
+    "rollback": "Datei entfernen; kanonische Quellen bleiben byteweise unverändert."
+  }
+}
