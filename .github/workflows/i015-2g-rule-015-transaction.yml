@@ -1,0 +1,71 @@
+name: I015.2G RULE-015 Vier-Artefakt-Transaktion
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/apply_rule_intake.py'
+      - 'evidence/I015_2G_RULE_015_KANDIDAT.json'
+      - '.github/workflows/i015-2g-rule-015-transaction.yml'
+      - 'scripts/verify_browser_derivatives.py'
+      - 'scripts/verify_delta_append_only.py'
+      - 'data/masterbook_seed.json'
+      - 'data/knowledge-deltas.json'
+      - 'src/seed.js'
+      - 'src/deltas.js'
+
+permissions:
+  contents: read
+
+jobs:
+  qualification:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Ausgangszustand pruefen
+        run: |
+          python scripts/verify_browser_derivatives.py
+          python scripts/apply_rule_intake.py
+
+      - name: Vier-Artefakt-Transaktion isoliert ausfuehren
+        run: |
+          rm -rf /tmp/provoware-rule-intake
+          cp -a "$GITHUB_WORKSPACE" /tmp/provoware-rule-intake
+          cd /tmp/provoware-rule-intake
+          python scripts/apply_rule_intake.py --apply | tee /tmp/rule-intake-receipt.json
+          grep -q '"status": "APPLIED"' /tmp/rule-intake-receipt.json
+
+      - name: Derivate und Append-only-Historie validieren
+        run: |
+          cd /tmp/provoware-rule-intake
+          python scripts/verify_browser_derivatives.py
+          python scripts/verify_delta_append_only.py --baseline-ref origin/main
+
+      - name: Zielzustand fail-closed validieren
+        run: |
+          cd /tmp/provoware-rule-intake
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          seed = json.loads(Path('data/masterbook_seed.json').read_text(encoding='utf-8'))
+          ledger = json.loads(Path('data/knowledge-deltas.json').read_text(encoding='utf-8'))
+          rules = [item for item in seed if item.get('id') == 'RULE-015']
+          deltas = [item for item in ledger['items'] if item.get('event_id') == 'DELTA-0016']
+          assert len(rules) == 1, 'RULE-015 fehlt oder ist doppelt'
+          assert len(deltas) == 1, 'DELTA-0016 fehlt oder ist doppelt'
+          rule = rules[0]
+          delta = deltas[0]
+          assert rule['maturity'] == 'E2'
+          assert rule['status'] == 'bestaetigt'
+          assert delta['entry_id'] == 'RULE-015'
+          assert delta['after_hash']
+          assert 'goldene_regel' not in rule or rule['goldene_regel'] is False
+          print('RULE_015_TRANSACTION_QUALIFICATION=PASS')
+          PY
+
+      - name: Original-Checkout muss unveraendert bleiben
+        run: |
+          git diff --exit-code -- data/masterbook_seed.json data/knowledge-deltas.json src/seed.js src/deltas.js
