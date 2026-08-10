@@ -1,0 +1,90 @@
+name: I015.2G RULE-015 Aufnahmequalifikation
+
+on:
+  pull_request:
+    paths:
+      - 'evidence/I015_2G_RULE_015_KANDIDAT.json'
+      - '.github/workflows/i015-2g-rule-015-intake.yml'
+      - 'data/masterbook_seed.json'
+      - 'data/knowledge-deltas.json'
+      - 'src/seed.js'
+      - 'src/deltas.js'
+
+jobs:
+  intake-preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: RULE-015 und DELTA-0016 Aufnahmevorschau fail-closed pruefen
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          candidate = json.loads(Path('evidence/I015_2G_RULE_015_KANDIDAT.json').read_text(encoding='utf-8'))
+          seed = json.loads(Path('data/masterbook_seed.json').read_text(encoding='utf-8'))
+          deltas = json.loads(Path('data/knowledge-deltas.json').read_text(encoding='utf-8'))
+
+          assert candidate['typ'] == 'REGEL_AUFNAHMEVORSCHAU'
+          assert candidate['reifegrad'] == 'E2'
+          assert candidate['prioritaet'] == 'P0'
+          assert candidate['automatisierbarkeit'] == 'JA'
+          assert candidate['goldene_regel'] is False
+
+          rule = candidate['zielregel']
+          assert rule['id'] == 'RULE-015'
+          assert rule['maturity'] == 'E2'
+          assert rule['priority'] == 'P0'
+          assert rule['automatable'] is True
+          assert rule['revision'] == 1
+          assert 'unbekannter Scope blockiert fail-closed' in rule['summary']
+
+          delta = candidate['zieldelta']
+          assert delta['event_id'] == 'DELTA-0016'
+          assert delta['entry_id'] == 'RULE-015'
+          assert delta['change_type'] == 'neu'
+
+          ids = [entry['id'] for entry in seed]
+          rule_ids = [x for x in ids if x.startswith('RULE-')]
+          assert 'RULE-014' in rule_ids
+          assert 'RULE-015' not in ids
+          assert max(int(x.split('-')[1]) for x in rule_ids) == 14
+
+          items = deltas['items']
+          event_ids = [item['event_id'] for item in items]
+          assert event_ids[-1] == 'DELTA-0015'
+          assert 'DELTA-0016' not in event_ids
+
+          contract = candidate['transaktionsvertrag']
+          assert contract['append_only_delta'] is True
+          assert contract['derivate_deterministisch_regenerieren'] is True
+          assert contract['unbekannte_pruefung_blockiert'] is True
+          assert contract['main_direkt_mutieren'] is False
+          PY
+
+      - name: Bestehende Browser-Derivate mit kanonischem Guard pruefen
+        run: python scripts/verify_browser_derivatives.py
+
+      - name: Diese Preflight-Runde darf kanonische Wissensdaten noch nicht mutieren
+        run: |
+          git diff --name-only origin/main...HEAD > /tmp/changed.txt
+          cat /tmp/changed.txt
+          python - <<'PY'
+          from pathlib import Path
+          changed = set(Path('/tmp/changed.txt').read_text().splitlines())
+          forbidden = {
+              'data/masterbook_seed.json',
+              'data/knowledge-deltas.json',
+              'src/seed.js',
+              'src/deltas.js',
+          }
+          assert not (changed & forbidden), f'Preflight hat kanonische Vier-Artefakt-Menge mutiert: {sorted(changed & forbidden)}'
+          allowed = {
+              'evidence/I015_2G_RULE_015_KANDIDAT.json',
+              '.github/workflows/i015-2g-rule-015-intake.yml',
+          }
+          assert changed <= allowed, f'Unerwarteter Scope: {sorted(changed - allowed)}'
+          PY

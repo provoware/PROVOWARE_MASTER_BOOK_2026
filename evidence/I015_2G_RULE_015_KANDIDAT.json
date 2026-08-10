@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.0",
+  "id": "ERK-I015-2G-001",
+  "typ": "REGEL_AUFNAHMEVORSCHAU",
+  "hauptkategorie": "Architektur",
+  "nebenkategorien": ["CI/CD", "Lebenszyklus", "Tests", "Evidence & Audit", "Fehlervermeidung"],
+  "reifegrad": "E2",
+  "prioritaet": "P0",
+  "gueltigkeitsbereich": "projekt",
+  "projektbezug": ["PROVOWARE Knowledge & Project Intelligence", "PROVOWARE"],
+  "quelle_herkunft": [
+    {
+      "kind": "projektregel",
+      "ref": "provoware/PROVOWARE: ERK-I012-002",
+      "claim": "Historische Qualifikationsgates muessen auf ihren qualifizierten Quell- und Lebenszyklus-Scope begrenzt bleiben."
+    },
+    {
+      "kind": "konsolidierungsevidence",
+      "ref": "evidence/I015_2_HISTORICAL_CI_SCOPE.json",
+      "claim": "I007 bis I010 wurden toolseitig scope-gehaertet; die Testsuite-Abgrenzung ist Teil des bestaetigten Befunds."
+    }
+  ],
+  "automatisierbarkeit": "JA",
+  "status": "AUFNAHMEVORSCHAU",
+  "goldene_regel": false,
+  "zielregel": {
+    "id": "RULE-015",
+    "type": "regel",
+    "title": "Historische Qualifikationsgates muessen auf ihren qualifizierten Scope begrenzt bleiben",
+    "summary": "Historische Gates duerfen nur durch fachlich zugehoerige Quellen requalifiziert werden und ausschliesslich Tests ihres qualifizierten Lebenszyklus-Scope ausfuehren; unbekannter Scope blockiert fail-closed.",
+    "primary_category": "Architektur",
+    "categories": ["CI/CD", "Lebenszyklus", "Tests", "Evidence & Audit", "Fehlervermeidung"],
+    "tags": ["Historical CI", "Qualified Scope", "Fail Closed", "Lifecycle"],
+    "projects": ["PROVOWARE Knowledge & Project Intelligence", "PROVOWARE"],
+    "priority": "P0",
+    "maturity": "E2",
+    "scope": "projekt",
+    "automatable": true,
+    "status": "bestaetigt",
+    "revision": 1,
+    "sources": [
+      {
+        "kind": "projektregel",
+        "ref": "provoware/PROVOWARE: ERK-I012-002",
+        "claim": "E2/BESTAETIGTE Projektregel aus I012; Qualification Run 31357647745."
+      },
+      {
+        "kind": "projektdatei",
+        "ref": "evidence/I015_2_HISTORICAL_CI_SCOPE.json",
+        "claim": "I015.2 bestaetigte die Regel ueber I007-I010 und erweiterte sie um die Begrenzung der intern ausgefuehrten Testsuite."
+      }
+    ]
+  },
+  "zieldelta": {
+    "event_id": "DELTA-0016",
+    "schema_version": "1.0",
+    "iteration": 15,
+    "entry_id": "RULE-015",
+    "change_type": "neu",
+    "reason": "Die bestaetigte Projektregel ERK-I012-002 und die I015.2-Scope-Haertung werden ohne Parallelregel als kanonische Masterbuch-Regel zusammengefuehrt.",
+    "source": {
+      "kind": "konsolidierungsevidence",
+      "ref": "evidence/I015_2_HISTORICAL_CI_SCOPE.json",
+      "claim": "Kanonischer Masterbuchbestand RULE-001 bis RULE-014 wurde geprueft; keine semantische CI-/Lifecycle-Scope-Dublette vorhanden."
+    },
+    "before_hash": null,
+    "after_hash": null,
+    "status": "direkt_nachgewiesen"
+  },
+  "transaktionsvertrag": {
+    "kanonische_dateien": ["data/masterbook_seed.json", "data/knowledge-deltas.json"],
+    "derivate": ["src/seed.js", "src/deltas.js"],
+    "append_only_delta": true,
+    "derivate_deterministisch_regenerieren": true,
+    "unbekannte_pruefung_blockiert": true,
+    "main_direkt_mutieren": false
+  },
+  "historie": [
+    {
+      "datum": "2026-08-10",
+      "aktion": "Aufnahmevorschau fuer RULE-015/DELTA-0016 erstellt; noch keine kanonische Wissensmutation."
+    }
+  ]
+}
