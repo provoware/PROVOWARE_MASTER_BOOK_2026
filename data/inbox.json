@@ -11,9 +11,7 @@
       "priority": "P1",
       "maturity": "E1",
       "scope": "projekt",
-      "sources": [
-        {"kind": "projektchat", "ref": "Wissensspeicher Autopilot – Iteration 002", "claim": "Als nächster Verbesserungshebel wurde ein maschinenlesbares Knowledge-Delta vorgeschlagen."}
-      ],
+      "sources": [{"kind": "projektchat", "ref": "Wissensspeicher Autopilot – Iteration 002", "claim": "Als nächster Verbesserungshebel wurde ein maschinenlesbares Knowledge-Delta vorgeschlagen."}],
       "status": "neu"
     },
     {
@@ -26,9 +24,7 @@
       "priority": "P0",
       "maturity": "E2",
       "scope": "projekt",
-      "sources": [
-        {"kind": "projektdatei", "ref": "WISSENSSPEICHERBUCH_UND_TOOL.txt", "claim": "Ein Eintrag darf mehrfach sichtbar sein, aber nur einmal gespeichert werden."}
-      ],
+      "sources": [{"kind": "projektdatei", "ref": "WISSENSSPEICHERBUCH_UND_TOOL.txt", "claim": "Ein Eintrag darf mehrfach sichtbar sein, aber nur einmal gespeichert werden."}],
       "status": "neu"
     },
     {
@@ -41,12 +37,8 @@
       "priority": "P1",
       "maturity": "E0",
       "scope": "projekt",
-      "sources": [
-        {"kind": "projektchat", "ref": "Störfallkandidat I003", "claim": "Absichtlich widersprechender Testkandidat für die Konfliktdarstellung."}
-      ],
-      "relationships": [
-        {"type": "widerspricht", "target_id": "RULE-002"}
-      ],
+      "sources": [{"kind": "projektchat", "ref": "Störfallkandidat I003", "claim": "Absichtlich widersprechender Testkandidat für die Konfliktdarstellung."}],
+      "relationships": [{"type": "widerspricht", "target_id": "RULE-002"}],
       "status": "neu"
     },
     {
@@ -59,9 +51,7 @@
       "priority": "P0",
       "maturity": "E1",
       "scope": "projekt",
-      "sources": [
-        {"kind": "projektchat", "ref": "Störfallkandidat I003", "claim": "Absichtlich ungültiger Testkandidat für die BLOCKED-Darstellung."}
-      ],
+      "sources": [{"kind": "projektchat", "ref": "Störfallkandidat I003", "claim": "Absichtlich ungültiger Testkandidat für die BLOCKED-Darstellung."}],
       "status": "neu"
     },
     {
@@ -81,7 +71,8 @@
         {"kind": "projektdatei", "ref": "provoware/PROVOWARE: docs/WISSENSSPEICHER_I014_ERKENNTNIS.json", "claim": "I014 modelliert die TOCTOU-Lücke vor der ersten mutierenden Dateisystemprimitive als E1/P0-Regelentwurf."},
         {"kind": "projektdatei", "ref": "provoware/PROVOWARE: docs/PLAN_DELTA_I014.json", "claim": "Die ursprünglichen mutierenden P03-Schritte werden bis zur qualifizierten read-only Identitätsprüfung aufgeschoben."}
       ],
-      "status": "neu"
+      "relationships": [{"type": "erweitert_oder_konsolidiert", "target_id": "RULE-007"}],
+      "status": "merge_pruefen"
     },
     {
       "candidate_id": "INBOX-006",
@@ -100,9 +91,7 @@
         {"kind": "projektdatei", "ref": "provoware/PROVOWARE: docs/WISSENSSPEICHER_I015_ERKENNTNIS.json", "claim": "I015 trennt Vorbedingungen, Datei-fsync, os.replace und Verzeichnis-fsync sowie Fehlerzustände vor und nach der Namensmutation."},
         {"kind": "primärquelle", "ref": "Linux rename(2) / fsync(2)", "claim": "Rename ersetzt einen bestehenden Zielnamen atomar; Verzeichnis-Persistenz benötigt einen separaten fsync des Verzeichnisses."}
       ],
-      "relationships": [
-        {"type": "erweitert_oder_konsolidiert", "target_id": "RULE-008"}
-      ],
+      "relationships": [{"type": "erweitert_oder_konsolidiert", "target_id": "RULE-008"}],
       "status": "merge_pruefen"
     }
   ]
