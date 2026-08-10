@@ -17,15 +17,20 @@
     "begruendung": "Die neue Erkenntnis formalisiert und erweitert eine bereits bestaetigte Scope-Regel; parallele Regelbildung ist zu vermeiden."
   },
   "validierungsgrenze": {
-    "tool_scope_manifest": "ANGELEGT",
-    "i010_trigger": "GEHAERTET_STATIC",
-    "i015_2_ci": "NOCH_NICHT_BEOBACHTET",
-    "i007_i009": "OFFEN"
+    "tool_scope_manifest": "KANONISCH",
+    "i010_trigger": "GEHAERTET_UND_SCOPE_GATE_GRUEN",
+    "i015_2_ci": "GRUEN_FUER_I010_REFERENZFALL",
+    "i007_trigger": "IMPLEMENTIERT_PR26_CI_AUSSTEHEND",
+    "i008_i009": "OFFEN"
   },
   "historie": [
     {
       "datum": "2026-08-10",
       "aktion": "Als E1-Konsolidierungskandidat aufgenommen; keine Seed-Aenderung und keine Hochstufung."
+    },
+    {
+      "datum": "2026-08-10",
+      "aktion": "I010-Scope-Vertrag nach real gruenem I015.2-Gate kanonisch; I007 als zweiter einzelner Referenzfall in Tool-PR #26 umgesetzt, reale CI-Abnahme noch ausstehend."
     }
   ]
 }
