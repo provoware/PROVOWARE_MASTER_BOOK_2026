@@ -71,7 +71,8 @@ window.KNOWLEDGE_INBOX = {
         {kind:'projektdatei',ref:'provoware/PROVOWARE: docs/WISSENSSPEICHER_I014_ERKENNTNIS.json',claim:'I014 modelliert die TOCTOU-Lücke vor der ersten mutierenden Dateisystemprimitive als E1/P0-Regelentwurf.'},
         {kind:'projektdatei',ref:'provoware/PROVOWARE: docs/PLAN_DELTA_I014.json',claim:'Die ursprünglichen mutierenden P03-Schritte werden bis zur qualifizierten read-only Identitätsprüfung aufgeschoben.'}
       ],
-      status: 'neu'
+      relationships: [{type:'erweitert_oder_konsolidiert',target_id:'RULE-007'}],
+      status: 'merge_pruefen'
     },
     {
       candidate_id: 'INBOX-006',
