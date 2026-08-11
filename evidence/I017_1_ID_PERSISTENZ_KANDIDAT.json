@@ -1,0 +1,46 @@
+{
+  "id": "ERK-I017-002",
+  "typ": "Nachweisentwurf",
+  "hauptkategorie": "Architektur",
+  "nebenkategorien": ["Identitaet", "Persistenz", "Restart", "Konflikt", "Datenintegritaet"],
+  "reifegrad": "E1",
+  "prioritaet": "P0",
+  "gueltigkeitsbereich": "PROVOWARE P04 / lokale portable Projektartefakte / einzelne ID-Bindungsdatei",
+  "projektbezug": "I017.1 dauerhafter ID-Persistenz- und Restartvertrag",
+  "quelle_herkunft": [
+    "Tool-PR provoware/PROVOWARE#40",
+    "Tool-Head dcfbe7d39f75e13b0defdf31bbd1af94678ebb40",
+    "ERK-I017-001",
+    "Masterplan P04/I015"
+  ],
+  "automatisierbarkeit": "JA",
+  "status": "IN_PRUEFUNG",
+  "goldene_regel": false,
+  "aussage": "Persistierte gueltige PROVOWARE-IDs muessen ueber Prozess-/Neuladegrenzen unveraendert erhalten bleiben. Widerspruechliche oder beschaedigte ID-Bindungen sind fail-closed zu behandeln; stilles Ueberschreiben oder Neuerzeugen ist unzulaessig.",
+  "grenzen": [
+    "Tool-Qualification fuer PR #40 ist noch ausstehend; deshalb E1 und IN_PRUEFUNG.",
+    "Registry bleibt I018 und ist nicht Bestandteil dieser Evidence.",
+    "Crash-Atomizitaet ueber Strom-/Dateisystemausfall ist nicht qualifiziert.",
+    "Keine mathematische Kollisionsfreiheit behauptet."
+  ],
+  "dublettenpruefung": {
+    "status": "KONSOLIDIERUNG_BEABSICHTIGT",
+    "kandidaten": ["ERK-I017-001"],
+    "hinweis": "Kein neuer Regelkern vorgesehen; nach realem Tool-PASS soll diese Evidence den bestehenden I017-ID-Vertragskern erweitern."
+  },
+  "widersprueche": [],
+  "qualification": {
+    "status": "AUSSTEHEND",
+    "tool_pr": 40,
+    "tool_head": "dcfbe7d39f75e13b0defdf31bbd1af94678ebb40",
+    "workflow_run_id": null,
+    "workflow_conclusion": "unknown"
+  },
+  "historie": [
+    {
+      "iteration": "I017.1",
+      "aktion": "Persistenz-/Restart-Evidence parallel zum Tool-Patch als E1 vorgemerkt",
+      "status": "IN_PRUEFUNG"
+    }
+  ]
+}
