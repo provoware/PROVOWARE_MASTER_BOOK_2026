@@ -1,40 +1,48 @@
 {
   "id": "ERK-I017-002",
-  "typ": "Nachweisentwurf",
+  "typ": "Nachweis",
   "hauptkategorie": "Architektur",
   "nebenkategorien": ["Identitaet", "Persistenz", "Restart", "Konflikt", "Datenintegritaet"],
-  "reifegrad": "E1",
+  "reifegrad": "E2",
   "prioritaet": "P0",
   "gueltigkeitsbereich": "PROVOWARE P04 / lokale portable Projektartefakte / einzelne ID-Bindungsdatei",
   "projektbezug": "I017.1 dauerhafter ID-Persistenz- und Restartvertrag",
   "quelle_herkunft": [
     "Tool-PR provoware/PROVOWARE#40",
-    "Tool-Head 1a0a6d85e0547d6f1e0b395281a490828d40491c",
+    "Tool-Qualification-Head 1a0a6d85e0547d6f1e0b395281a490828d40491c",
+    "Tool-Promotions-Head 739f0b8368ad79f418a800d5d98b5aea70e0ab54",
+    "Tool-Run 31536871890",
+    "Tool-Promotions-Run 31536951091",
+    "Tool-Merge 0d2e6c8d2e042527274fb2428efe635dbbb337cc",
     "ERK-I017-001",
     "Masterplan P04/I015"
   ],
   "automatisierbarkeit": "JA",
-  "status": "IN_PRUEFUNG",
+  "status": "BESTAETIGT",
   "goldene_regel": false,
-  "aussage": "Persistierte gueltige PROVOWARE-IDs muessen ueber Prozess-/Neuladegrenzen unveraendert erhalten bleiben. Widerspruechliche oder beschaedigte ID-Bindungen sind fail-closed zu behandeln; stilles Ueberschreiben oder Neuerzeugen ist unzulaessig.",
+  "aussage": "Persistierte gueltige PROVOWARE-IDs bleiben ueber Prozess-/Neuladegrenzen unveraendert erhalten. Widerspruechliche oder beschaedigte ID-Bindungen werden fail-closed behandelt; stilles Ueberschreiben oder Neuerzeugen ist unzulaessig.",
   "grenzen": [
-    "Tool-Qualification fuer PR #40 ist noch ausstehend; deshalb E1 und IN_PRUEFUNG.",
     "Registry bleibt I018 und ist nicht Bestandteil dieser Evidence.",
     "Crash-Atomizitaet ueber Strom-/Dateisystemausfall ist nicht qualifiziert.",
-    "Keine mathematische Kollisionsfreiheit behauptet."
+    "Netzwerkdateisysteme sind nicht qualifiziert.",
+    "Keine mathematische Kollisionsfreiheit behauptet.",
+    "E2 ist keine Goldene Regel."
   ],
   "dublettenpruefung": {
-    "status": "KONSOLIDIERUNG_BEABSICHTIGT",
+    "status": "KONSOLIDIERUNG",
     "kandidaten": ["ERK-I017-001"],
-    "hinweis": "Kein neuer Regelkern vorgesehen; nach realem Tool-PASS soll diese Evidence den bestehenden I017-ID-Vertragskern erweitern."
+    "hinweis": "Kein neuer Regelkern: ERK-I017-002 erweitert ERK-I017-001 um real qualifizierte Persistenz-/Restart-Evidence."
   },
   "widersprueche": [],
   "qualification": {
-    "status": "AUSSTEHEND",
+    "status": "PASS_REAL",
     "tool_pr": 40,
-    "tool_head": "1a0a6d85e0547d6f1e0b395281a490828d40491c",
-    "workflow_run_id": null,
-    "workflow_conclusion": "unknown"
+    "tool_qualifikations_head": "1a0a6d85e0547d6f1e0b395281a490828d40491c",
+    "tool_promotions_head": "739f0b8368ad79f418a800d5d98b5aea70e0ab54",
+    "tool_workflow_run_id": 31536871890,
+    "tool_promotions_run_id": 31536951091,
+    "tool_merge": "0d2e6c8d2e042527274fb2428efe635dbbb337cc",
+    "workflow_conclusion": "success"
   },
   "historie": [
     {
@@ -44,8 +52,13 @@
     },
     {
       "iteration": "I017.1",
-      "aktion": "Evidence nach Ruff- und mypy-Korrektur auf finalen Tool-Kandidaten-Head synchronisiert",
+      "aktion": "Evidence nach Ruff- und mypy-Korrektur auf finalen Tool-Kandidaten synchronisiert",
       "status": "IN_PRUEFUNG"
+    },
+    {
+      "iteration": "I017.1",
+      "aktion": "Nach real erfolgreicher Tool-Qualification und SHA-gebundener Promotion auf E2 angehoben",
+      "status": "BESTAETIGT"
     }
   ]
 }
