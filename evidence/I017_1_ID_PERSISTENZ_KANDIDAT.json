@@ -9,7 +9,7 @@
   "projektbezug": "I017.1 dauerhafter ID-Persistenz- und Restartvertrag",
   "quelle_herkunft": [
     "Tool-PR provoware/PROVOWARE#40",
-    "Tool-Head dcfbe7d39f75e13b0defdf31bbd1af94678ebb40",
+    "Tool-Head 1a0a6d85e0547d6f1e0b395281a490828d40491c",
     "ERK-I017-001",
     "Masterplan P04/I015"
   ],
@@ -32,7 +32,7 @@
   "qualification": {
     "status": "AUSSTEHEND",
     "tool_pr": 40,
-    "tool_head": "dcfbe7d39f75e13b0defdf31bbd1af94678ebb40",
+    "tool_head": "1a0a6d85e0547d6f1e0b395281a490828d40491c",
     "workflow_run_id": null,
     "workflow_conclusion": "unknown"
   },
@@ -40,6 +40,11 @@
     {
       "iteration": "I017.1",
       "aktion": "Persistenz-/Restart-Evidence parallel zum Tool-Patch als E1 vorgemerkt",
+      "status": "IN_PRUEFUNG"
+    },
+    {
+      "iteration": "I017.1",
+      "aktion": "Evidence nach Ruff- und mypy-Korrektur auf finalen Tool-Kandidaten-Head synchronisiert",
       "status": "IN_PRUEFUNG"
     }
   ]
