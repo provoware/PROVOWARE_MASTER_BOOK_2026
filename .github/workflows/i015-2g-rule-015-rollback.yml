@@ -7,10 +7,6 @@ on:
       - 'scripts/apply_rule_intake_safe.py'
       - 'evidence/I015_2G_RULE_015_KANDIDAT.json'
       - '.github/workflows/i015-2g-rule-015-rollback.yml'
-      - 'data/masterbook_seed.json'
-      - 'data/knowledge-deltas.json'
-      - 'src/seed.js'
-      - 'src/deltas.js'
 
 permissions:
   contents: read
