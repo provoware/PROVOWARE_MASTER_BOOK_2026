@@ -1,0 +1,47 @@
+{
+  "id": "ERK-I016-003",
+  "typ": "Nachweis",
+  "hauptkategorie": "Architektur",
+  "nebenkategorien": ["Dateisystem", "Schreibsicherheit", "Nebenlaeufigkeit", "TOCTOU", "Linux"],
+  "reifegrad": "E2",
+  "prioritaet": "P0",
+  "gueltigkeitsbereich": "PROVOWARE P03 / lokale Linux-Dateisysteme / kooperierende PROVOWARE-Schreiber",
+  "projektbezug": "provoware/PROVOWARE Delta-I016.3 Lease-Stale-Replace-Kopplung",
+  "quelle_herkunft": [
+    "ERK-I016-001",
+    "ERK-I016-002",
+    "Tool-PR #36",
+    "Tool-Qualification-Run 31511070448",
+    "Tool-Qualification-Head 403bba4b2ae6e8a79e573e95dca7f2308c37207f",
+    "Tool-Merge a4b63b758bf5ef71060d2e73eae95d584be13fbe",
+    "src/provoware/plattform/sicherer_replace.py",
+    "tests/platform/test_sicherer_replace.py"
+  ],
+  "automatisierbarkeit": "JA",
+  "status": "BESTAETIGT",
+  "goldene_regel": false,
+  "aussage": "Die bestehende I016-Schreibserialisierung ist End-to-End bis zum atomaren Einzeldatei-Replace qualifiziert: Ein kooperativer Schreibpfad erwirbt den Datei-Lease, fuehrt darunter einen frischen I014-Stale-Recheck aus und uebergibt nur dessen Ergebnis an I015; ein belegter Lease oder ein abweichender Zielzustand blockiert fail-closed vor Mutation, und der Lease wird auch bei Fehlerpfaden freigegeben.",
+  "dublettenpruefung": {
+    "status": "KONSOLIDIEREN",
+    "gegen": "ERK-I016-001 / ERK-I016-002 / RULE-001 bis RULE-015",
+    "befund": "Kein neuer kanonischer Regelkern. Diese E2-Evidence erweitert ERK-I016-001/002 um den qualifizierten End-to-End-Nachweis Lease -> frischer Stale-Recheck -> atomarer Replace; keine eigenstaendige kanonische Regel und keine Goldene Regel erzeugen."
+  },
+  "widersprueche": [],
+  "grenzen": [
+    "Nicht kooperierende Schreiber bleiben nicht qualifiziert.",
+    "Netzwerkdateisysteme bleiben nicht qualifiziert.",
+    "Advisory flock ist keine globale Schreibsperre gegen fremde Programme.",
+    "Der Lease ersetzt weder I012-Projektwurzelpruefung noch I013-Symlinkprobe."
+  ],
+  "qualification": {
+    "status": "PASS_REAL",
+    "workflow_run_id": 31511070448,
+    "head_sha": "403bba4b2ae6e8a79e573e95dca7f2308c37207f",
+    "merge_sha": "a4b63b758bf5ef71060d2e73eae95d584be13fbe",
+    "tool_pr": 36
+  },
+  "historie": [
+    {"iteration": "Delta-I016.3", "aktion": "Lease-Stale-Replace-Evidence vor realer Qualification vorgemerkt", "status": "IN_PRUEFUNG"},
+    {"iteration": "Delta-I016.3", "aktion": "Realer Tool-Run 31511070448 erfolgreich; PR #36 SHA-gebunden promoviert; Evidence auf E2 konsolidiert", "status": "BESTAETIGT"}
+  ]
+}
