@@ -1,0 +1,71 @@
+name: I017 ID-Evidence
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "evidence/I017_ID_VERTRAGSKERN_KANDIDAT.json"
+      - ".github/workflows/i017-id-evidence.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  evidence:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Scope fail-closed prüfen
+        run: |
+          python3 - <<'PY'
+          import os
+          import subprocess
+
+          allowed = {
+              'evidence/I017_ID_VERTRAGSKERN_KANDIDAT.json',
+              '.github/workflows/i017-id-evidence.yml',
+          }
+          base = os.environ['GITHUB_BASE_REF']
+          changed = {
+              p for p in subprocess.check_output(
+                  ['git', 'diff', '--name-only', f'origin/{base}...HEAD'], text=True
+              ).splitlines() if p
+          }
+          assert changed == allowed, f'I017-Masterbuch-Scope abweichend: {sorted(changed)}'
+          assert 'MASTERBUCH_SEED.json' not in changed
+          assert not any(p.startswith('delta/') for p in changed)
+          PY
+
+      - name: E2-Evidence und Tool-Bindung prüfen
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          d = json.loads(Path('evidence/I017_ID_VERTRAGSKERN_KANDIDAT.json').read_text(encoding='utf-8'))
+          assert d['id'] == 'ERK-I017-001'
+          assert d['typ'] == 'Nachweis'
+          assert d['hauptkategorie'] == 'Architektur'
+          assert d['reifegrad'] == 'E2'
+          assert d['prioritaet'] == 'P0'
+          assert d['automatisierbarkeit'] == 'JA'
+          assert d['status'] == 'BESTAETIGT'
+          assert d['goldene_regel'] is False
+          assert d['widersprueche'] == []
+          q = d['qualification']
+          assert q['status'] == 'PASS_REAL'
+          assert q['tool_pr'] == 38
+          assert q['tool_head'] == 'be324f1cbbe30ee4e2c9f19e17b1855d5601c34c'
+          assert q['workflow_run_id'] == 31526518691
+          assert q['workflow_conclusion'] == 'success'
+          assert q['i007_regression_run_id'] == 31526518704
+          assert q['i007_regression_conclusion'] == 'success'
+          assert q['tool_merge'] == '4e0a9f961c479932ac1e72c7b68367e200451ec9'
+          assert any('Persistenzanbindung' in grenze for grenze in d['grenzen'])
+          assert any('Kollisionsfreiheit' in grenze for grenze in d['grenzen'])
+          PY
