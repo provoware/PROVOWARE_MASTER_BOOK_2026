@@ -1,48 +1,57 @@
 {
   "id": "ERK-I017-001",
-  "typ": "Regelentwurf",
+  "typ": "Nachweis",
   "hauptkategorie": "Architektur",
   "nebenkategorien": ["Identitaet", "Datenmodell", "Serialisierung", "Validierung", "Portabilitaet"],
-  "reifegrad": "E1",
+  "reifegrad": "E2",
   "prioritaet": "P0",
   "gueltigkeitsbereich": "PROVOWARE P04 / Kernvertraege / portable Projektartefakte",
   "projektbezug": "Tool-I017 dauerhafte ID-Erzeugung und Validierung — Vertragskern",
   "quelle_herkunft": [
-    "provoware/PROVOWARE@2a947e194f8b5bdd26ec1cc4b86a9175bca97ced",
     "provoware/PROVOWARE#38",
-    "Tool-Head bfea0bce26720ddb955dc3a05070040959155cbb",
+    "Tool-Qualification-Head be324f1cbbe30ee4e2c9f19e17b1855d5601c34c",
+    "Tool-Workflow 31526518691",
+    "I007-Regression 31526518704",
+    "Tool-Merge 4e0a9f961c479932ac1e72c7b68367e200451ec9",
     "src/provoware/vertraege/datentypen.py",
     "tests/contract/test_i017_id_vertrag.py"
   ],
   "automatisierbarkeit": "JA",
-  "status": "IN_PRUEFUNG",
+  "status": "BESTAETIGT",
   "goldene_regel": false,
-  "aussage": "Der bestehende PROVOWARE-ID-Kern soll als kanonischer P04-Vertrag qualifiziert werden: stabile Domaenenpraefixe, kanonische lowercase UUID-Hexdarstellung, UUID4-Erzeugung und fail-closed Format- sowie Domaenenvalidierung.",
+  "aussage": "Der bestehende PROVOWARE-ID-Kern ist als P04-Vertragskern real qualifiziert: stabile Domaenenpraefixe, kanonische lowercase UUID-Hexdarstellung, UUID4-Erzeugung und fail-closed Format- sowie Domaenenvalidierung.",
   "grenzen": [
-    "Tool-Qualification ist bei Anlage dieses Kandidaten noch nicht abgeschlossen.",
-    "Persistenzanbindung ist nicht Bestandteil dieses Kandidaten.",
-    "Versions-/Manifestregistry ist nicht Bestandteil dieses Kandidaten.",
+    "Persistenzanbindung ist nicht Bestandteil dieses Nachweises.",
+    "Versions-/Manifestregistry ist nicht Bestandteil dieses Nachweises.",
     "Kollisionsfreiheit ist nicht mathematisch bewiesen.",
-    "Keine Hochstufung auf E2 und keine Goldene Regel ohne realen Tool-PASS."
+    "E2 ist keine Goldene Regel und keine Freigabe fuer eine noch ungepruefte kanonische Regelaufnahme."
   ],
   "dublettenpruefung": {
     "status": "VORGEPRUEFT",
     "kandidaten": [],
-    "hinweis": "Keine direkte Dublette in den zuletzt qualifizierten I015/I016-Evidenzen; diese behandeln CI-Lifecycle beziehungsweise Schreibserialisierung/TOCTOU. Vor E2 ist der gesamte kanonische Regelbestand erneut zu pruefen."
+    "hinweis": "Keine direkte Dublette in den zuletzt qualifizierten I015/I016-Evidenzen; diese behandeln CI-Lifecycle beziehungsweise Schreibserialisierung/TOCTOU. Vor einer kanonischen Regelaufnahme ist der gesamte Regelbestand erneut zu pruefen."
   },
   "widersprueche": [],
   "qualification": {
-    "status": "AUSSTEHEND",
+    "status": "PASS_REAL",
     "tool_pr": 38,
-    "tool_head": "bfea0bce26720ddb955dc3a05070040959155cbb",
-    "workflow_run_id": null,
-    "workflow_conclusion": null
+    "tool_head": "be324f1cbbe30ee4e2c9f19e17b1855d5601c34c",
+    "workflow_run_id": 31526518691,
+    "workflow_conclusion": "success",
+    "i007_regression_run_id": 31526518704,
+    "i007_regression_conclusion": "success",
+    "tool_merge": "4e0a9f961c479932ac1e72c7b68367e200451ec9"
   },
   "historie": [
     {
       "iteration": "I017",
       "aktion": "ID-Vertragskern als E1/P0-Kandidat parallel zum Tool-Draft erfasst",
       "status": "IN_PRUEFUNG"
+    },
+    {
+      "iteration": "I017",
+      "aktion": "Nach realer Tool-Qualification und SHA-gebundener Promotion auf E2 angehoben",
+      "status": "BESTAETIGT"
     }
   ]
 }
