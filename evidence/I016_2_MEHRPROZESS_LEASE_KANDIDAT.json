@@ -1,0 +1,23 @@
+{
+  "id": "ERK-I016-002",
+  "typ": "Nachweisentwurf",
+  "hauptkategorie": "Architektur",
+  "nebenkategorien": ["Dateisystem", "Schreibsicherheit", "Nebenlaeufigkeit", "Prozessgrenzen", "Linux"],
+  "reifegrad": "E1",
+  "prioritaet": "P0",
+  "gueltigkeitsbereich": "PROVOWARE P03 / Linux lokale Dateisysteme / kooperierende getrennte Prozesse",
+  "projektbezug": "provoware/PROVOWARE Delta-I016.2",
+  "quelle_herkunft": ["ERK-I016-001", "Tool-PR #34", "Tool-Head 0be678f4c9bffee072253c4b117e6658145a709a"],
+  "automatisierbarkeit": "JA",
+  "status": "IN_PRUEFUNG",
+  "goldene_regel": false,
+  "aussage": "Die bereits bestaetigte Lease-Regel ERK-I016-001 soll zusaetzlich an echten Prozessgrenzen qualifiziert werden; bis zum real erfolgreichen Tool-Gate bleibt dies reine E1-Evidence.",
+  "dublettenpruefung": {
+    "status": "VORLAEUFIG_KONSOLIDIEREN",
+    "gegen": "ERK-I016-001 / RULE-001 bis RULE-015",
+    "befund": "Voraussichtlich kein neuer Regelkern, sondern eine staerkere Evidenzstufe fuer ERK-I016-001. Keine kanonische neue Regel vor Qualification."
+  },
+  "widersprueche": [],
+  "grenzen": ["Nicht kooperierende Schreiber nicht abgedeckt", "Netzwerkdateisysteme nicht qualifiziert", "Replace-Integration noch nicht umgesetzt"],
+  "historie": [{"iteration": "Delta-I016.2", "aktion": "Mehrprozess-Evidence vor realer Qualification vorgemerkt", "status": "IN_PRUEFUNG"}]
+}
