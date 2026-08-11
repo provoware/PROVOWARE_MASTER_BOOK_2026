@@ -1,0 +1,77 @@
+name: I015.2G RULE-015 Kanonische Aufnahme
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/i015-2g-rule-015-canonical.yml'
+      - 'data/masterbook_seed.json'
+      - 'data/knowledge-deltas.json'
+      - 'src/seed.js'
+      - 'src/deltas.js'
+
+permissions:
+  contents: read
+
+jobs:
+  canonical-lifecycle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Derivate und Append-only-Historie prüfen
+        run: |
+          set -Eeuo pipefail
+          python scripts/verify_browser_derivatives.py
+          python scripts/verify_delta_append_only.py --baseline-ref origin/main
+      - name: Lifecycle-Zustand fail-closed prüfen
+        run: |
+          set -Eeuo pipefail
+          git diff --name-only "origin/${{ github.base_ref }}...HEAD" > /tmp/changed.txt
+          cat /tmp/changed.txt
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+
+          changed=set(Path('/tmp/changed.txt').read_text().splitlines())
+          outputs={
+              'data/masterbook_seed.json',
+              'data/knowledge-deltas.json',
+              'src/seed.js',
+              'src/deltas.js',
+          }
+          candidate=json.loads(Path('evidence/I015_2G_RULE_015_KANDIDAT.json').read_text(encoding='utf-8'))
+          seed=json.loads(Path('data/masterbook_seed.json').read_text(encoding='utf-8'))
+          ledger=json.loads(Path('data/knowledge-deltas.json').read_text(encoding='utf-8'))
+          rules=[x for x in seed if isinstance(x,dict) and x.get('id')=='RULE-015']
+          deltas=[x for x in ledger.get('items',[]) if isinstance(x,dict) and x.get('event_id')=='DELTA-0016']
+          output_changes=changed & outputs
+
+          if output_changes:
+              assert output_changes == outputs, f'Partielle Vier-Artefakt-Aufnahme: {sorted(output_changes)}'
+              assert len(rules)==1, 'RULE-015 fehlt oder ist doppelt'
+              assert len(deltas)==1, 'DELTA-0016 fehlt oder ist doppelt'
+              rule=rules[0]
+              delta=deltas[0]
+              assert rule == candidate['zielregel'], 'RULE-015 weicht von qualifizierter Aufnahmevorschau ab'
+              expected_delta=json.loads(json.dumps(candidate['zieldelta'], ensure_ascii=False))
+              expected_delta['before_hash']=None
+              canonical=json.dumps(rule, ensure_ascii=False, sort_keys=True, separators=(',', ':')).encode('utf-8')
+              expected_delta['after_hash']=hashlib.sha256(canonical).hexdigest()
+              assert delta == expected_delta, 'DELTA-0016 weicht vom qualifizierten Zielereignis ab'
+              assert [x.get('id') for x in seed if isinstance(x,dict) and str(x.get('id','')).startswith('RULE-')][-1]=='RULE-015'
+              assert ledger['items'][-1]['event_id']=='DELTA-0016'
+              assert rule['maturity']=='E2'
+              assert rule['status']=='bestaetigt'
+              assert rule.get('goldene_regel', False) is False
+              print('RULE_015_CANONICAL_POST_INTAKE=PASS')
+          else:
+              assert not rules, 'Workflow-only-Qualifikation erwartet Pre-Intake-Basis ohne RULE-015'
+              assert not deltas, 'Workflow-only-Qualifikation erwartet Pre-Intake-Basis ohne DELTA-0016'
+              rule_ids=[x.get('id') for x in seed if isinstance(x,dict) and str(x.get('id','')).startswith('RULE-')]
+              assert rule_ids[-1]=='RULE-014'
+              assert ledger['items'][-1]['event_id']=='DELTA-0015'
+              print('RULE_015_CANONICAL_PRE_INTAKE_BASELINE=PASS')
+          PY
