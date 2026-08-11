@@ -20,10 +20,19 @@ jobs:
           p = Path('evidence/I017_1_ID_PERSISTENZ_KANDIDAT.json')
           d = json.loads(p.read_text(encoding='utf-8'))
           assert d['id'] == 'ERK-I017-002'
-          assert d['reifegrad'] == 'E1'
+          assert d['reifegrad'] == 'E2'
           assert d['prioritaet'] == 'P0'
-          assert d['status'] == 'IN_PRUEFUNG'
+          assert d['status'] == 'BESTAETIGT'
           assert d['goldene_regel'] is False
-          assert d['qualification']['status'] == 'AUSSTEHEND'
+          q = d['qualification']
+          assert q['status'] == 'PASS_REAL'
+          assert q['tool_pr'] == 40
+          assert q['tool_qualifikations_head'] == '1a0a6d85e0547d6f1e0b395281a490828d40491c'
+          assert q['tool_promotions_head'] == '739f0b8368ad79f418a800d5d98b5aea70e0ab54'
+          assert q['tool_workflow_run_id'] == 31536871890
+          assert q['tool_promotions_run_id'] == 31536951091
+          assert q['tool_merge'] == '0d2e6c8d2e042527274fb2428efe635dbbb337cc'
+          assert q['workflow_conclusion'] == 'success'
           assert d['dublettenpruefung']['kandidaten'] == ['ERK-I017-001']
+          assert d['widersprueche'] == []
           PY
