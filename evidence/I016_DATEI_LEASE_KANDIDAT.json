@@ -1,0 +1,20 @@
+{
+  "id": "ERK-I016-001",
+  "typ": "Regelentwurf",
+  "hauptkategorie": "Architektur",
+  "nebenkategorien": ["Dateisystem", "Schreibsicherheit", "Nebenläufigkeit", "Linux"],
+  "reifegrad": "E1",
+  "prioritaet": "P0",
+  "gueltigkeitsbereich": "PROVOWARE P03 / Linux lokale Dateisysteme / kooperierende Schreiber",
+  "projektbezug": "provoware/PROVOWARE Delta-I016",
+  "quelle_herkunft": ["PLAN-DELTA-P03-2026-08-10-001", "Tool-PR #32 Head a449d46f90e199d4bb7b9be80a0e8b134fbe2946"],
+  "automatisierbarkeit": "JA",
+  "status": "IN_PRUEFUNG",
+  "goldene_regel": false,
+  "aussage": "Ein stabiler zielbezogener advisory Lease soll kooperierende PROVOWARE-Schreiber vor einer spaeteren Mutation fail-closed serialisieren und ersetzt keine bestehenden I012-I015-Sicherheitsgates.",
+  "qualifikation": "AUSSTEHEND",
+  "dublettenpruefung": "AUSSTEHEND",
+  "widersprueche": [],
+  "grenzen": ["Nicht kooperierende Schreiber nicht abgedeckt", "Netzwerkdateisysteme nicht qualifiziert", "Replace-Integration noch nicht umgesetzt"],
+  "historie": [{"iteration": "Delta-I016 Phase 1", "aktion": "Evidence-Kandidat aus Tool-PR #32 angelegt", "status": "IN_PRUEFUNG"}]
+}
