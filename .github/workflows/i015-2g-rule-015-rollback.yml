@@ -1,0 +1,52 @@
+name: I015.2G RULE-015 Rollback-Qualifikation
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/apply_rule_intake.py'
+      - 'scripts/apply_rule_intake_safe.py'
+      - 'evidence/I015_2G_RULE_015_KANDIDAT.json'
+      - '.github/workflows/i015-2g-rule-015-rollback.yml'
+      - 'data/masterbook_seed.json'
+      - 'data/knowledge-deltas.json'
+      - 'src/seed.js'
+      - 'src/deltas.js'
+
+permissions:
+  contents: read
+
+jobs:
+  rollback-qualification:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Ausgangszustand validieren
+        run: |
+          python scripts/verify_browser_derivatives.py
+          python scripts/apply_rule_intake_safe.py
+      - name: Fault Injection nach jedem Teilwrite muss vollständig zurückrollen
+        run: |
+          set -euo pipefail
+          before=$(sha256sum data/masterbook_seed.json data/knowledge-deltas.json src/seed.js src/deltas.js)
+          for n in 1 2 3 4; do
+            if python scripts/apply_rule_intake_safe.py --apply --fail-after "$n"; then
+              echo "Fault Injection $n wurde unerwartet als Erfolg gewertet" >&2
+              exit 1
+            fi
+            after=$(sha256sum data/masterbook_seed.json data/knowledge-deltas.json src/seed.js src/deltas.js)
+            test "$before" = "$after"
+            python scripts/verify_browser_derivatives.py
+          done
+      - name: Erfolgsweg isoliert prüfen
+        run: |
+          rm -rf /tmp/provoware-rule-intake-safe
+          cp -a "$GITHUB_WORKSPACE" /tmp/provoware-rule-intake-safe
+          cd /tmp/provoware-rule-intake-safe
+          python scripts/apply_rule_intake_safe.py --apply | tee /tmp/rule-intake-safe-receipt.json
+          grep -q '"status": "APPLIED_WITH_ROLLBACK_GUARD"' /tmp/rule-intake-safe-receipt.json
+          python scripts/verify_browser_derivatives.py
+          python scripts/verify_delta_append_only.py --baseline-ref origin/main
+      - name: Original-Checkout unverändert
+        run: git diff --exit-code -- data/masterbook_seed.json data/knowledge-deltas.json src/seed.js src/deltas.js
