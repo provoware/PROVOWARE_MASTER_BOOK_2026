@@ -2,19 +2,66 @@
   "id": "ERK-I016-001",
   "typ": "Regelentwurf",
   "hauptkategorie": "Architektur",
-  "nebenkategorien": ["Dateisystem", "Schreibsicherheit", "Nebenläufigkeit", "Linux"],
-  "reifegrad": "E1",
+  "nebenkategorien": [
+    "Dateisystem",
+    "Schreibsicherheit",
+    "Nebenlaeufigkeit",
+    "Linux"
+  ],
+  "reifegrad": "E2",
   "prioritaet": "P0",
   "gueltigkeitsbereich": "PROVOWARE P03 / Linux lokale Dateisysteme / kooperierende Schreiber",
   "projektbezug": "provoware/PROVOWARE Delta-I016",
-  "quelle_herkunft": ["PLAN-DELTA-P03-2026-08-10-001", "Tool-PR #32 Head a449d46f90e199d4bb7b9be80a0e8b134fbe2946"],
+  "quelle_herkunft": [
+    "PLAN-DELTA-P03-2026-08-10-001",
+    "Tool-PR #32",
+    "qualifizierter Tool-Head 4eea4591ae2296961869f567498744372aa7ff11",
+    "Tool-Merge cfb9d67966ba737eb1331004890973ed2404f3ff",
+    "I016 Qualification Run 31476216289",
+    "I015 Revalidation Run 31476216369"
+  ],
   "automatisierbarkeit": "JA",
-  "status": "IN_PRUEFUNG",
+  "status": "BESTAETIGT",
   "goldene_regel": false,
-  "aussage": "Ein stabiler zielbezogener advisory Lease soll kooperierende PROVOWARE-Schreiber vor einer spaeteren Mutation fail-closed serialisieren und ersetzt keine bestehenden I012-I015-Sicherheitsgates.",
-  "qualifikation": "AUSSTEHEND",
-  "dublettenpruefung": "AUSSTEHEND",
+  "aussage": "Ein stabiler zielbezogener advisory Lease serialisiert kooperierende PROVOWARE-Schreiber vor einer spaeteren Mutation fail-closed und ersetzt keine bestehenden I012-I015-Sicherheitsgates.",
+  "qualifikation": {
+    "status": "PASS",
+    "tool_head": "4eea4591ae2296961869f567498744372aa7ff11",
+    "tool_merge": "cfb9d67966ba737eb1331004890973ed2404f3ff",
+    "i016_run_id": 31476216289,
+    "i015_revalidation_run_id": 31476216369,
+    "lease_contracttests": "5/5 PASS",
+    "i012_i015_plattformregression": "47/47 PASS",
+    "ruff_format_mypy_und_workflowregression": "PASS"
+  },
+  "dublettenpruefung": {
+    "status": "BESTANDEN",
+    "gegen": "RULE-001 bis RULE-015",
+    "befund": "Keine direkte Dublette. RULE-008, RULE-011 und RULE-015 sind fachlich benachbart, decken aber Transaktionssicherheit, End-to-End-Qualifikation bzw. CI-Lifecycle-Scope statt Schreibkonkurrenz ab."
+  },
   "widersprueche": [],
-  "grenzen": ["Nicht kooperierende Schreiber nicht abgedeckt", "Netzwerkdateisysteme nicht qualifiziert", "Replace-Integration noch nicht umgesetzt"],
-  "historie": [{"iteration": "Delta-I016 Phase 1", "aktion": "Evidence-Kandidat aus Tool-PR #32 angelegt", "status": "IN_PRUEFUNG"}]
+  "grenzen": [
+    "Nicht kooperierende Schreiber nicht abgedeckt",
+    "Netzwerkdateisysteme nicht qualifiziert",
+    "Replace-Integration noch nicht umgesetzt"
+  ],
+  "historie": [
+    {
+      "iteration": "Delta-I016 Phase 1",
+      "aktion": "Evidence-Kandidat aus Tool-PR #32 angelegt",
+      "status": "IN_PRUEFUNG"
+    },
+    {
+      "iteration": "Delta-I016 Phase 1 Qualification",
+      "aktion": "Tool-Qualification nach realem Ruff-SIM105-Befund minimal korrigiert und auf unveraendertem Vertrags-Scope erneut qualifiziert",
+      "status": "BESTAETIGT",
+      "runs": [31476216289, 31476216369]
+    },
+    {
+      "iteration": "Delta-I016 Phase 1 Promotion",
+      "aktion": "Tool-PR #32 SHA-gebunden promoviert und Dublettenpruefung gegen RULE-001 bis RULE-015 abgeschlossen",
+      "status": "BESTAETIGT",
+      "merge": "cfb9d67966ba737eb1331004890973ed2404f3ff"
+    }
+  ]
 }
