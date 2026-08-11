@@ -1,0 +1,82 @@
+name: I016 Lease Evidence Qualification
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "evidence/I016_DATEI_LEASE_KANDIDAT.json"
+      - ".github/workflows/i016-lease-evidence.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  gate:
+    name: I016 Lease Evidence / read-only
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - name: Repository auschecken
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Diff-Scope fail-closed pruefen
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          python3 - <<'PY'
+          import os, subprocess
+          allowed = {
+              'evidence/I016_DATEI_LEASE_KANDIDAT.json',
+              '.github/workflows/i016-lease-evidence.yml',
+          }
+          base = os.environ['GITHUB_BASE_REF']
+          changed = {
+              line.strip()
+              for line in subprocess.check_output(
+                  ['git', 'diff', '--name-only', f'origin/{base}...HEAD'], text=True
+              ).splitlines()
+              if line.strip()
+          }
+          assert changed
+          assert not (changed - allowed), f'Unerwarteter Scope: {sorted(changed - allowed)}'
+          forbidden = {
+              'data/masterbook_seed.json',
+              'data/knowledge-deltas.json',
+              'src/seed.js',
+              'src/deltas.js',
+          }
+          assert not (changed & forbidden), f'Kanonische Wissensmutation unzulaessig: {sorted(changed & forbidden)}'
+          PY
+
+      - name: Evidence-Schema und Qualification pruefen
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          evidence = json.loads(Path('evidence/I016_DATEI_LEASE_KANDIDAT.json').read_text(encoding='utf-8'))
+          assert evidence['id'] == 'ERK-I016-001'
+          assert evidence['typ'] == 'Regelentwurf'
+          assert evidence['hauptkategorie'] == 'Architektur'
+          assert evidence['reifegrad'] == 'E2'
+          assert evidence['prioritaet'] == 'P0'
+          assert evidence['automatisierbarkeit'] == 'JA'
+          assert evidence['status'] == 'BESTAETIGT'
+          assert evidence['goldene_regel'] is False
+          assert evidence['qualifikation']['status'] == 'PASS'
+          assert evidence['qualifikation']['tool_head'] == '4eea4591ae2296961869f567498744372aa7ff11'
+          assert evidence['qualifikation']['tool_merge'] == 'cfb9d67966ba737eb1331004890973ed2404f3ff'
+          assert evidence['qualifikation']['i016_run_id'] == 31476216289
+          assert evidence['qualifikation']['i015_revalidation_run_id'] == 31476216369
+          assert evidence['dublettenpruefung']['status'] == 'BESTANDEN'
+          assert evidence['dublettenpruefung']['gegen'] == 'RULE-001 bis RULE-015'
+          assert evidence['widersprueche'] == []
+          assert 'Nicht kooperierende Schreiber nicht abgedeckt' in evidence['grenzen']
+          assert 'Netzwerkdateisysteme nicht qualifiziert' in evidence['grenzen']
+          assert 'Replace-Integration noch nicht umgesetzt' in evidence['grenzen']
+          PY
