@@ -8,10 +8,6 @@ on:
       - '.github/workflows/i015-2g-rule-015-transaction.yml'
       - 'scripts/verify_browser_derivatives.py'
       - 'scripts/verify_delta_append_only.py'
-      - 'data/masterbook_seed.json'
-      - 'data/knowledge-deltas.json'
-      - 'src/seed.js'
-      - 'src/deltas.js'
 
 permissions:
   contents: read
