@@ -1,0 +1,59 @@
+name: I015.3 Planidentitaet Evidence
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "evidence/I015_3_PLAN_IDENTITAET_KANDIDAT.json"
+      - ".github/workflows/i015-3-plan-identitaet-evidence.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  gate:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: E1-Evidence validieren
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('evidence/I015_3_PLAN_IDENTITAET_KANDIDAT.json')
+          e = json.loads(p.read_text(encoding='utf-8'))
+          assert e['evidence_id'] == 'EVID-I015-3-PLAN-IDENTITAET-001'
+          assert e['projekt'] == 'PROVOWARE'
+          assert e['status'] == 'IN_PRUEFUNG'
+          assert e['reifegrad'] == 'E1'
+          assert e['prioritaet'] == 'P0'
+          assert e['goldene_regel'] is False
+          assert e['automatisierbarkeit'] == 'JA'
+          assert e['belegter_konflikt']['ausgangsplan_i016'] == 'Versions- und Manifestregistry'
+          assert e['belegter_konflikt']['projekt_delta_i016'] == 'Lock-Lease und Prozessidentitaet'
+          assert e['belegter_konflikt']['klassifikation'] == 'NUMMERNKOLLISION_OHNE_FACHLICHEN_WIDERSPRUCH'
+          assert e['promotion']['kanonische_rule'] is None
+          assert e['promotion']['delta'] is None
+          assert e['promotion']['erlaubt'] is False
+          print('E1-Evidence: PASS')
+          PY
+
+      - name: Kanonische Wissensmutation blockieren
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}" | sort > /tmp/changed.txt
+          cat > /tmp/allowed.txt <<'EOF'
+          .github/workflows/i015-3-plan-identitaet-evidence.yml
+          evidence/I015_3_PLAN_IDENTITAET_KANDIDAT.json
+          EOF
+          sort -o /tmp/allowed.txt /tmp/allowed.txt
+          diff -u /tmp/allowed.txt /tmp/changed.txt
+          ! grep -Eq '^(data/masterbook_seed.json|data/knowledge-deltas.json|src/seed.js|src/deltas.js)$' /tmp/changed.txt
