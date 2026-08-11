@@ -1,0 +1,58 @@
+{
+  "schema": "1.0.0",
+  "evidence_id": "EVID-I015-3-PLAN-IDENTITAET-001",
+  "projekt": "PROVOWARE",
+  "status": "IN_PRUEFUNG",
+  "reifegrad": "E1",
+  "prioritaet": "P0",
+  "typ": "Regelentwurf-Kandidat",
+  "hauptkategorie": "Architektur",
+  "nebenkategorien": ["Entwicklungsplan", "Traceability", "Lebenszyklus", "Evidence & Audit", "Fehlervermeidung"],
+  "gueltigkeitsbereich": "projektbezogen; Konsolidierungskandidat",
+  "automatisierbarkeit": "JA",
+  "goldene_regel": false,
+  "titel": "Plan-Delta und Ausgangsplan muessen bei Iterationskollision getrennt adressierbar bleiben",
+  "kernaussage": "Eine Iterationsnummer allein ist bei aktivierter, sicherheitsbedingter PLAN_DELTA-Sequenz keine eindeutige Identitaet, wenn der Ausgangsplan dieselbe Nummer fuer ein anderes Ziel verwendet. Planversion, Herkunft und Delta-ID muessen mitgefuehrt werden; ungeklaerte Mehrdeutigkeit bleibt fail-closed.",
+  "belegter_konflikt": {
+    "ausgangsplan_version": "2.0.0",
+    "ausgangsplan_i016": "Versions- und Manifestregistry",
+    "projekt_delta_id": "PLAN-DELTA-P03-2026-08-10-001",
+    "projekt_delta_i016": "Lock-Lease und Prozessidentitaet",
+    "klassifikation": "NUMMERNKOLLISION_OHNE_FACHLICHEN_WIDERSPRUCH"
+  },
+  "projektquelle": {
+    "repository": "provoware/PROVOWARE",
+    "pull_request": 31,
+    "head_sha": "edb23bb2e494dbb754385b9eff33a6c34040dd39",
+    "status_zum_zeitpunkt": "DRAFT_QUALIFICATION_AUSSTEHEND"
+  },
+  "quellen_herkunft": [
+    "PROVOWARE_VOLLSTAENDIGER_ENTWICKLUNGSPLAN_EXPERT_FINAL_v2.0.0_2026-08-09",
+    "provoware/PROVOWARE:docs/PLAN_DELTA_I014.json",
+    "provoware/PROVOWARE:ITERATIONSUEBERGABE.json",
+    "provoware/PROVOWARE:PROJEKTSTATUS.json",
+    "qualifizierte I014/I015-Projekthistorie"
+  ],
+  "dublettenstrategie": "Vor kanonischer Aufnahme RULE-001 bis RULE-015 semantisch gegen Lifecycle-, Scope-, Traceability- und Planidentitaetsregeln pruefen; bevorzugt zusammenfuehren.",
+  "widersprueche": [
+    {
+      "status": "MARKIERT",
+      "beschreibung": "I016 bezeichnet im Ausgangsplan und in der aktivierten Delta-Sequenz unterschiedliche Ziele. Keine der beiden Aussagen darf ohne Herkunftskontext die andere ueberschreiben."
+    }
+  ],
+  "historie": [
+    {
+      "revision": 1,
+      "datum": "2026-08-11",
+      "status": "IN_PRUEFUNG",
+      "reifegrad": "E1",
+      "aenderung": "Erstaufnahme als nicht-kanonische Evidence parallel zur Tool-Qualification."
+    }
+  ],
+  "promotion": {
+    "kanonische_rule": null,
+    "delta": null,
+    "erlaubt": false,
+    "bedingung": "Tool-PR #31 real qualifizieren, danach Dubletten-/Konsolidierungspruefung gegen den kanonischen Regelbestand ausfuehren."
+  }
+}
