@@ -81,6 +81,9 @@ jobs:
           allowed = {
               'evidence/I015_2G_RULE_015_KANDIDAT.json',
               '.github/workflows/i015-2g-rule-015-intake.yml',
+              '.github/workflows/i015-2g-rule-015-transaction.yml',
+              '.github/workflows/i015-2g-rule-015-rollback.yml',
+              '.github/workflows/i015-2g-rule-015-canonical.yml',
           }
           assert changed <= allowed, f'Unerwarteter Scope: {sorted(changed - allowed)}'
           PY
