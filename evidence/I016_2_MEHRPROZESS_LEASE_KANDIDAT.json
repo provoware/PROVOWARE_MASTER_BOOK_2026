@@ -1,0 +1,43 @@
+{
+  "id": "ERK-I016-002",
+  "typ": "Nachweis",
+  "hauptkategorie": "Architektur",
+  "nebenkategorien": ["Dateisystem", "Schreibsicherheit", "Nebenlaeufigkeit", "Prozessgrenzen", "Linux"],
+  "reifegrad": "E2",
+  "prioritaet": "P0",
+  "gueltigkeitsbereich": "PROVOWARE P03 / Linux lokale Dateisysteme / kooperierende getrennte Prozesse",
+  "projektbezug": "provoware/PROVOWARE Delta-I016.2",
+  "quelle_herkunft": [
+    "ERK-I016-001",
+    "Tool-PR #34",
+    "Tool-Qualification-Run 31490138072",
+    "Tool-Qualification-Head 0be678f4c9bffee072253c4b117e6658145a709a",
+    "Tool-Merge 38f873b55a4539147458ed8a76ad4ac4f4e3e116"
+  ],
+  "automatisierbarkeit": "JA",
+  "status": "BESTAETIGT",
+  "goldene_regel": false,
+  "aussage": "Die bereits bestaetigte Lease-Regel ERK-I016-001 ist an echten Prozessgrenzen qualifiziert: Ein spawn-basierter Prozess A kann den Lease halten, ein getrennter Prozess B wird deterministisch mit BELEGT abgewiesen und nach Freigabe kann ein weiterer getrennter Prozess den Lease erwerben.",
+  "dublettenpruefung": {
+    "status": "KONSOLIDIEREN",
+    "gegen": "ERK-I016-001 / RULE-001 bis RULE-015",
+    "befund": "Kein neuer Regelkern. Diese E2-Evidence staerkt ERK-I016-001 um einen qualifizierten Prozessgrenzennachweis; keine eigenstaendige kanonische Regel und keine Goldene Regel erzeugen."
+  },
+  "widersprueche": [],
+  "grenzen": [
+    "Nicht kooperierende Schreiber nicht abgedeckt",
+    "Netzwerkdateisysteme nicht qualifiziert",
+    "Replace-Integration noch nicht umgesetzt"
+  ],
+  "qualification": {
+    "status": "PASS_REAL",
+    "workflow_run_id": 31490138072,
+    "head_sha": "0be678f4c9bffee072253c4b117e6658145a709a",
+    "merge_sha": "38f873b55a4539147458ed8a76ad4ac4f4e3e116",
+    "tool_pr": 34
+  },
+  "historie": [
+    {"iteration": "Delta-I016.2", "aktion": "Mehrprozess-Evidence vor realer Qualification vorgemerkt", "status": "IN_PRUEFUNG"},
+    {"iteration": "Delta-I016.2", "aktion": "Realer Tool-Run 31490138072 erfolgreich; PR #34 SHA-gebunden promoviert; Evidence auf E2 konsolidiert", "status": "BESTAETIGT"}
+  ]
+}
