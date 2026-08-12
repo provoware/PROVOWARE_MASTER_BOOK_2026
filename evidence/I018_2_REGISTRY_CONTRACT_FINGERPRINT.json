@@ -11,6 +11,8 @@
     "Tool-PR provoware/PROVOWARE#49",
     "Tool-Qualifikations-Head 21a7a2e95340fe2abfa371161d98487e3a04e8ac",
     "Tool-Workflow 31605278784 = SUCCESS",
+    "Tool-Workflow-ID 332812614",
+    "Tool-Workflow-Pfad .github/workflows/i018-2-registry-contract-fingerprint.yml",
     "Tool-Merge 5fa8eca05bfbebe50898fafad26d31d7f26a14fd",
     "ERK-I018-001",
     "ERK-I018-002"
@@ -43,6 +45,16 @@
     "scope": "6_DATEIEN_PASS",
     "historisches_i018_1_gate": "WORKFLOW_DISPATCH_ONLY"
   },
+  "evidence_binding": {
+    "status": "REVALIDIERUNG_ERFORDERLICH",
+    "grund": "Review P1/P2: ursprüngliches Masterbuch-Gate band den Tool-Run nicht explizit an Workflow-ID/-Pfad, Event, Head-Branch und aufgezeichnete PR-/Conclusion-Felder.",
+    "workflow_id": 332812614,
+    "workflow_path": ".github/workflows/i018-2-registry-contract-fingerprint.yml",
+    "event": "pull_request",
+    "head_branch": "automation/i018-2-registry-contract-fingerprint",
+    "tool_pr": 49,
+    "fail_closed": true
+  },
   "historie": [
     {
       "iteration": "I018.2",
@@ -53,6 +65,11 @@
       "iteration": "I018.2",
       "aktion": "Tool-Head real qualifiziert und SHA-gebunden promoviert; danach E2/BESTAETIGT gebunden.",
       "status": "BESTAETIGT"
+    },
+    {
+      "iteration": "I018.2E",
+      "aktion": "Review P1/P2 aufgenommen; Evidence-Gate um explizite Workflow- und PR-Bindung gehärtet. Revalidierung auf dem finalen Hardening-Head ist vor erneutem Abschluss erforderlich.",
+      "status": "IN_PRUEFUNG"
     }
   ]
 }
