@@ -1,0 +1,64 @@
+{
+  "id": "ERK-I018-002",
+  "typ": "Nachweis",
+  "hauptkategorie": "Architektur",
+  "nebenkategorien": ["Registry", "Integritaet", "Fingerprint", "SHA-256", "Fail-Closed", "Lifecycle"],
+  "reifegrad": "E2",
+  "prioritaet": "P0",
+  "gueltigkeitsbereich": "PROVOWARE P04 / I018.1 read-only Registry-Source-Fingerprint",
+  "projektbezug": "I018.1 Registry-Source-Fingerprint auf Basis des qualifizierten I018.0-Aufloesungsvertrags",
+  "quelle_herkunft": [
+    "Tool-PR provoware/PROVOWARE#47",
+    "Tool-Qualifikations-Head d4c85ffc7b28c0e33dcd504c2155794caca8eaea",
+    "Tool-Workflow 31590478317 = SUCCESS",
+    "Tool-Merge c6322ec2251fc8c54c2648c586572e34a14409e0",
+    "Tool-Vorlauf 31585958197 = FAILURE wegen falscher CI-Pythonversion",
+    "Tool-Vorlauf 31585991994 = FAILURE ausschliesslich im historischen I018.0-Scope-Gate",
+    "ERK-I018-001"
+  ],
+  "automatisierbarkeit": "JA",
+  "status": "BESTAETIGT",
+  "goldene_regel": false,
+  "aussage": "Eine read-only Registryquelle kann revisionssicher gebunden werden, indem ihr vollstaendiger kanonisch serialisierbarer Inhalt deterministisch per SHA-256 fingerprinted und ein erwarteter Fingerprint vor der Aufloesung fail-closed geprueft wird.",
+  "grenzen": [
+    "Registry-Persistenz ist nicht implementiert.",
+    "Automatische Quellensuche ist nicht implementiert.",
+    "Der Fingerprint ist eine Integritaetsbindung, keine Signatur und kein Herkunftsnachweis.",
+    "Ein separater Registry-Contract-Fingerprint ist nicht Bestandteil von I018.1.",
+    "Mehrprojekt-Registry und GUI sind nicht Bestandteil von I018.1.",
+    "E2 ist keine Goldene Regel."
+  ],
+  "dublettenpruefung": {
+    "status": "KEINE_DUBLETTE",
+    "kandidaten": ["ERK-I018-001", "ERK-I017-002"],
+    "hinweis": "ERK-I018-001 qualifiziert Eindeutigkeit und Widerspruchsfreiheit der read-only Registry-Aufloesung; ERK-I018-002 qualifiziert zusaetzlich die deterministische Inhaltsbindung der Quelle. Beide werden ueber den Projektbezug konsolidiert, besitzen aber unterschiedliche Regelkerne."
+  },
+  "widersprueche": [],
+  "qualification": {
+    "status": "PASS_REAL",
+    "tool_pr": 47,
+    "tool_qualifikations_head": "d4c85ffc7b28c0e33dcd504c2155794caca8eaea",
+    "tool_workflow_run_id": 31590478317,
+    "workflow_conclusion": "success",
+    "tool_merge_commit": "c6322ec2251fc8c54c2648c586572e34a14409e0",
+    "scope": "4_DATEIEN_PASS",
+    "historisches_i018_0_gate": "WORKFLOW_DISPATCH_ONLY"
+  },
+  "historie": [
+    {
+      "iteration": "I018.1",
+      "aktion": "Source-Fingerprint-Vertrag als E1-Kandidat vorbereitet; keine Hochstufung vor realer Qualification.",
+      "status": "IN_PRUEFUNG"
+    },
+    {
+      "iteration": "I018.1",
+      "aktion": "Ersten CI-Fehler durch falsche Pythonversion und anschliessende historische I018.0-Scope-Reaktivierung fail-closed erkannt und korrigiert.",
+      "status": "KORRIGIERT"
+    },
+    {
+      "iteration": "I018.1",
+      "aktion": "Finalen Tool-Head real qualifiziert und SHA-gebunden promoviert; danach E2/BESTAETIGT gebunden.",
+      "status": "BESTAETIGT"
+    }
+  ]
+}
