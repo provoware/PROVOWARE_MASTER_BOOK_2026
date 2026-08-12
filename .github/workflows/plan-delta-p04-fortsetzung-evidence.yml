@@ -1,0 +1,59 @@
+name: PLAN_DELTA P04 Evidence
+
+on:
+  pull_request:
+    paths:
+      - 'evidence/PLAN_DELTA_P04_FORTSETZUNG_2026-08-12.json'
+      - '.github/workflows/plan-delta-p04-fortsetzung-evidence.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Evidence lokal validieren
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          e = json.loads(Path('evidence/PLAN_DELTA_P04_FORTSETZUNG_2026-08-12.json').read_text())
+          assert e['id'] == 'ERK-PLANDELTA-P04-001'
+          assert e['typ'] == 'Planabweichung'
+          assert e['reifegrad'] == 'E2'
+          assert e['prioritaet'] == 'P0'
+          assert e['status'] == 'BESTAETIGT'
+          assert e['automatisierbarkeit'] == 'JA'
+          assert e['goldene_regel'] is False
+          q = e['qualification']
+          assert q['status'] == 'PASS_REAL'
+          assert q['tool_pr'] == 53
+          assert q['tool_workflow_run_id'] == 31626001490
+          assert q['tool_head'] == '2e38b17e1c688e7cf3ec4fbea540131329fb0451'
+          assert q['tool_merge'] == '2e31127f0ea9ca2332c1f18e6d1ca116995dff9e'
+          PY
+      - name: Tool-Run und PR remote binden
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import json, os, urllib.request
+          headers={'Authorization': f'Bearer {os.environ["GH_TOKEN"]}', 'Accept':'application/vnd.github+json'}
+          def get(url):
+              return json.load(urllib.request.urlopen(urllib.request.Request(url, headers=headers)))
+          run=get('https://api.github.com/repos/provoware/PROVOWARE/actions/runs/31626001490')
+          pr=get('https://api.github.com/repos/provoware/PROVOWARE/pulls/53')
+          assert run['status']=='completed'
+          assert run['conclusion']=='success'
+          assert run['head_sha']=='2e38b17e1c688e7cf3ec4fbea540131329fb0451'
+          assert run['workflow_id']==332986135
+          assert run['event']=='pull_request'
+          assert pr['state']=='closed'
+          assert pr['merged'] is True
+          assert pr['head']['sha']=='2e38b17e1c688e7cf3ec4fbea540131329fb0451'
+          assert pr['merge_commit_sha']=='2e31127f0ea9ca2332c1f18e6d1ca116995dff9e'
+          print('EVIDENCE_BINDING=PASS')
+          PY
