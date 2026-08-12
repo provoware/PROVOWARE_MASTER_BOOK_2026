@@ -1,0 +1,65 @@
+name: I018.2 Registry-Contract-Fingerprint Evidence
+
+on:
+  pull_request:
+    paths:
+      - 'evidence/I018_2_REGISTRY_CONTRACT_FINGERPRINT.json'
+      - '.github/workflows/i018-2-registry-contract-fingerprint-evidence.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  evidence:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Evidence und Tool-Promotion verifizieren
+        env:
+          TOOL_RUN_ID: '31605278784'
+          TOOL_HEAD: '21a7a2e95340fe2abfa371161d98487e3a04e8ac'
+          TOOL_MERGE: '5fa8eca05bfbebe50898fafad26d31d7f26a14fd'
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import urllib.request
+          from pathlib import Path
+
+          evidence = json.loads(Path('evidence/I018_2_REGISTRY_CONTRACT_FINGERPRINT.json').read_text(encoding='utf-8'))
+          q = evidence['qualification']
+          assert evidence['id'] == 'ERK-I018-003'
+          assert evidence['typ'] == 'Nachweis'
+          assert evidence['hauptkategorie'] == 'Architektur'
+          assert evidence['reifegrad'] == 'E2'
+          assert evidence['prioritaet'] == 'P0'
+          assert evidence['status'] == 'BESTAETIGT'
+          assert evidence['automatisierbarkeit'] == 'JA'
+          assert evidence['goldene_regel'] is False
+          assert evidence['widersprueche'] == []
+          assert q['status'] == 'PASS_REAL'
+          assert str(q['tool_workflow_run_id']) == os.environ['TOOL_RUN_ID']
+          assert q['tool_qualifikations_head'] == os.environ['TOOL_HEAD']
+          assert q['tool_merge_commit'] == os.environ['TOOL_MERGE']
+          assert q['scope'] == '6_DATEIEN_PASS'
+          assert q['historisches_i018_1_gate'] == 'WORKFLOW_DISPATCH_ONLY'
+
+          with urllib.request.urlopen(
+              f"https://api.github.com/repos/provoware/PROVOWARE/actions/runs/{os.environ['TOOL_RUN_ID']}"
+          ) as response:
+              run = json.load(response)
+          assert run['status'] == 'completed'
+          assert run['conclusion'] == 'success'
+          assert run['head_sha'] == os.environ['TOOL_HEAD']
+
+          with urllib.request.urlopen(
+              'https://api.github.com/repos/provoware/PROVOWARE/pulls/49'
+          ) as response:
+              pr = json.load(response)
+          assert pr['state'] == 'closed'
+          assert pr['merged'] is True
+          assert pr['head']['sha'] == os.environ['TOOL_HEAD']
+          assert pr['merge_commit_sha'] == os.environ['TOOL_MERGE']
+          print('I018.2 Masterbuch-Evidence: PASS_REAL gebunden')
+          PY
