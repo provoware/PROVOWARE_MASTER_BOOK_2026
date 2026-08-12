@@ -9,7 +9,8 @@
   "projektbezug": "I018.0 read-only Registry-Vertragskern",
   "quelle_herkunft": [
     "Tool-Draft-PR provoware/PROVOWARE#45",
-    "Tool-Kandidaten-Head ae05805d3ef6893cbfa69772787e28577e82ab3f",
+    "Tool-Kandidaten-Head b464a76fcb932d6938bd7c0aa5a8040a73ca53c6",
+    "Tool-Vorlauf 31565497987 = FAILURE wegen falschem optional-dependency-Namen",
     "VERSIONSREGISTER.json",
     "MANIFEST_PROJEKT.json",
     "ERK-I017-002",
@@ -20,7 +21,7 @@
   "goldene_regel": false,
   "aussage": "Eine read-only Versions-/Manifestregistry ist nur eindeutig, wenn genau eine autoritative Quelle aufgeloest wird, Produktversion und Manifest-Schema widerspruchsfrei sind und vorhandene IDs lediglich referenziert werden.",
   "grenzen": [
-    "Tool-Qualification fuer I018.0 ist noch ausstehend.",
+    "Tool-Qualification fuer den korrigierten I018.0-Head ist noch ausstehend.",
     "Registry-Persistenz ist nicht implementiert.",
     "Automatische Quellensuche ist nicht implementiert.",
     "Manifest-Signatur oder Hashbindung ist nicht implementiert.",
@@ -36,7 +37,7 @@
   "qualification": {
     "status": "AUSSTEHEND",
     "tool_pr": 45,
-    "tool_qualifikations_head": "ae05805d3ef6893cbfa69772787e28577e82ab3f",
+    "tool_qualifikations_head": "b464a76fcb932d6938bd7c0aa5a8040a73ca53c6",
     "tool_workflow_run_id": null,
     "workflow_conclusion": null
   },
@@ -44,6 +45,11 @@
     {
       "iteration": "I018.0",
       "aktion": "Evidence parallel zum Tool-Kandidaten als E1 vorgemerkt",
+      "status": "IN_PRUEFUNG"
+    },
+    {
+      "iteration": "I018.0",
+      "aktion": "Ersten realen CI-Fehler dokumentiert und Evidence auf korrigierten Tool-Head synchronisiert",
       "status": "IN_PRUEFUNG"
     }
   ]
