@@ -1,0 +1,70 @@
+{
+  "id": "ERK-I018-004",
+  "typ": "Nachweis",
+  "hauptkategorie": "Architektur",
+  "nebenkategorien": ["Registry", "Integritaet", "Binding-Receipt", "Source-Fingerprint", "Contract-Fingerprint", "SHA-256", "Fail-Closed", "Lifecycle"],
+  "reifegrad": "E2",
+  "prioritaet": "P0",
+  "gueltigkeitsbereich": "PROVOWARE P04 / I018.3 read-only Source+Contract Binding Receipt",
+  "projektbezug": "I018.3 Gesamtzustandsbindung auf Basis der qualifizierten I018.1-/I018.2-Registryintegrität",
+  "quelle_herkunft": [
+    "Tool-PR provoware/PROVOWARE#51",
+    "Tool-Qualifikations-Head 31828051212af237a4df837ba1fe7640515a9b37",
+    "Tool-Workflow 31621026866 = SUCCESS",
+    "Tool-Workflow-ID 332948088",
+    "Tool-Workflow-Pfad .github/workflows/i018-3-source-contract-binding-receipt.yml",
+    "Tool-Merge 9967dc70fcda1d12c5d34602f7bb2178908e4ff3",
+    "ERK-I018-002",
+    "ERK-I018-003"
+  ],
+  "automatisierbarkeit": "JA",
+  "status": "BESTAETIGT",
+  "goldene_regel": false,
+  "aussage": "Projekt-ID, Source-Fingerprint, Contract-Fingerprint, aufgelöste Produktversion und Manifest-Schema können zusätzlich in einem kanonischen read-only Binding-Receipt gemeinsam per SHA-256 gebunden werden; eine Abweichung gegen einen erwarteten Receipt-Pin blockiert fail-closed.",
+  "grenzen": [
+    "Registry-Persistenz ist nicht implementiert.",
+    "Automatische Quellensuche ist nicht implementiert.",
+    "Das Binding-Receipt ist keine Signatur und kein Herkunftsnachweis.",
+    "Das Binding-Receipt wird in I018.3 nicht dauerhaft gespeichert.",
+    "Mehrprojekt-Registry und GUI sind nicht Bestandteil von I018.3.",
+    "E2 ist keine Goldene Regel."
+  ],
+  "dublettenpruefung": {
+    "status": "KEINE_DUBLETTE",
+    "kandidaten": ["ERK-I018-002", "ERK-I018-003"],
+    "hinweis": "ERK-I018-002 bindet den Quellinhalt, ERK-I018-003 die Interpretationsregeln; ERK-I018-004 bindet beide zusammen mit Identität und aufgelöstem Ergebnis."
+  },
+  "widersprueche": [],
+  "qualification": {
+    "status": "PASS_REAL",
+    "pass_real": true,
+    "tool_pr": 51,
+    "tool_qualifikations_head": "31828051212af237a4df837ba1fe7640515a9b37",
+    "tool_workflow_run_id": 31621026866,
+    "workflow_conclusion": "success",
+    "tool_merge_commit": "9967dc70fcda1d12c5d34602f7bb2178908e4ff3",
+    "scope": "6_DATEIEN_PASS",
+    "historisches_i018_2_gate": "WORKFLOW_DISPATCH_ONLY"
+  },
+  "evidence_binding": {
+    "status": "PASS_REAL",
+    "workflow_id": 332948088,
+    "workflow_path": ".github/workflows/i018-3-source-contract-binding-receipt.yml",
+    "event": "pull_request",
+    "head_branch": "automation/i018-3-source-contract-binding-receipt",
+    "tool_pr": 51,
+    "fail_closed": true
+  },
+  "historie": [
+    {
+      "iteration": "I018.3",
+      "aktion": "Binding-Receipt als E1-Kandidat parallel zum Tool-PR vorbereitet; keine Hochstufung vor realer Qualification und Promotion.",
+      "status": "IN_PRUEFUNG"
+    },
+    {
+      "iteration": "I018.3",
+      "aktion": "Tool-Head 31828051212af237a4df837ba1fe7640515a9b37 in Run 31621026866 real erfolgreich qualifiziert und SHA-gebunden als 9967dc70fcda1d12c5d34602f7bb2178908e4ff3 promoviert; Evidence auf E2/BESTAETIGT angehoben.",
+      "status": "BESTAETIGT"
+    }
+  ]
+}

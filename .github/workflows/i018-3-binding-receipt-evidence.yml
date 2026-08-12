@@ -1,0 +1,88 @@
+name: I018.3 Binding-Receipt Evidence
+
+on:
+  pull_request:
+    paths:
+      - 'evidence/I018_3_SOURCE_CONTRACT_BINDING_RECEIPT.json'
+      - '.github/workflows/i018-3-binding-receipt-evidence.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  evidence:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Evidence und Tool-Promotion verifizieren
+        env:
+          TOOL_RUN_ID: '31621026866'
+          TOOL_WORKFLOW_ID: '332948088'
+          TOOL_WORKFLOW_PATH: '.github/workflows/i018-3-source-contract-binding-receipt.yml'
+          TOOL_EVENT: 'pull_request'
+          TOOL_BRANCH: 'automation/i018-3-source-contract-binding-receipt'
+          TOOL_PR: '51'
+          TOOL_HEAD: '31828051212af237a4df837ba1fe7640515a9b37'
+          TOOL_MERGE: '9967dc70fcda1d12c5d34602f7bb2178908e4ff3'
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import urllib.request
+          from pathlib import Path
+
+          evidence = json.loads(Path('evidence/I018_3_SOURCE_CONTRACT_BINDING_RECEIPT.json').read_text(encoding='utf-8'))
+          q = evidence['qualification']
+          binding = evidence['evidence_binding']
+          assert evidence['id'] == 'ERK-I018-004'
+          assert evidence['typ'] == 'Nachweis'
+          assert evidence['hauptkategorie'] == 'Architektur'
+          assert evidence['reifegrad'] == 'E2'
+          assert evidence['prioritaet'] == 'P0'
+          assert evidence['status'] == 'BESTAETIGT'
+          assert evidence['automatisierbarkeit'] == 'JA'
+          assert evidence['goldene_regel'] is False
+          assert evidence['widersprueche'] == []
+          assert q['status'] == 'PASS_REAL'
+          assert q['pass_real'] is True
+          assert str(q['tool_pr']) == os.environ['TOOL_PR']
+          assert str(q['tool_workflow_run_id']) == os.environ['TOOL_RUN_ID']
+          assert q['workflow_conclusion'] == 'success'
+          assert q['tool_qualifikations_head'] == os.environ['TOOL_HEAD']
+          assert q['tool_merge_commit'] == os.environ['TOOL_MERGE']
+          assert q['scope'] == '6_DATEIEN_PASS'
+          assert q['historisches_i018_2_gate'] == 'WORKFLOW_DISPATCH_ONLY'
+          assert str(binding['workflow_id']) == os.environ['TOOL_WORKFLOW_ID']
+          assert binding['workflow_path'] == os.environ['TOOL_WORKFLOW_PATH']
+          assert binding['event'] == os.environ['TOOL_EVENT']
+          assert binding['head_branch'] == os.environ['TOOL_BRANCH']
+          assert str(binding['tool_pr']) == os.environ['TOOL_PR']
+          assert binding['fail_closed'] is True
+
+          with urllib.request.urlopen(
+              f"https://api.github.com/repos/provoware/PROVOWARE/actions/runs/{os.environ['TOOL_RUN_ID']}"
+          ) as response:
+              run = json.load(response)
+          assert run['status'] == 'completed'
+          assert run['conclusion'] == q['workflow_conclusion']
+          assert run['head_sha'] == os.environ['TOOL_HEAD']
+          assert str(run['workflow_id']) == os.environ['TOOL_WORKFLOW_ID']
+          assert run['path'] == os.environ['TOOL_WORKFLOW_PATH']
+          assert run['event'] == os.environ['TOOL_EVENT']
+          assert run['head_branch'] == os.environ['TOOL_BRANCH']
+
+          with urllib.request.urlopen(
+              f"https://api.github.com/repos/provoware/PROVOWARE/pulls/{os.environ['TOOL_PR']}"
+          ) as response:
+              pr = json.load(response)
+          assert pr['number'] == q['tool_pr']
+          assert pr['state'] == 'closed'
+          assert pr['merged'] is True
+          assert pr['head']['sha'] == os.environ['TOOL_HEAD']
+          assert pr['head']['ref'] == os.environ['TOOL_BRANCH']
+          assert pr['merge_commit_sha'] == os.environ['TOOL_MERGE']
+          assert run['head_sha'] == pr['head']['sha']
+          assert run['head_branch'] == pr['head']['ref']
+          print('I018.3 Masterbuch-Evidence: PASS_REAL workflow- und PR-gebunden')
+          PY
