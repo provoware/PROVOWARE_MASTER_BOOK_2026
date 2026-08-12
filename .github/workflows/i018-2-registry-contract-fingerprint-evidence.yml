@@ -18,6 +18,11 @@ jobs:
       - name: Evidence und Tool-Promotion verifizieren
         env:
           TOOL_RUN_ID: '31605278784'
+          TOOL_WORKFLOW_ID: '332812614'
+          TOOL_WORKFLOW_PATH: '.github/workflows/i018-2-registry-contract-fingerprint.yml'
+          TOOL_EVENT: 'pull_request'
+          TOOL_BRANCH: 'automation/i018-2-registry-contract-fingerprint'
+          TOOL_PR: '49'
           TOOL_HEAD: '21a7a2e95340fe2abfa371161d98487e3a04e8ac'
           TOOL_MERGE: '5fa8eca05bfbebe50898fafad26d31d7f26a14fd'
         run: |
@@ -29,6 +34,7 @@ jobs:
 
           evidence = json.loads(Path('evidence/I018_2_REGISTRY_CONTRACT_FINGERPRINT.json').read_text(encoding='utf-8'))
           q = evidence['qualification']
+          binding = evidence['evidence_binding']
           assert evidence['id'] == 'ERK-I018-003'
           assert evidence['typ'] == 'Nachweis'
           assert evidence['hauptkategorie'] == 'Architektur'
@@ -39,27 +45,42 @@ jobs:
           assert evidence['goldene_regel'] is False
           assert evidence['widersprueche'] == []
           assert q['status'] == 'PASS_REAL'
+          assert str(q['tool_pr']) == os.environ['TOOL_PR']
           assert str(q['tool_workflow_run_id']) == os.environ['TOOL_RUN_ID']
+          assert q['workflow_conclusion'] == 'success'
           assert q['tool_qualifikations_head'] == os.environ['TOOL_HEAD']
           assert q['tool_merge_commit'] == os.environ['TOOL_MERGE']
           assert q['scope'] == '6_DATEIEN_PASS'
           assert q['historisches_i018_1_gate'] == 'WORKFLOW_DISPATCH_ONLY'
+          assert str(binding['workflow_id']) == os.environ['TOOL_WORKFLOW_ID']
+          assert binding['workflow_path'] == os.environ['TOOL_WORKFLOW_PATH']
+          assert binding['event'] == os.environ['TOOL_EVENT']
+          assert binding['head_branch'] == os.environ['TOOL_BRANCH']
+          assert str(binding['tool_pr']) == os.environ['TOOL_PR']
 
           with urllib.request.urlopen(
               f"https://api.github.com/repos/provoware/PROVOWARE/actions/runs/{os.environ['TOOL_RUN_ID']}"
           ) as response:
               run = json.load(response)
           assert run['status'] == 'completed'
-          assert run['conclusion'] == 'success'
+          assert run['conclusion'] == q['workflow_conclusion']
           assert run['head_sha'] == os.environ['TOOL_HEAD']
+          assert str(run['workflow_id']) == os.environ['TOOL_WORKFLOW_ID']
+          assert run['path'] == os.environ['TOOL_WORKFLOW_PATH']
+          assert run['event'] == os.environ['TOOL_EVENT']
+          assert run['head_branch'] == os.environ['TOOL_BRANCH']
 
           with urllib.request.urlopen(
-              'https://api.github.com/repos/provoware/PROVOWARE/pulls/49'
+              f"https://api.github.com/repos/provoware/PROVOWARE/pulls/{os.environ['TOOL_PR']}"
           ) as response:
               pr = json.load(response)
+          assert pr['number'] == q['tool_pr']
           assert pr['state'] == 'closed'
           assert pr['merged'] is True
           assert pr['head']['sha'] == os.environ['TOOL_HEAD']
+          assert pr['head']['ref'] == os.environ['TOOL_BRANCH']
           assert pr['merge_commit_sha'] == os.environ['TOOL_MERGE']
-          print('I018.2 Masterbuch-Evidence: PASS_REAL gebunden')
+          assert run['head_sha'] == pr['head']['sha']
+          assert run['head_branch'] == pr['head']['ref']
+          print('I018.2 Masterbuch-Evidence: PASS_REAL workflow- und PR-gebunden')
           PY
