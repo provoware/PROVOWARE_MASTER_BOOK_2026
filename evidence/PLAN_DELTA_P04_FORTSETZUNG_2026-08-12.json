@@ -1,0 +1,54 @@
+{
+  "id": "ERK-PLANDELTA-P04-001",
+  "titel": "P04 nach P03-Neuzuordnung vollständig fortsetzen",
+  "typ": "Planabweichung",
+  "hauptkategorie": "Architektur",
+  "nebenkategorien": ["Planung", "Iteration", "Lifecycle", "Audit", "Evidence", "Fail-Closed"],
+  "reifegrad": "E2",
+  "prioritaet": "P0",
+  "gueltigkeitsbereich": "PROVOWARE Masterplan v2.0.0, P04 nach PLAN-DELTA-P03-2026-08-10-001",
+  "projektbezug": "PROVOWARE",
+  "quelle_herkunft": {
+    "masterplan": "PROVOWARE_VOLLSTAENDIGER_ENTWICKLUNGSPLAN_EXPERT_FINAL_v2.0.0_2026-08-09",
+    "tool_pr": 53,
+    "tool_head": "2e38b17e1c688e7cf3ec4fbea540131329fb0451",
+    "tool_workflow_run_id": 31626001490,
+    "tool_workflow_conclusion": "success",
+    "tool_merge": "2e31127f0ea9ca2332c1f18e6d1ca116995dff9e",
+    "tool_delta": "PLAN-DELTA-P04-2026-08-12-001"
+  },
+  "automatisierbarkeit": "JA",
+  "status": "BESTAETIGT",
+  "goldene_regel": false,
+  "widersprueche": [
+    {
+      "status": "AUFGELOEST_DURCH_MAPPING",
+      "beschreibung": "Der Projektstrang I017/I018 deckt nach dokumentierter P03-Neuzuordnung nur die Masterplan-P04-Ursprungsziele I015/I016 ab. Die Masterplan-P04-Ursprungsziele I017/I018 bleiben durch Projekt-I019/I020 erhalten."
+    }
+  ],
+  "dubletten": {
+    "status": "KEINE_FACHLICHE_DUBLETTE",
+    "hinweis": "Bestehende ERK-I017-/I018-Nachweise qualifizieren Fachvertraege; dieser Eintrag dokumentiert ausschliesslich die Plan-/Lifecycle-Zuordnung."
+  },
+  "kernaussage": "Nach der P03-bedingten Verschiebung werden die verbleibenden P04-Pflichtkerne Auditjournal und Audit/Debug/Evidence-Speichertrennung vor P05 als Projekt-I019 bzw. Projekt-I020 fortgesetzt.",
+  "qualification": {
+    "status": "PASS_REAL",
+    "tool_workflow_run_id": 31626001490,
+    "tool_pr": 53,
+    "tool_head": "2e38b17e1c688e7cf3ec4fbea540131329fb0451",
+    "tool_merge": "2e31127f0ea9ca2332c1f18e6d1ca116995dff9e",
+    "promotion_erlaubt": true
+  },
+  "historie": [
+    {
+      "datum": "2026-08-12",
+      "status": "E1_KANDIDAT",
+      "aenderung": "Planabweichung aufgenommen; keine E2-Hochstufung ohne realen Tool-Gate-PASS."
+    },
+    {
+      "datum": "2026-08-12",
+      "status": "E2_BESTAETIGT",
+      "aenderung": "Tool-PR #53 auf finalem Head real qualifiziert und SHA-gebunden gemergt; Planmapping bestaetigt."
+    }
+  ]
+}
