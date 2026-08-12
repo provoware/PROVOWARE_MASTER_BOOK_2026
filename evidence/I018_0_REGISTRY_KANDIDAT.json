@@ -2,44 +2,55 @@
   "id": "ERK-I018-001",
   "typ": "Nachweis",
   "hauptkategorie": "Architektur",
-  "nebenkategorien": ["Registry", "Versionierung", "Manifest", "Identitaet", "Fail-Closed"],
-  "reifegrad": "E1",
+  "nebenkategorien": ["Registry", "Versionierung", "Manifest", "Identitaet", "Fail-Closed", "Lifecycle"],
+  "reifegrad": "E2",
   "prioritaet": "P0",
   "gueltigkeitsbereich": "PROVOWARE P04 / I018.0 read-only Versions-/Manifestregistry",
   "projektbezug": "I018.0 read-only Registry-Vertragskern",
   "quelle_herkunft": [
-    "Tool-Draft-PR provoware/PROVOWARE#45",
-    "Tool-Kandidaten-Head b464a76fcb932d6938bd7c0aa5a8040a73ca53c6",
+    "Tool-PR provoware/PROVOWARE#45",
+    "Tool-Qualifikations-Head 45e9edec963dfd4f0a7c3e23c264b1c28d08a3d1",
+    "Tool-Workflow 31573547771 = SUCCESS",
+    "Tool-Merge f9c5a065231329a668ae9a3dc1a65783252f6362",
     "Tool-Vorlauf 31565497987 = FAILURE wegen falschem optional-dependency-Namen",
+    "Tool-Vorlauf 31565569235 = FAILURE wegen historischer Lifecycle-Kopplung",
+    "Tool-Vorlauf 31573217649 = FAILURE nach Regression-PASS wegen Ruff",
     "VERSIONSREGISTER.json",
     "MANIFEST_PROJEKT.json",
     "ERK-I017-002",
     "Masterplan P04/I016"
   ],
   "automatisierbarkeit": "JA",
-  "status": "KANDIDAT",
+  "status": "BESTAETIGT",
   "goldene_regel": false,
   "aussage": "Eine read-only Versions-/Manifestregistry ist nur eindeutig, wenn genau eine autoritative Quelle aufgeloest wird, Produktversion und Manifest-Schema widerspruchsfrei sind und vorhandene IDs lediglich referenziert werden.",
   "grenzen": [
-    "Tool-Qualification fuer den korrigierten I018.0-Head ist noch ausstehend.",
     "Registry-Persistenz ist nicht implementiert.",
     "Automatische Quellensuche ist nicht implementiert.",
     "Manifest-Signatur oder Hashbindung ist nicht implementiert.",
     "Mehrprojekt-Registry und GUI sind nicht Bestandteil von I018.0.",
-    "E1 ist keine Goldene Regel."
+    "Der historische I010-Gesamtzustand wird nach Verlassen seines Lifecycle-Bereichs explizit SKIP statt als heutiger PASS gewertet.",
+    "E2 ist keine Goldene Regel."
   ],
   "dublettenpruefung": {
-    "status": "KONSOLIDIERUNG_PRUEFEN",
+    "status": "KEINE_DUBLETTE",
     "kandidaten": ["ERK-I017-001", "ERK-I017-002"],
-    "hinweis": "I018.0 baut auf dem ID-Vertrag auf, ist aber fachlich eine neue Registry-Aufloesungsgrenze; vor E2 ist erneut auf Regelduplikate zu pruefen."
+    "hinweis": "I017 qualifiziert ID-Identitaet und Restart-Persistenz; I018.0 qualifiziert davon getrennt die eindeutige read-only Registry-Aufloesungsgrenze. Konsolidierung ueber Projektbezug, aber kein identischer Regelkern."
   },
   "widersprueche": [],
   "qualification": {
-    "status": "AUSSTEHEND",
+    "status": "PASS_REAL",
     "tool_pr": 45,
-    "tool_qualifikations_head": "b464a76fcb932d6938bd7c0aa5a8040a73ca53c6",
-    "tool_workflow_run_id": null,
-    "workflow_conclusion": null
+    "tool_qualifikations_head": "45e9edec963dfd4f0a7c3e23c264b1c28d08a3d1",
+    "tool_workflow_run_id": 31573547771,
+    "workflow_conclusion": "success",
+    "tool_merge_commit": "f9c5a065231329a668ae9a3dc1a65783252f6362",
+    "contracttests": "6_PASS",
+    "gesamtregression": "168_PASS_1_HISTORISCH_SKIP",
+    "ruff": "PASS",
+    "ruff_format": "PASS",
+    "mypy": "PASS",
+    "scope": "10_DATEIEN_PASS"
   },
   "historie": [
     {
@@ -49,8 +60,13 @@
     },
     {
       "iteration": "I018.0",
-      "aktion": "Ersten realen CI-Fehler dokumentiert und Evidence auf korrigierten Tool-Head synchronisiert",
-      "status": "IN_PRUEFUNG"
+      "aktion": "Reale Vorlaeufe haben Dependency-, Lifecycle- und Formatfehler fail-closed sichtbar gemacht; keine rote Qualification wurde als PASS gewertet.",
+      "status": "KORRIGIERT"
+    },
+    {
+      "iteration": "I018.0",
+      "aktion": "Finalen Tool-Head mit Contracttests, Gesamtregression, Ruff, Format, mypy, Lifecycle-Freeze und exaktem Scope real qualifiziert und SHA-gebunden promoviert.",
+      "status": "BESTAETIGT"
     }
   ]
 }
