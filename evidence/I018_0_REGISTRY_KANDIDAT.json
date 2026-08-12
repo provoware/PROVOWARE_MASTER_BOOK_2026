@@ -1,0 +1,50 @@
+{
+  "id": "ERK-I018-001",
+  "typ": "Nachweis",
+  "hauptkategorie": "Architektur",
+  "nebenkategorien": ["Registry", "Versionierung", "Manifest", "Identitaet", "Fail-Closed"],
+  "reifegrad": "E1",
+  "prioritaet": "P0",
+  "gueltigkeitsbereich": "PROVOWARE P04 / I018.0 read-only Versions-/Manifestregistry",
+  "projektbezug": "I018.0 read-only Registry-Vertragskern",
+  "quelle_herkunft": [
+    "Tool-Draft-PR provoware/PROVOWARE#45",
+    "Tool-Kandidaten-Head ae05805d3ef6893cbfa69772787e28577e82ab3f",
+    "VERSIONSREGISTER.json",
+    "MANIFEST_PROJEKT.json",
+    "ERK-I017-002",
+    "Masterplan P04/I016"
+  ],
+  "automatisierbarkeit": "JA",
+  "status": "KANDIDAT",
+  "goldene_regel": false,
+  "aussage": "Eine read-only Versions-/Manifestregistry ist nur eindeutig, wenn genau eine autoritative Quelle aufgeloest wird, Produktversion und Manifest-Schema widerspruchsfrei sind und vorhandene IDs lediglich referenziert werden.",
+  "grenzen": [
+    "Tool-Qualification fuer I018.0 ist noch ausstehend.",
+    "Registry-Persistenz ist nicht implementiert.",
+    "Automatische Quellensuche ist nicht implementiert.",
+    "Manifest-Signatur oder Hashbindung ist nicht implementiert.",
+    "Mehrprojekt-Registry und GUI sind nicht Bestandteil von I018.0.",
+    "E1 ist keine Goldene Regel."
+  ],
+  "dublettenpruefung": {
+    "status": "KONSOLIDIERUNG_PRUEFEN",
+    "kandidaten": ["ERK-I017-001", "ERK-I017-002"],
+    "hinweis": "I018.0 baut auf dem ID-Vertrag auf, ist aber fachlich eine neue Registry-Aufloesungsgrenze; vor E2 ist erneut auf Regelduplikate zu pruefen."
+  },
+  "widersprueche": [],
+  "qualification": {
+    "status": "AUSSTEHEND",
+    "tool_pr": 45,
+    "tool_qualifikations_head": "ae05805d3ef6893cbfa69772787e28577e82ab3f",
+    "tool_workflow_run_id": null,
+    "workflow_conclusion": null
+  },
+  "historie": [
+    {
+      "iteration": "I018.0",
+      "aktion": "Evidence parallel zum Tool-Kandidaten als E1 vorgemerkt",
+      "status": "IN_PRUEFUNG"
+    }
+  ]
+}
