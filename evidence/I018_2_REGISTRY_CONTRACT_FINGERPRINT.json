@@ -46,13 +46,14 @@
     "historisches_i018_1_gate": "WORKFLOW_DISPATCH_ONLY"
   },
   "evidence_binding": {
-    "status": "REVALIDIERUNG_ERFORDERLICH",
-    "grund": "Review P1/P2: ursprüngliches Masterbuch-Gate band den Tool-Run nicht explizit an Workflow-ID/-Pfad, Event, Head-Branch und aufgezeichnete PR-/Conclusion-Felder.",
+    "status": "PASS_REAL",
+    "grund": "Review P1/P2 behoben: Tool-Run ist explizit an Workflow-ID/-Pfad, Event, Head-Branch, PR, Head-SHA, Merge-Commit und gespeicherte Conclusion gebunden.",
     "workflow_id": 332812614,
     "workflow_path": ".github/workflows/i018-2-registry-contract-fingerprint.yml",
     "event": "pull_request",
     "head_branch": "automation/i018-2-registry-contract-fingerprint",
     "tool_pr": 49,
+    "hardening_workflow_run_id": 31610897581,
     "fail_closed": true
   },
   "historie": [
@@ -68,8 +69,13 @@
     },
     {
       "iteration": "I018.2E",
-      "aktion": "Review P1/P2 aufgenommen; Evidence-Gate um explizite Workflow- und PR-Bindung gehärtet. Revalidierung auf dem finalen Hardening-Head ist vor erneutem Abschluss erforderlich.",
+      "aktion": "Review P1/P2 aufgenommen; Evidence-Gate um explizite Workflow- und PR-Bindung gehärtet.",
       "status": "IN_PRUEFUNG"
+    },
+    {
+      "iteration": "I018.2E",
+      "aktion": "Gehärtetes Evidence-Gate in Run 31610897581 real erfolgreich; Bindung an Workflow, Event, Branch und PR bestätigt.",
+      "status": "BESTAETIGT"
     }
   ]
 }
