@@ -1,0 +1,40 @@
+name: I018.3 Binding-Receipt Evidence
+
+on:
+  pull_request:
+    paths:
+      - 'evidence/I018_3_SOURCE_CONTRACT_BINDING_RECEIPT.json'
+      - '.github/workflows/i018-3-binding-receipt-evidence.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  evidence:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: E1-Kandidat fail-closed prüfen
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          evidence = json.loads(Path('evidence/I018_3_SOURCE_CONTRACT_BINDING_RECEIPT.json').read_text(encoding='utf-8'))
+          q = evidence['qualification']
+          assert evidence['id'] == 'ERK-I018-004'
+          assert evidence['typ'] == 'Nachweis'
+          assert evidence['hauptkategorie'] == 'Architektur'
+          assert evidence['reifegrad'] == 'E1'
+          assert evidence['prioritaet'] == 'P0'
+          assert evidence['status'] == 'KANDIDAT'
+          assert evidence['automatisierbarkeit'] == 'JA'
+          assert evidence['goldene_regel'] is False
+          assert evidence['widersprueche'] == []
+          assert q['status'] == 'AUSSTEHEND'
+          assert q['pass_real'] is False
+          assert q['tool_pr'] == 51
+          assert q['tool_kandidaten_head'] == '31828051212af237a4df837ba1fe7640515a9b37'
+          assert q['tool_workflow_run_id'] == 31621026866
+          print('I018.3 Masterbuch-Evidence: E1/KANDIDAT, keine vorzeitige Promotion')
+          PY
