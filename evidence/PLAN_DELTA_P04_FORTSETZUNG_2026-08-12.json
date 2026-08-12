@@ -1,0 +1,43 @@
+{
+  "id": "ERK-PLANDELTA-P04-001",
+  "titel": "P04 nach P03-Neuzuordnung vollständig fortsetzen",
+  "typ": "Planabweichung",
+  "hauptkategorie": "Architektur",
+  "nebenkategorien": ["Planung", "Iteration", "Lifecycle", "Audit", "Evidence", "Fail-Closed"],
+  "reifegrad": "E1",
+  "prioritaet": "P0",
+  "gueltigkeitsbereich": "PROVOWARE Masterplan v2.0.0, P04 nach PLAN-DELTA-P03-2026-08-10-001",
+  "projektbezug": "PROVOWARE",
+  "quelle_herkunft": {
+    "masterplan": "PROVOWARE_VOLLSTAENDIGER_ENTWICKLUNGSPLAN_EXPERT_FINAL_v2.0.0_2026-08-09",
+    "tool_pr": 53,
+    "tool_head": "2e38b17e1c688e7cf3ec4fbea540131329fb0451",
+    "tool_delta": "PLAN-DELTA-P04-2026-08-12-001"
+  },
+  "automatisierbarkeit": "JA",
+  "status": "KANDIDAT",
+  "goldene_regel": false,
+  "widersprueche": [
+    {
+      "status": "MARKIERT",
+      "beschreibung": "Der Projektstrang I017/I018 deckt nach dokumentierter P03-Neuzuordnung nur die Masterplan-P04-Ursprungsziele I015/I016 ab. Die Masterplan-P04-Ursprungsziele I017/I018 duerfen vor P05 nicht entfallen."
+    }
+  ],
+  "dubletten": {
+    "status": "KEINE_FACHLICHE_DUBLETTE",
+    "hinweis": "Bestehende ERK-I017-/I018-Nachweise qualifizieren Fachvertraege; dieser Eintrag dokumentiert ausschliesslich die Plan-/Lifecycle-Zuordnung."
+  },
+  "kernaussage": "Nach der P03-bedingten Verschiebung muessen die verbleibenden P04-Pflichtkerne Auditjournal und Audit/Debug/Evidence-Speichertrennung vor einem P05-Start explizit erhalten bleiben. Kandidatenmapping: Projekt-I019 <- Masterplan P04/I017; Projekt-I020 <- Masterplan P04/I018.",
+  "qualification": {
+    "status": "AUSSTEHEND",
+    "tool_workflow_run_id": null,
+    "promotion_erlaubt": false
+  },
+  "historie": [
+    {
+      "datum": "2026-08-12",
+      "status": "E1_KANDIDAT",
+      "aenderung": "Planabweichung aufgenommen; keine E2-Hochstufung ohne realen Tool-Gate-PASS."
+    }
+  ]
+}
