@@ -1,0 +1,58 @@
+{
+  "id": "ERK-I018-003",
+  "typ": "Nachweis",
+  "hauptkategorie": "Architektur",
+  "nebenkategorien": ["Registry", "Integritaet", "Contract-Fingerprint", "SHA-256", "Fail-Closed", "Lifecycle"],
+  "reifegrad": "E2",
+  "prioritaet": "P0",
+  "gueltigkeitsbereich": "PROVOWARE P04 / I018.2 read-only Registry-Contract-Fingerprint",
+  "projektbezug": "I018.2 Contract-Fingerprint auf Basis des qualifizierten I018.0/I018.1-Registryvertrags",
+  "quelle_herkunft": [
+    "Tool-PR provoware/PROVOWARE#49",
+    "Tool-Qualifikations-Head 21a7a2e95340fe2abfa371161d98487e3a04e8ac",
+    "Tool-Workflow 31605278784 = SUCCESS",
+    "Tool-Merge 5fa8eca05bfbebe50898fafad26d31d7f26a14fd",
+    "ERK-I018-001",
+    "ERK-I018-002"
+  ],
+  "automatisierbarkeit": "JA",
+  "status": "BESTAETIGT",
+  "goldene_regel": false,
+  "aussage": "Neben dem Registryquellinhalt kann auch der explizite Interpretationsvertrag unabhängig und deterministisch per SHA-256 gebunden werden; ein nicht autorisierter Vertragswechsel wird gegen einen erwarteten Contract-Pin fail-closed blockiert.",
+  "grenzen": [
+    "Registry-Persistenz ist nicht implementiert.",
+    "Automatische Quellensuche ist nicht implementiert.",
+    "Der Contract-Fingerprint ist keine Signatur und kein Herkunftsnachweis.",
+    "Ein kombiniertes Source+Contract-Binding-Receipt ist nicht Bestandteil von I018.2.",
+    "Mehrprojekt-Registry und GUI sind nicht Bestandteil von I018.2.",
+    "E2 ist keine Goldene Regel."
+  ],
+  "dublettenpruefung": {
+    "status": "KEINE_DUBLETTE",
+    "kandidaten": ["ERK-I018-001", "ERK-I018-002"],
+    "hinweis": "ERK-I018-001 qualifiziert die eindeutige Registryauflösung, ERK-I018-002 die Inhaltsbindung der Quelle und ERK-I018-003 separat die Bindung der Interpretationsregeln."
+  },
+  "widersprueche": [],
+  "qualification": {
+    "status": "PASS_REAL",
+    "tool_pr": 49,
+    "tool_qualifikations_head": "21a7a2e95340fe2abfa371161d98487e3a04e8ac",
+    "tool_workflow_run_id": 31605278784,
+    "workflow_conclusion": "success",
+    "tool_merge_commit": "5fa8eca05bfbebe50898fafad26d31d7f26a14fd",
+    "scope": "6_DATEIEN_PASS",
+    "historisches_i018_1_gate": "WORKFLOW_DISPATCH_ONLY"
+  },
+  "historie": [
+    {
+      "iteration": "I018.2",
+      "aktion": "Contract-Fingerprint als E1-Kandidat vorbereitet; keine Hochstufung vor realer Qualification.",
+      "status": "IN_PRUEFUNG"
+    },
+    {
+      "iteration": "I018.2",
+      "aktion": "Tool-Head real qualifiziert und SHA-gebunden promoviert; danach E2/BESTAETIGT gebunden.",
+      "status": "BESTAETIGT"
+    }
+  ]
+}
