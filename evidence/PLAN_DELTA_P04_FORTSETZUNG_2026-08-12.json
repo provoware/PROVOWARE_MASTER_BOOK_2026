@@ -3,7 +3,7 @@
   "titel": "P04 nach P03-Neuzuordnung vollständig fortsetzen",
   "typ": "Planabweichung",
   "hauptkategorie": "Architektur",
-  "nebenkategorien": ["Planung", "Iteration", "Lifecycle", "Audit", "Evidence", "Fail-Closed"],
+  "nebenkategorien": ["Planung", "Iteration", "Lifecycle", "Audit", "Evidence", "Fail-Closed", "Coverage", "Qualitaetssicherung"],
   "reifegrad": "E2",
   "prioritaet": "P0",
   "gueltigkeitsbereich": "PROVOWARE Masterplan v2.0.0, P04 nach PLAN-DELTA-P03-2026-08-10-001",
@@ -27,8 +27,8 @@
     }
   ],
   "dubletten": {
-    "status": "KEINE_FACHLICHE_DUBLETTE",
-    "hinweis": "Bestehende ERK-I017-/I018-Nachweise qualifizieren Fachvertraege; dieser Eintrag dokumentiert ausschliesslich die Plan-/Lifecycle-Zuordnung."
+    "status": "KONSOLIDIERT",
+    "hinweis": "Das MASTERPLAN_COVERAGE_GATE liefert zusätzliche technische Evidence für dieselbe P04-Fortsetzungsentscheidung; kein neuer Regel- oder Planabweichungskern wird angelegt."
   },
   "kernaussage": "Nach der P03-bedingten Verschiebung werden die verbleibenden P04-Pflichtkerne Auditjournal und Audit/Debug/Evidence-Speichertrennung vor P05 als Projekt-I019 bzw. Projekt-I020 fortgesetzt.",
   "qualification": {
@@ -38,6 +38,38 @@
     "tool_head": "2e38b17e1c688e7cf3ec4fbea540131329fb0451",
     "tool_merge": "2e31127f0ea9ca2332c1f18e6d1ca116995dff9e",
     "promotion_erlaubt": true
+  },
+  "coverage_revalidierung": {
+    "typ": "Nachweis",
+    "hauptkategorie": "Qualitaetssicherung",
+    "nebenkategorien": ["Masterplan", "Coverage", "Lifecycle", "Evidence", "Fail-Closed"],
+    "reifegrad": "E2",
+    "prioritaet": "P0",
+    "gueltigkeitsbereich": "PROVOWARE P04 Phasenabdeckung",
+    "projektbezug": ["PROVOWARE Wissensspeicher", "PROVOWARE Tool"],
+    "quelle_herkunft": "Tool-PR #56 MASTERPLAN Coverage Gate P04",
+    "automatisierbarkeit": "JA",
+    "status": "BESTAETIGT",
+    "goldene_regel": false,
+    "tool_pr": 56,
+    "tool_head": "9579a71bd029a874f885d63f3c10dad5204b3174",
+    "tool_workflow_run_id": 31711344686,
+    "tool_workflow_id": 333644439,
+    "tool_workflow_conclusion": "success",
+    "historische_gates_linter_run_id": 31711344627,
+    "historische_gates_linter_conclusion": "success",
+    "tool_merge": "17fa418771e6ca7e3a8085fa88e564847dbb13d5",
+    "sha_bound_promotion": true,
+    "coverage": {
+      "qualifiziert": 2,
+      "explizit_weitergefuehrt": 2,
+      "blockiert": 0,
+      "pflichtkerne_gesamt": 4,
+      "fachfortschritt_prozent": 50,
+      "phase_close_allowed": false,
+      "next_iteration": "I019"
+    },
+    "offene_grenze": "PROJEKTSTATUS.json enthält weiterhin einen älteren, nicht coverage-basierten P04-Prozentwert; dieser wird nicht als Phasenabschlussbeleg verwendet."
   },
   "historie": [
     {
@@ -49,6 +81,11 @@
       "datum": "2026-08-12",
       "status": "E2_BESTAETIGT",
       "aenderung": "Tool-PR #53 auf finalem Head real qualifiziert und SHA-gebunden gemergt; Planmapping bestaetigt."
+    },
+    {
+      "datum": "2026-08-13",
+      "status": "E2_REVALIDIERT",
+      "aenderung": "Tool-PR #56 hat die P04-Pflichtkernabdeckung fail-closed gegen PLAN_DELTA und ITERATIONSUEBERGABE geprüft: 2/4 qualifiziert, I019/I020 explizit weitergeführt, P04-Abschluss weiterhin blockiert. Keine neue Goldene Regel."
     }
   ]
 }
