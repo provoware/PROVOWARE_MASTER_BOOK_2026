@@ -1,4 +1,4 @@
-name: I015.2 Konsolidierungsanalyse
+name: I015.2 / RULE-015 Lifecycle-Revalidierung
 
 on:
   pull_request:
@@ -6,13 +6,15 @@ on:
     paths:
       - "evidence/I015_2_HISTORICAL_CI_SCOPE.json"
       - ".github/workflows/i015-2-konsolidierungsanalyse.yml"
+  workflow_dispatch:
 
 permissions:
   contents: read
+  pull-requests: read
 
 jobs:
   pruefung:
-    name: E1-Konsolidierung / Seed-Schutz
+    name: RULE-015 / Historische Gates Linter Evidence
     runs-on: ubuntu-22.04
     timeout-minutes: 5
     steps:
@@ -22,49 +24,87 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
 
-      - name: Evidence fail-closed prüfen
-        shell: bash
+      - name: Evidence und kanonische Konsolidierung fail-closed pruefen
         run: |
-          set -Eeuo pipefail
           python3 - <<'PY'
           import json
           from pathlib import Path
-
-          p = Path('evidence/I015_2_HISTORICAL_CI_SCOPE.json')
-          data = json.loads(p.read_text(encoding='utf-8'))
-          assert data['schema'] == '1.0.0'
-          assert data['iteration'] == 'I015.2'
-          assert data['typ'] == 'KONSOLIDIERUNGSANALYSE'
-          assert data['status'] == 'IN_PRUEFUNG'
-          assert data['reifegrad'] == 'E1'
-          assert data['prioritaet'] == 'P0'
-          assert data['automatisierbarkeit'] == 'JA'
+          data=json.loads(Path('evidence/I015_2_HISTORICAL_CI_SCOPE.json').read_text())
+          seed=json.loads(Path('data/masterbook_seed.json').read_text())
+          assert data['schema']=='1.0.0'
+          assert data['iteration']=='I015.2'
+          assert data['status']=='BESTAETIGT'
+          assert data['reifegrad']=='E2'
+          assert data['prioritaet']=='P0'
+          assert data['automatisierbarkeit']=='JA'
           assert data['goldene_regel'] is False
-          d = data['dublettenstrategie']
-          assert d['projektregel_bezug'] == 'ERK-I012-002 im Repository provoware/PROVOWARE'
-          assert d['projektregel_status'] == 'E2_BESTAETIGT'
-          assert d['kanonischer_masterbuch_abgleich'] == 'RULE-001_BIS_RULE-014_GEPRUEFT_KEINE_SEMANTISCHE_DUBLETTE'
-          assert d['entscheidung'] == 'KANONISCHE_AUFNAHME_AUS_BESTAETIGTER_PROJEKTREGEL_PRUEFEN'
+          d=data['dublettenstrategie']
+          assert d['kanonischer_masterbuch_abgleich']=='RULE-015_KANONISCH_E2_BESTAETIGT'
+          assert d['entscheidung']=='MIT_RULE_015_KONSOLIDIERT'
           assert d['neue_rule_id'] is False
-          v = data['validierungsgrenze']
-          assert v['i007_historischer_nachlauf_31402618783'] == 'GRUEN'
-          assert v['i008_historischer_nachlauf_31407554415'] == 'GRUEN'
-          assert v['i009_historischer_nachlauf_31412511481'] == 'GRUEN'
-          assert v['i009_scope_gate_run_31412511727'] == 'GRUEN'
-          assert v['i007_bis_i010_scope'] == 'VOLLSTAENDIG_GEHAERTET_TOOLSEITIG'
-          assert v['erk_i012_002_qualifikation'] == 'E2_BESTAETIGT_DURCH_I012_RUN_31357647745'
-          assert v['masterbook_rule_012_bedeutung'] == 'APPEND_ONLY_HISTORIENSCHUTZ_KEINE_SCOPE_REGEL'
-          assert v['kanonische_konsolidierung'] == 'AUSSTEHEND'
+          rules=[x for x in seed if isinstance(x,dict) and x.get('id')=='RULE-015']
+          assert len(rules)==1
+          assert rules[0]['maturity']=='E2'
+          assert rules[0]['status']=='bestaetigt'
+          assert rules[0].get('goldene_regel',False) is False
+          q=data['revalidierung_2026_08_13']
+          assert q['tool_pr']==55
+          assert q['tool_head']=='030d8657ceba29e30cbb8d319bd5a156872c459b'
+          assert q['tool_workflow_run_id']==31709297240
+          assert q['tool_workflow_conclusion']=='success'
+          assert q['tool_workflow_id']==333628577
+          assert q['tool_workflow_path']=='.github/workflows/historische-gates-linter.yml'
+          assert q['tool_workflow_event']=='pull_request'
+          assert q['tool_head_branch']=='automation/historische-gates-linter'
+          assert q['tool_merge']=='3643af81267c5e83cf80f11f0fb94298eba9c022'
+          assert q['sha_bound_promotion'] is True
+          assert q['status']=='PASS_REAL'
+          print('LOCAL_RULE_015_REVALIDATION=PASS')
           PY
 
-      - name: Seed und kanonische Regeln unverändert halten
-        shell: bash
+      - name: Tool-Run und PR remote binden
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          set -Eeuo pipefail
-          git fetch --no-tags origin main
-          CHANGED="$(git diff --name-only origin/main...HEAD)"
-          printf '%s\n' "$CHANGED"
-          if printf '%s\n' "$CHANGED" | grep -E '(^|/)masterbook_seed\.json$|(^|/)golden|(^|/)rules?/|(^|/)RULE-' ; then
-            echo 'Kanonische Seed-/Regeldatei in E1-Konsolidierungsanalyse verändert.' >&2
-            exit 1
-          fi
+          python3 - <<'PY'
+          import json,os,urllib.request
+          headers={'Authorization':f'Bearer {os.environ["GH_TOKEN"]}','Accept':'application/vnd.github+json'}
+          def get(url):
+              with urllib.request.urlopen(urllib.request.Request(url,headers=headers)) as r:
+                  return json.load(r)
+          run=get('https://api.github.com/repos/provoware/PROVOWARE/actions/runs/31709297240')
+          pr=get('https://api.github.com/repos/provoware/PROVOWARE/pulls/55')
+          files=get('https://api.github.com/repos/provoware/PROVOWARE/pulls/55/files?per_page=100')
+          assert run['status']=='completed' and run['conclusion']=='success'
+          assert run['head_sha']=='030d8657ceba29e30cbb8d319bd5a156872c459b'
+          assert run['head_branch']=='automation/historische-gates-linter'
+          assert run['workflow_id']==333628577
+          assert run['path']=='.github/workflows/historische-gates-linter.yml'
+          assert run['event']=='pull_request'
+          assert pr['state']=='closed' and pr['merged'] is True
+          assert pr['head']['sha']==run['head_sha']
+          assert pr['head']['ref']==run['head_branch']
+          assert pr['merge_commit_sha']=='3643af81267c5e83cf80f11f0fb94298eba9c022'
+          changed={x['filename'] for x in files}
+          expected={'docs/HISTORISCHE_GATES.json','docs/HISTORISCHE_GATES_LINTER.md','tools/historical_gate_linter.py','.github/workflows/historische-gates-linter.yml'}
+          assert changed==expected,(changed,expected)
+          print('REMOTE_TOOL_EVIDENCE=PASS')
+          PY
+
+      - name: Exakten Masterbuch-Scope fail-closed pruefen
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import json,os,urllib.request
+          event=json.load(open(os.environ['GITHUB_EVENT_PATH']))
+          number=event['pull_request']['number']
+          repo=os.environ['GITHUB_REPOSITORY']
+          req=urllib.request.Request(f'https://api.github.com/repos/{repo}/pulls/{number}/files?per_page=100',headers={'Authorization':f'Bearer {os.environ["GH_TOKEN"]}','Accept':'application/vnd.github+json'})
+          with urllib.request.urlopen(req) as r:
+              changed={x['filename'] for x in json.load(r)}
+          expected={'evidence/I015_2_HISTORICAL_CI_SCOPE.json','.github/workflows/i015-2-konsolidierungsanalyse.yml'}
+          assert changed==expected,(changed,expected)
+          print('MASTERBUCH_SCOPE=PASS')
+          PY
