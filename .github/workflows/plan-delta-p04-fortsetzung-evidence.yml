@@ -1,4 +1,4 @@
-name: PLAN_DELTA P04 Evidence
+name: PLAN_DELTA P04 / Coverage Evidence
 
 on:
   pull_request:
@@ -9,17 +9,20 @@ on:
 
 permissions:
   contents: read
+  pull-requests: read
 
 jobs:
   verify:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-      - name: Evidence lokal validieren
+
+      - name: Evidence und Konsolidierung lokal validieren
         run: |
           python3 - <<'PY'
           import json
           from pathlib import Path
+
           e = json.loads(Path('evidence/PLAN_DELTA_P04_FORTSETZUNG_2026-08-12.json').read_text())
           assert e['id'] == 'ERK-PLANDELTA-P04-001'
           assert e['typ'] == 'Planabweichung'
@@ -28,32 +31,123 @@ jobs:
           assert e['status'] == 'BESTAETIGT'
           assert e['automatisierbarkeit'] == 'JA'
           assert e['goldene_regel'] is False
+          assert e['dubletten']['status'] == 'KONSOLIDIERT'
+
           q = e['qualification']
           assert q['status'] == 'PASS_REAL'
           assert q['tool_pr'] == 53
           assert q['tool_workflow_run_id'] == 31626001490
           assert q['tool_head'] == '2e38b17e1c688e7cf3ec4fbea540131329fb0451'
           assert q['tool_merge'] == '2e31127f0ea9ca2332c1f18e6d1ca116995dff9e'
+
+          c = e['coverage_revalidierung']
+          assert c['typ'] == 'Nachweis'
+          assert c['hauptkategorie'] == 'Qualitaetssicherung'
+          assert c['reifegrad'] == 'E2'
+          assert c['prioritaet'] == 'P0'
+          assert c['automatisierbarkeit'] == 'JA'
+          assert c['status'] == 'BESTAETIGT'
+          assert c['goldene_regel'] is False
+          assert c['tool_pr'] == 56
+          assert c['tool_head'] == '9579a71bd029a874f885d63f3c10dad5204b3174'
+          assert c['tool_workflow_run_id'] == 31711344686
+          assert c['tool_workflow_id'] == 333644439
+          assert c['tool_workflow_conclusion'] == 'success'
+          assert c['historische_gates_linter_run_id'] == 31711344627
+          assert c['historische_gates_linter_conclusion'] == 'success'
+          assert c['tool_merge'] == '17fa418771e6ca7e3a8085fa88e564847dbb13d5'
+          assert c['sha_bound_promotion'] is True
+          coverage = c['coverage']
+          assert coverage == {
+              'qualifiziert': 2,
+              'explizit_weitergefuehrt': 2,
+              'blockiert': 0,
+              'pflichtkerne_gesamt': 4,
+              'fachfortschritt_prozent': 50,
+              'phase_close_allowed': False,
+              'next_iteration': 'I019',
+          }
+          print('LOCAL_COVERAGE_EVIDENCE=PASS')
           PY
-      - name: Tool-Run und PR remote binden
+
+      - name: Tool-Coverage-Run und PR remote binden
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           python3 - <<'PY'
-          import json, os, urllib.request
-          headers={'Authorization': f'Bearer {os.environ["GH_TOKEN"]}', 'Accept':'application/vnd.github+json'}
+          import json
+          import os
+          import urllib.request
+
+          headers = {
+              'Authorization': f'Bearer {os.environ["GH_TOKEN"]}',
+              'Accept': 'application/vnd.github+json',
+          }
+
           def get(url):
-              return json.load(urllib.request.urlopen(urllib.request.Request(url, headers=headers)))
-          run=get('https://api.github.com/repos/provoware/PROVOWARE/actions/runs/31626001490')
-          pr=get('https://api.github.com/repos/provoware/PROVOWARE/pulls/53')
-          assert run['status']=='completed'
-          assert run['conclusion']=='success'
-          assert run['head_sha']=='2e38b17e1c688e7cf3ec4fbea540131329fb0451'
-          assert run['workflow_id']==332986135
-          assert run['event']=='pull_request'
-          assert pr['state']=='closed'
+              req = urllib.request.Request(url, headers=headers)
+              with urllib.request.urlopen(req) as response:
+                  return json.load(response)
+
+          run = get('https://api.github.com/repos/provoware/PROVOWARE/actions/runs/31711344686')
+          lint = get('https://api.github.com/repos/provoware/PROVOWARE/actions/runs/31711344627')
+          pr = get('https://api.github.com/repos/provoware/PROVOWARE/pulls/56')
+          files = get('https://api.github.com/repos/provoware/PROVOWARE/pulls/56/files?per_page=100')
+
+          assert run['status'] == 'completed'
+          assert run['conclusion'] == 'success'
+          assert run['head_sha'] == '9579a71bd029a874f885d63f3c10dad5204b3174'
+          assert run['head_branch'] == 'automation/masterplan-coverage-gate'
+          assert run['workflow_id'] == 333644439
+          assert run['path'] == '.github/workflows/masterplan-coverage-gate.yml'
+          assert run['event'] == 'pull_request'
+
+          assert lint['status'] == 'completed'
+          assert lint['conclusion'] == 'success'
+          assert lint['head_sha'] == run['head_sha']
+          assert lint['workflow_id'] == 333628577
+
+          assert pr['state'] == 'closed'
           assert pr['merged'] is True
-          assert pr['head']['sha']=='2e38b17e1c688e7cf3ec4fbea540131329fb0451'
-          assert pr['merge_commit_sha']=='2e31127f0ea9ca2332c1f18e6d1ca116995dff9e'
-          print('EVIDENCE_BINDING=PASS')
+          assert pr['head']['sha'] == run['head_sha']
+          assert pr['merge_commit_sha'] == '17fa418771e6ca7e3a8085fa88e564847dbb13d5'
+
+          changed = {item['filename'] for item in files}
+          expected = {
+              '.github/workflows/masterplan-coverage-gate.yml',
+              'docs/MASTERPLAN_COVERAGE_GATE.md',
+              'docs/MASTERPLAN_COVERAGE_P04.json',
+          }
+          assert changed == expected, (changed, expected)
+          print('REMOTE_COVERAGE_BINDING=PASS')
+          PY
+
+      - name: Exakten Masterbuch-Scope fail-closed pruefen
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import urllib.request
+
+          event = json.load(open(os.environ['GITHUB_EVENT_PATH']))
+          number = event['pull_request']['number']
+          repo = os.environ['GITHUB_REPOSITORY']
+          req = urllib.request.Request(
+              f'https://api.github.com/repos/{repo}/pulls/{number}/files?per_page=100',
+              headers={
+                  'Authorization': f'Bearer {os.environ["GH_TOKEN"]}',
+                  'Accept': 'application/vnd.github+json',
+              },
+          )
+          with urllib.request.urlopen(req) as response:
+              changed = {item['filename'] for item in json.load(response)}
+          expected = {
+              'evidence/PLAN_DELTA_P04_FORTSETZUNG_2026-08-12.json',
+              '.github/workflows/plan-delta-p04-fortsetzung-evidence.yml',
+          }
+          assert changed == expected, (changed, expected)
+          print('MASTERBUCH_SCOPE=PASS')
           PY
