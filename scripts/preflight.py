@@ -54,11 +54,22 @@ def preflight(candidate: dict, seed: list[dict]) -> dict:
     duplicate = None
     title_key = _norm(candidate.get('title', ''))
     summary_key = _norm(candidate.get('summary', ''))
+    candidate_sources = {
+        (src.get('kind'), src.get('ref'), src.get('claim'))
+        for src in candidate.get('sources', [])
+        if isinstance(src, dict) and all(src.get(field) for field in ('kind', 'ref', 'claim'))
+    }
     for entry in seed:
         if title_key and _norm(entry.get('title', '')) == title_key:
             duplicate = entry['id']
             break
-        if title_key and summary_key and _norm(entry.get('title', '')) == title_key and _norm(entry.get('summary', '')) == summary_key:
+        # Identische konkrete Quellenbehauptung desselben Eintragstyps ist ebenfalls eine Dublette.
+        entry_sources = {
+            (src.get('kind'), src.get('ref'), src.get('claim'))
+            for src in entry.get('sources', [])
+            if isinstance(src, dict) and all(src.get(field) for field in ('kind', 'ref', 'claim'))
+        }
+        if candidate.get('type') == entry.get('type') and candidate_sources & entry_sources:
             duplicate = entry['id']
             break
 
