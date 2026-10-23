@@ -40,4 +40,25 @@ result = preflight(conflict, seed)
 assert result['result'] == 'CONFLICT'
 assert result['conflict_with'] == ['RULE-001']
 
+# Der reale INBOX-002-Wortlaut weicht ab, seine Quellenbehauptung ist aber identisch
+# mit RULE-002. Der Titelvergleich allein darf die Dublette nicht als READY melden.
+same_source = dict(
+    base,
+    candidate_id='INBOX-SOURCE',
+    title='Einmalig speichern, in vielen Ansichten anzeigen',
+    type=seed[1]['type'],
+    sources=list(seed[1]['sources']),
+)
+found = preflight(same_source, seed)
+assert found['result'] == 'DUPLICATE', found
+assert found['possible_duplicate_of'] == seed[1]['id']
+
+# Gleicher Dokumentverweis mit einer ANDEREN Quellenbehauptung ist keine Dublette.
+different_claim = dict(
+    same_source,
+    candidate_id='INBOX-DIFFERENT',
+    sources=[{**same_source['sources'][0], 'claim': 'Andere eigenständige Aussage'}],
+)
+assert preflight(different_claim, seed)['result'] == 'READY'
+
 print('PASS: READY, DUPLICATE, BLOCKED und CONFLICT deterministisch geprüft.')

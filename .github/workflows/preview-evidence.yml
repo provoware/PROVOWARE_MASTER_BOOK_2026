@@ -9,6 +9,13 @@ on:
       - 'data/**'
       - 'schemas/**'
       - '.github/workflows/preview-evidence.yml'
+  pull_request:
+    paths:
+      - 'scripts/**'
+      - 'tests/**'
+      - 'data/**'
+      - 'schemas/**'
+      - '.github/workflows/preview-evidence.yml'
   workflow_dispatch:
 
 permissions:
