@@ -6,6 +6,10 @@ from single_commit_qualification import qualify
 
 ROOT = Path(__file__).resolve().parents[1]
 HISTORY = ROOT / 'data' / 'knowledge-deltas.json'
+REQUIRED_INNER_CHECKS = (
+    'preview_pass', 'intent_ready', 'transaction_committed',
+    'restart_replay_pass', 'commit_evidence_present', 'state_changed',
+)
 
 
 def canonical_history_hash() -> str:
@@ -14,9 +18,14 @@ def canonical_history_hash() -> str:
 
 def verify_receipt(receipt: dict) -> dict:
     required = ('before_seed_hash','after_seed_hash','preview_evidence_hash','intent_hash','transaction_id','replay_hash','commit_evidence_hash','receipt_hash')
+    inner_checks = receipt.get('checks')
     checks = {
         'qualified_result': receipt.get('result') == 'SINGLE_COMMIT_QUALIFIED',
-        'all_inner_checks': all(receipt.get('checks', {}).values()),
+        'all_inner_checks': (
+            isinstance(inner_checks, dict)
+            and all(inner_checks.get(key) is True for key in REQUIRED_INNER_CHECKS)
+            and all(value is True for value in inner_checks.values())
+        ),
         'required_lineage_present': all(bool(receipt.get(k)) for k in required[:-1]),
     }
     unsigned = dict(receipt)
