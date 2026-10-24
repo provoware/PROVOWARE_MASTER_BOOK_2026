@@ -1,0 +1,62 @@
+name: Browser Preflight Parity
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/preflight.js'
+      - 'src/registries.js'
+      - 'src/app.js'
+      - 'src/preview.js'
+      - 'index.html'
+      - 'preview.html'
+      - 'data/categories.json'
+      - 'data/relationship-types.json'
+      - 'data/masterbook_seed.json'
+      - 'data/inbox.json'
+      - 'tests/test_browser_preflight.cjs'
+      - 'scripts/generate_registries.py'
+      - '.github/workflows/browser-preflight-parity.yml'
+  pull_request:
+    paths:
+      - 'src/preflight.js'
+      - 'src/registries.js'
+      - 'src/app.js'
+      - 'src/preview.js'
+      - 'index.html'
+      - 'preview.html'
+      - 'data/categories.json'
+      - 'data/relationship-types.json'
+      - 'data/masterbook_seed.json'
+      - 'data/inbox.json'
+      - 'tests/test_browser_preflight.cjs'
+      - 'scripts/generate_registries.py'
+      - '.github/workflows/browser-preflight-parity.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  browser-preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: JavaScript-Syntax
+        run: |
+          node --check src/preflight.js
+          node --check src/registries.js
+          node --check src/app.js
+          node --check src/preview.js
+      - name: Browser-Preflight Regression
+        run: node tests/test_browser_preflight.cjs
+      - name: Kanonische Python-Vorprüfung
+        run: python3 tests/test_preflight.py
+      - name: Kanonische Browser-Derivate
+        run: python3 scripts/verify_browser_derivatives.py
