@@ -9,6 +9,7 @@ SEED_SOURCE = ROOT / "data" / "masterbook_seed.json"
 SEED_TARGET = ROOT / "src" / "seed.js"
 DELTA_SOURCE = ROOT / "data" / "knowledge-deltas.json"
 DELTA_TARGET = ROOT / "src" / "deltas.js"
+REGISTRY_TARGET = ROOT / "src" / "registries.js"
 
 
 def _compact_json(path: Path) -> str:
@@ -24,10 +25,21 @@ def expected_deltas() -> str:
     return f"window.KNOWLEDGE_DELTAS = {_compact_json(DELTA_SOURCE)};\n"
 
 
+def expected_registries() -> str:
+    categories = json.loads((ROOT / "data/categories.json").read_text(encoding="utf-8"))["categories"]
+    relations = json.loads((ROOT / "data/relationship-types.json").read_text(encoding="utf-8"))["relationship_types"]
+    compact = lambda value: json.dumps(value, ensure_ascii=False, separators=(",", ":"))
+    return (
+        "window.MASTERBOOK_CATEGORIES=" + compact(categories) + ";\\n"
+        "window.MASTERBOOK_RELATIONSHIP_TYPES=" + compact(relations) + ";\\n"
+    )
+
+
 def verify() -> dict:
     checks = {
         "seed_derivative_exact": SEED_TARGET.read_text(encoding="utf-8") == expected_seed(),
         "delta_derivative_exact": DELTA_TARGET.read_text(encoding="utf-8") == expected_deltas(),
+        "registry_derivative_exact": REGISTRY_TARGET.read_text(encoding="utf-8") == expected_registries(),
     }
     return {
         "schema_version": "1.0",
@@ -36,10 +48,13 @@ def verify() -> dict:
         "canonical_sources": [
             str(SEED_SOURCE.relative_to(ROOT)),
             str(DELTA_SOURCE.relative_to(ROOT)),
+            "data/categories.json",
+            "data/relationship-types.json",
         ],
         "derived_targets": [
             str(SEED_TARGET.relative_to(ROOT)),
             str(DELTA_TARGET.relative_to(ROOT)),
+            str(REGISTRY_TARGET.relative_to(ROOT)),
         ],
     }
 
