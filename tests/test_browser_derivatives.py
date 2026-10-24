@@ -20,7 +20,7 @@ def test_expected_rendering_is_strict():
     assert guard.expected_deltas().startswith("window.KNOWLEDGE_DELTAS = ")
     assert guard.expected_deltas().endswith(";\n")
     assert guard.expected_registries().startswith("window.MASTERBOOK_CATEGORIES=")
-    assert guard.expected_registries().endswith(";\\n")
+    assert guard.expected_registries().endswith(";\n")
     assert guard.expected_registries() + "drift" != guard.REGISTRY_TARGET.read_text(encoding="utf-8")
     assert guard.expected_seed() + "drift" != guard.SEED_TARGET.read_text(encoding="utf-8")
 
