@@ -30,8 +30,8 @@ def expected_registries() -> str:
     relations = json.loads((ROOT / "data/relationship-types.json").read_text(encoding="utf-8"))["relationship_types"]
     compact = lambda value: json.dumps(value, ensure_ascii=False, separators=(",", ":"))
     return (
-        "window.MASTERBOOK_CATEGORIES=" + compact(categories) + ";\\n"
-        "window.MASTERBOOK_RELATIONSHIP_TYPES=" + compact(relations) + ";\\n"
+        "window.MASTERBOOK_CATEGORIES=" + compact(categories) + ";\n"
+        "window.MASTERBOOK_RELATIONSHIP_TYPES=" + compact(relations) + ";\n"
     )
 
 
