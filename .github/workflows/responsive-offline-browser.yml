@@ -10,6 +10,8 @@ on:
       - 'src/**'
       - 'tests/test_responsive_browser.py'
       - '.github/workflows/responsive-offline-browser.yml'
+      - 'docs/RELEASE_PFLICHTMATRIX.md'
+      - 'README.md'
   pull_request:
     paths:
       - 'src/style.css'
@@ -18,6 +20,8 @@ on:
       - 'src/**'
       - 'tests/test_responsive_browser.py'
       - '.github/workflows/responsive-offline-browser.yml'
+      - 'docs/RELEASE_PFLICHTMATRIX.md'
+      - 'README.md'
 
 permissions:
   contents: read

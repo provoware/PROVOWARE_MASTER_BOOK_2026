@@ -13,14 +13,14 @@ Arbeitszweig: `dev/browser-preflight-parity-20261024`; PR #29 (Entwurf). Geprüf
 | Fehlerbehandlung | Fehler sichtbar, ungültige Kategorien/Beziehungen abgewiesen | Browser-Vorprüfung prüft kanonische Register; Browser-E2E offen | OPEN |
 | Sicherheit | XSS, Pfad-/Eingabegrenzen, Rechte, Schutzregeln | HTML-Escaping in beiden Ansichten; umfassender Sicherheitstest offen | OPEN |
 | Design und Lesbarkeit | Große Schrift, klare Rückmeldungen, Kontrast | CSS vorhanden; reale Sichtprüfung fehlt | OPEN |
-| 800×600 + hohe Skalierung | Ohne horizontales Scrollen bedienbar | CSS-Raster für beide Ansichten responsiv; echter Chromium-Test für 1280/800/400/320 und 200 % Schrift in `tests/test_responsive_browser.py` angelegt; CI-Ergebnis noch ausstehend | OPEN – Browser-Gate noch nicht nachgewiesen |
-| Tastatur und Barrierefreiheit | Fokus, Tastatur, Screenreader, Statusansagen | Karten mit Enter/Leertaste; vollständige Prüfung fehlt | OPEN |
+| 800×600 + hohe Skalierung | Ohne horizontales Scrollen bedienbar | Chromium-Offline-Test auf `f5f8c0b` für 1280/800/400/320 und 200 % Schrift: [CI #40095636573](https://github.com/provoware/PROVOWARE_MASTER_BOOK_2026/actions/runs/40095636573) PASS; echter Browserzoom/Firefox offen | OPEN – Teilprüfung PASS |
+| Tastatur und Barrierefreiheit | Fokus, Tastatur, Screenreader, Statusansagen | Echte Chromium-Tastaturauswahl in beiden Ansichten [PASS auf f5f8c0b](https://github.com/provoware/PROVOWARE_MASTER_BOOK_2026/actions/runs/40095636573); Screenreader/gesamte Navigation offen | OPEN – Teilprüfung PASS |
 | Performance | Reaktionszeit, Speicher, große Datenmengen | Keine belastbaren Grenzwertmessungen | OPEN |
 | Wartbarkeit | Gemeinsame Logik, kanonische Datenquellen | Gemeinsame Browser-Vorprüfung; Register aus JSON generiert | OPEN – Arbeitspaket-CI PASS; Gesamtprüfung offen |
 | Paketierung und Installation | Offline-Start, reproduzierbares Paket | HTML-Offlinestart dokumentiert, Paket- und Frischinstallationstest offen | OPEN |
 | Automatische Funktionstests | Positiv/Negativ und Fehlerfälle | Python-Tests vorhanden; neuer Node-Regressionstest und GitHub-Workflow | OPEN – Arbeitspaket-CI PASS; Gesamtprüfung offen |
 | Integration | Browser/Python konsistent, Generatoren aktuell | Gemeinsame Browser-Vorprüfung, Derivat-Wächter erweitert | OPEN – Arbeitspaket-CI PASS; Gesamtprüfung offen |
-| GUI/Browser | Chrome, Firefox, 800×600, Zoom, Tastatur | Kein vollständiger realer E2E-Beleg | OPEN |
+| GUI/Browser | Chrome, Firefox, 800×600, Zoom, Tastatur | Chromium-Offline-Layout und Auswahl [PASS auf f5f8c0b](https://github.com/provoware/PROVOWARE_MASTER_BOOK_2026/actions/runs/40095636573); Firefox und echter Browserzoom offen | OPEN – Teilprüfung PASS |
 | Regression und CI | Pflichtprüfungen grün auf identischem Commit | Sieben GitHub-Prüfjobs auf Funktions-HEAD `7f50f1e` erfolgreich; Gesamtrelease weiterhin ungeprüft | OPEN |
 | Dokumentation | Aktuelle Start-, Test-, Wiederherstellungsanleitung | README überarbeitet; Fach-/Release-Dokumentation noch nicht vollständig | OPEN |
 | Release-Vorbereitung | Stabiler, eingefrorener Kandidat mit Nachweisen | Nicht erreicht; keine Veröffentlichung | BLOCKED |
@@ -46,5 +46,5 @@ Arbeitszweig: `dev/browser-preflight-parity-20261024`; PR #29 (Entwurf). Geprüf
 - Befund: `preview.html` überschrieb das responsive CSS-Raster durch ein Inline-Raster; lange Titel und Hashes konnten horizontales Scrollen verursachen.
 - Änderung: Gemeinsame responsive Layoutregel, Umbruch langer Zeichenketten, größere Bedienelemente und sichtbarer Tastaturfokus. Echte Chromium-Regression für beide Offline-Ansichten bei 1280×720, 800×600, 400×300 und 320×568 sowie 200 % Schriftgröße und Tastaturauswahl.
 - 400×300 ist eine enge CSS-Ansichtsgröße, **kein** Nachweis eines echten 200-%-Browserzooms. Echte Zoom-, Firefox- und Kubuntu-Sichtprüfungen bleiben offen.
-- Prüfstatus zum Commit-Zeitpunkt: **OPEN**; erst konkrete GitHub-Actions-Ergebnisse dürfen als PASS eingetragen werden.
+- Prüfbeleg: **PASS** für die drei Chromium-Testmethoden und beide Ausführungen auf Funktions-HEAD `f5f8c0b99ad7afe1d02ae688bd4e994be236f733`: [Push-CI #40095621000](https://github.com/provoware/PROVOWARE_MASTER_BOOK_2026/actions/runs/40095621000), [PR-CI #40095636573](https://github.com/provoware/PROVOWARE_MASTER_BOOK_2026/actions/runs/40095636573). Dies ist keine Freigabe der Gesamtmatrix.
 - Nächster Schritt: Browser-Gate auswerten, Fehler reparieren, anschließend weitere Tastatur-/Screenreader- und Browserprüfungen.

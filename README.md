@@ -49,3 +49,15 @@ Nicht ausgeführte Prüfungen dürfen nicht als PASS interpretiert werden.
 ## Nächster Schritt
 
 Die Browser-Vorprüfung mit dem kanonischen Python-Preflight abgleichen, die GitHub-Prüfketten auf dem Entwicklungszweig nachweisen und anschließend reale Browser-, 800×600- und Skalierungstests ausführen. Schreibende Übernahmen bleiben bis zu vollständig geprüften Transaktions- und Undo-Verträgen gesperrt.
+
+## Responsive Browserprüfung (Entwicklungszweig)
+
+Der eigenständige Folge-PR #30 prüft die beiden lokalen HTML-Ansichten in **echtem Chromium** auf horizontales Scrollen bei 1280×720, 800×600, 400×300 und 320×568, zusätzlich 800×600 bei 200 % Schrift sowie die Tastaturauswahl. Entwickler mit Playwright können die Prüfung so ausführen:
+
+```bash
+python3 -m pip install playwright==1.57.0
+python3 -m playwright install chromium
+python3 tests/test_responsive_browser.py
+```
+
+Der [GitHub-Browserprüflauf](https://github.com/provoware/PROVOWARE_MASTER_BOOK_2026/actions/runs/40095636573) auf Funktions-HEAD `f5f8c0b` war erfolgreich. Dies ersetzt **keinen** echten Browserzoom, Firefox-Test, Screenreader-Test oder die spätere gebündelte Kubuntu-Endabnahme. Die kanonischen Wissensdaten bleiben unverändert.
