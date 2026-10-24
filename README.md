@@ -2,7 +2,9 @@
 
 Lokaler Wissensspeicher, Masterbuch und spätere Standards Engine für projektübergreifendes Entwicklungswissen.
 
-## Aktueller Stand – Iteration 004
+## Stand und Nachweise
+
+Das Projektstatusdokument nennt formal Iteration 014; im Repository liegen darüber hinaus neuere Sicherheits- und CI-Nachträge. Der tatsächliche Release-Stand ergibt sich aus [der Release-Pflichtmatrix](docs/RELEASE_PFLICHTMATRIX.md), nicht aus einer Prozentzahl.
 
 Enthalten:
 
@@ -18,6 +20,9 @@ Enthalten:
 - read-only Ansicht `Was hat sich geändert?`
 - Single-Source-Generatoren für Browser-Derivate
 - Smoke-, Preflight- und Delta-Vertragstests
+- gemeinsame, schreibgeschützte Browser-Vorprüfung in beiden Ansichten
+- aus kanonischen Registern generierte Browser-Kategorien und Beziehungstypen
+- Browser-Preflight-Regressionstest mit positiven und negativen Fällen
 
 ## Start
 
@@ -31,13 +36,16 @@ Die Oberfläche bleibt absichtlich lesend. Persistente Nutzdatenspeicherung und 
 python3 scripts/generate_seed.py
 python3 scripts/generate_inbox.py
 python3 scripts/generate_deltas.py
+python3 scripts/generate_registries.py
 python3 tests/smoke.py
 python3 tests/test_preflight.py
 python3 tests/test_deltas.py
+python3 scripts/verify_browser_derivatives.py
+node tests/test_browser_preflight.cjs
 ```
 
 Nicht ausgeführte Prüfungen dürfen nicht als PASS interpretiert werden.
 
 ## Nächster Schritt
 
-Iteration 005: reversible Inbox-Übernahme zunächst als Preview/Simulation mit Delta-Erzeugung und Undo-Vertrag; kein stilles Schreiben in den kanonischen Bestand.
+Die Browser-Vorprüfung mit dem kanonischen Python-Preflight abgleichen, die GitHub-Prüfketten auf dem Entwicklungszweig nachweisen und anschließend reale Browser-, 800×600- und Skalierungstests ausführen. Schreibende Übernahmen bleiben bis zu vollständig geprüften Transaktions- und Undo-Verträgen gesperrt.

@@ -5,19 +5,7 @@
   const plan = document.getElementById('plan');
   const detail = document.getElementById('detail');
   const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const norm = value => String(value ?? '').normalize('NFKC').toLocaleLowerCase('de').trim().replace(/\s+/g,' ');
-
-  function preflight(candidate) {
-    const errors = [];
-    if (!candidate.sources || candidate.sources.length === 0) errors.push('Mindestens eine Quelle ist erforderlich');
-    if (candidate.type === 'goldene_regel' && candidate.maturity !== 'E5') errors.push('Goldene Regel erfordert E5');
-    const duplicate = seed.find(entry => norm(entry.title) === norm(candidate.title));
-    const conflicts = (candidate.relationships || []).filter(r => r.type === 'widerspricht' && r.target_id).map(r => r.target_id);
-    if (errors.length) return {result:'BLOCKED', errors, duplicate:null, conflicts};
-    if (conflicts.length) return {result:'CONFLICT', errors, duplicate:null, conflicts};
-    if (duplicate) return {result:'DUPLICATE', errors, duplicate:duplicate.id, conflicts};
-    return {result:'READY', errors, duplicate:null, conflicts};
-  }
+  const preflight = candidate => window.PROVOWARE_PREFLIGHT(candidate, seed);
 
   function stable(value) {
     if (Array.isArray(value)) return '[' + value.map(stable).join(',') + ']';

@@ -9,34 +9,7 @@
   const detail = document.getElementById('detail');
 
   const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-  const norm = value => String(value ?? '').normalize('NFKC').toLocaleLowerCase('de').trim().replace(/\s+/g, ' ');
-
-  function preflight(candidate) {
-    const errors = [];
-    const required = ['candidate_id','title','summary','type','primary_category','categories','priority','maturity','scope','sources','status'];
-    for (const key of required) {
-      if (!(key in candidate)) errors.push(`Pflichtfeld fehlt: ${key}`);
-    }
-    if (!candidate.sources || candidate.sources.length === 0) errors.push('Mindestens eine Quelle ist erforderlich');
-    if (candidate.type === 'goldene_regel' && candidate.maturity !== 'E5') errors.push('Goldene Regel erfordert E5');
-
-    const duplicate = entries.find(entry => norm(entry.title) === norm(candidate.title));
-    const conflicts = (candidate.relationships || [])
-      .filter(rel => rel.type === 'widerspricht' && rel.target_id)
-      .map(rel => rel.target_id);
-
-    let result = 'READY';
-    if (errors.length) result = 'BLOCKED';
-    else if (conflicts.length) result = 'CONFLICT';
-    else if (duplicate) result = 'DUPLICATE';
-
-    return {
-      result,
-      errors,
-      possible_duplicate_of: duplicate ? duplicate.id : null,
-      conflict_with: conflicts
-    };
-  }
+  const preflight = candidate => window.PROVOWARE_PREFLIGHT(candidate, entries);
 
   function matches(entry, query) {
     const haystack = [entry.id, entry.type, entry.title, entry.summary, entry.primary_category, ...(entry.categories || []), ...(entry.tags || []), ...(entry.projects || []), entry.priority, entry.maturity, entry.status].join(' ').toLowerCase();
